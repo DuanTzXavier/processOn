@@ -96,13 +96,17 @@
                     if (moveFlag) {
                         //移动则z-index变大
                         // addIndex(divObj);
-                        var now = moveEvent.clientX - mwidth + "px";
-                        // divObj.style.width = now - divObj.style.left + divObj.offsetWidth + "px"
-                        divObj.style.width = 100 + "px"
+                        var now = moveEvent.clientX - mwidth;
+                        var values = (now - 120 + divObj.offsetWidth)/2
 
-                        console.log(divObj.style.width)
+                        console.log("offsetWidth"  + divObj.offsetWidth)
 
-                        canvas.width = 100
+                        divObj.style.width = values + "px"
+
+                        canvas.width = values
+
+                        console.log(values)
+                        drawArrow2Left(canvas)
                         // divObj.style.top = moveEvent.clientY - mheight + "px";
                         //将鼠标坐标传给Canvas中的图像
                         X = moveEvent.clientX - mwidth;
