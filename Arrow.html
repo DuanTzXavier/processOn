@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <!-- <canvas id="myCanvas" width="400" height="400"></canvas> -->
+
+
+    <canvas id="down" width="24" height="200"></canvas>
+
+    <canvas id="up" width="24" height="200"></canvas>
+
+    <canvas id="left" width="200" height="24"></canvas>
+
+    <canvas id="right" width="200" height="24"></canvas>
+
+    <div id="123" style="position:absolute;left:125px;top:300px;width:210px;height: 25px;">
+
+    </div>
+
+
+
+    <!-- <script type="text/javascript" charset="UTF-8" src="arrow.js"></script> -->
+    <script type="text/javascript" charset="UTF-8" src="js/drawArrow.js"></script>
+
+    <script>
+
+        var myCanvas2 = document.getElementById('down');
+
+        drawArrow2Down(myCanvas2)
+
+        var myCanvas2 = document.getElementById('up');
+
+        drawArrow2Up(myCanvas2)
+
+        var myCanvas2 = document.getElementById('left');
+
+        drawArrow2Left(myCanvas2)
+
+        var myCanvas2 = document.getElementById('right');
+
+        drawArrow2Right(myCanvas2)
+
+        var div = document.getElementById('123');
+
+        var canvas = document.createElement("canvas");
+        canvas.height = div.offsetHeight
+        canvas.width = div.offsetWidth
+        canvas.id = "12312321312"
+        canvas.style = "position:absolute"
+
+        console.log(div.offsetWidth)
+        div.appendChild(canvas);
+        var node = document.createElement("canvas");
+        node.style = "position:absolute"
+        node.height = 25
+        node.width = 15
+        var cxt = node.getContext("2d");
+        cxt.fillStyle = "#FF0000";
+        cxt.fill();
+        cxt.fillRect(0, 0, 25, 25);
+        div.appendChild(node);
+
+        drag(div)
+
+        drawArrow2Left(canvas)
+
+
+
+        //公共的拖拽方法
+        function drag(divObj) {
+
+            // 绘制图片坐标
+            var X = 0;
+            var Y = 0;
+            // js部分
+            //var divObj=document.getElementById("strCanvas");
+            var moveFlag = false;
+            //区别moueseup与click的标志
+            var clickFlag = false;
+
+            // 拖拽函数
+            divObj.onmousedown = function (e) {
+                // var cans = divObj.getContext('2d');
+                //用isPointInPath方法
+                var p = getEventPosition(e);
+
+                moveFlag = true;
+                clickFlag = true;
+                var clickEvent = window.event || e;
+                var mwidth = clickEvent.clientX - divObj.offsetLeft;
+                var mheight = clickEvent.clientY - divObj.offsetTop;
+                document.onmousemove = function (e) {
+                    clickFlag = false;
+                    var moveEvent = window.event || e;
+                    if (moveFlag) {
+                        //移动则z-index变大
+                        // addIndex(divObj);
+                        var now = moveEvent.clientX - mwidth + "px";
+                        // divObj.style.width = now - divObj.style.left + divObj.offsetWidth + "px"
+                        divObj.style.width = 100 + "px"
+
+                        console.log(divObj.style.width)
+
+                        canvas.width = 100
+                        // divObj.style.top = moveEvent.clientY - mheight + "px";
+                        //将鼠标坐标传给Canvas中的图像
+                        X = moveEvent.clientX - mwidth;
+                        Y = moveEvent.clientY - mheight;
+                        //下面四个条件为限制div以及图像的活动边界
+                        // if (moveEvent.clientX <= mwidth) {
+                        //     divObj.style.left = 0 + "px";
+                        //     X = 0;
+                        // }
+                        // if (parseInt(divObj.style.left) + divObj.offsetWidth >= 1366) {
+                        //     divObj.style.left = 1366 - divObj.offsetWidth + "px";
+                        //     X = 1366 - divObj.offsetWidth;
+                        // }
+                        // if (moveEvent.clientY <= mheight) {
+                        //     divObj.style.top = 0 + "px";
+                        //     Y = 0;
+                        // }
+                        // if (parseInt(divObj.style.top) + divObj.offsetHeight >= 768) {
+                        //     divObj.style.top = 768 - divObj.offsetHeight + "px";
+                        //     Y = 768 - divObj.offsetHeight;
+                        // }
+                        divObj.onmouseup = function () {
+                            moveFlag = false;
+                        }
+                    }
+                }
+            }
+
+        }
+
+        //得到点击的坐标
+        function getEventPosition(ev) {
+            var x, y;
+            if (ev.layerX || ev.layerX == 0) {
+                x = ev.layerX;
+                y = ev.layerY;
+            } else if (ev.offsetX || ev.offsetX == 0) { // Opera
+                x = ev.offsetX;
+                y = ev.offsetY;
+            }
+            return { x: x, y: y };
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>
