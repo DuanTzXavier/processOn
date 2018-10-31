@@ -1,28 +1,32 @@
-//公共的拖拽方法
-// function dragElement(divObj) {
-//     var moveFlag = false;
-//     var startLeft;
-//     var startTop;
-//     // 拖拽函数
-//     divObj.onmousedown = function (e) {
-//         moveFlag = true;
-//         var clickEvent = window.event || e;
-//         startLeft = clickEvent.clientX - divObj.offsetLeft;
-//         startTop = clickEvent.clientY - divObj.offsetTop;
+// 公共的拖拽方法
+function dragAnchor(divObj, builtID) {
+    var moveFlag = false;
+    var startLeft;
+    var startTop;
+    // 拖拽函数
+    divObj.onmousedown = function (e) {
+        moveFlag = true;
+        var clickEvent = window.event || e;
+        startLeft = clickEvent.clientX - divObj.offsetLeft;
+        startTop = clickEvent.clientY - divObj.offsetTop;
 
-//         document.onmousemove = function (e) {
-//             var moveEvent = window.event || e;
-//             if (moveFlag) {
-//                 divObj.style.left = moveEvent.clientX - startLeft + "px";
-//                 divObj.style.top = moveEvent.clientY - startTop + "px";
-//             }
-//         }
+        document.onmousemove = function (e) {
+            var moveEvent = window.event || e;
+            if (moveFlag) {
+                var rootElement = document.getElementById(builtID)
+                divObj.style.top = moveEvent.clientY - startTop + "px";
+                rootElement.style.height = moveEvent.clientY - startTop + "px";
+                var canvas = rootElement.getElementsByTagName("canvas")
+                canvas[0].height = moveEvent.clientY - startTop
+                drawArrow2Down(canvas[0])
+            }
+        }
 
-//         divObj.onmouseup = function () {
-//             moveFlag = false;
-//         }
-//     }
-// }
+        document.onmouseup = function () {
+            moveFlag = false;
+        }
+    }
+}
 
 function addAnArrow() {
     /**
@@ -89,15 +93,18 @@ function addContourForElement(id){
     var top = rootElement.style.top;
     var style = "position: absolute;" + "left: "+left+";top: " + top
 
-    console.log(rootElement.style.width)
+    console.log()
 
     elementContour.style = style
 
     elementContour.innerHTML = ""
     var anchor = document.createElement("div");
-    var anchorStyle = "position: absolute;border-style: solid;border-width: 1;border-color: rgb(136, 51, 51); border-radius: 4px; width: 6px; height: 6px; left: -4px; top: 31px;"
+    var anchorTop = parseInt(rootElement.style.height) + "px"
+    var anchorLeft = parseInt(rootElement.style.width) / 2 - 5.5 + "px"
+    var anchorStyle = "position: absolute;border-style: solid;border-width: 1;border-color: rgb(136, 51, 51); border-radius: 4px; width: 6px; height: 6px; left: " + anchorLeft + "; top: "+ anchorTop +";"
     anchor.style = anchorStyle
     elementContour.appendChild(anchor)
 
+    dragAnchor(anchor, id)
 
 }
