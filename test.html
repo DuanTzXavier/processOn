@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .charttitle{
+                color:#fff;
+                text-align: center;
+                position: absolute;
+            }
+            .charttitle:hover{
+                cursor: pointer;
+                background-color: #4877E1;
+            }
+            .chartcontent{
+                position: absolute;
+                background-color:#5A9BD5;
+                padding: 5px;
+                color: #fff;
+                font-size: 10px;
+            }
+            .chartcontent:hover{
+                cursor: pointer;
+                background-color: #4877E1;
+            }
+            .chartcontent span{
+                text-align: left;
+                display: block;
+            }
+            .flag_0{
+                color:red;
+            }
+            body,#chart{
+                margin: 0;
+                padding: 0;
+            }
+            .followchart_warp{
+                position: relative;
+                height: 100%;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+     <div id="chart" style="position: absolute;top:0px;left:0px;right: 0;bottom: 0px; min-height:300px;min-width:500px;"></div>
+ 
+     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script>
+        var posts=["item1","item2","item3","item4","item5"]
+        var relations=[{"from":"item1","to":"item2","content":{"desc":"11223","time":"2017-09-22 16:38:12","flag":0}},{"from":"item1","to":"item2","content":{"desc":"11223","time":"2017-09-22 16:38:12","flag":0}},{"from":"item1","to":"item3","content":{"desc":"11223","time":"2017-09-22 16:38:12","flag":0}},{"from":"item4","to":"item2","content":{"desc":"11223","time":"2017-09-22 16:38:12","flag":1}}];
+        $(function(){
+            var chart=new followchart("chart",posts,relations,clickfunc);
+ 
+            $(window).resize(function() {
+                chart.redraw();
+            });
+        });
+        function clickfunc(obj,type){
+            console.log("obj:",obj);
+            console.log("type:",type);
+        }
+        function drawArrow(ctx, fromX, fromY, toX, toY, theta, headlen, width, color) {
+            theta = typeof(theta) != 'undefined' ? theta : 30;
+            headlen = typeof(theta) != 'undefined' ? headlen : 10;
+            width = typeof(width) != 'undefined' ? width : 1;
+            color = typeof(color) != 'color' ? color : '#5A9BD5'; // 计算各角度和对应的P2,P3坐标
+            var angle = Math.atan2(fromY - toY, fromX - toX) * 180 / Math.PI,
+                angle1 = (angle + theta) * Math.PI / 180,
+                angle2 = (angle - theta) * Math.PI / 180,
+                topX = headlen * Math.cos(angle1),
+                topY = headlen * Math.sin(angle1),
+                botX = headlen * Math.cos(angle2),
+                botY = headlen * Math.sin(angle2);
+ 
+            ctx.save();
+            ctx.beginPath();
+            var arrowX = fromX - topX,
+                arrowY = fromY - topY;
+            ctx.moveTo(arrowX, arrowY);
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+            arrowX = toX + topX;
+            arrowY = toY + topY;
+            ctx.moveTo(arrowX, arrowY);
+            ctx.lineTo(toX, toY);
+            arrowX = toX + botX;
+            arrowY = toY + botY;
+            ctx.lineTo(arrowX, arrowY);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = width;
+            ctx.stroke();
+            ctx.restore();
+        }
+        function Rect(name,x,y,isSelected,color){
+            this.name=name;
+            this.x=x;
+            this.y=y;
+            this.isSelected=isSelected;
+            this.color=color;
+        }
+        function RectLine(name,x,y,endx,endy,isSelected,color){
+            this.name=name;
+            this.x=x;
+            this.y=y;
+            this.endx=endx;
+            this.endy=endy;
+            this.isSelected=isSelected;
+            this.color=color;
+        }
+        function LineArrow(fromname,toname,fromx,fromy,tox,toy,isSelected,color,content){
+            this.fromname=fromname;
+            this.toname=toname;
+            this.fromx=fromx;
+            this.fromy=fromy;
+            this.tox=tox;
+            this.toy=toy;
+            this.isSelected=isSelected;
+            this.color=color;
+            this.content=content;
+        }
+        var followchart=function(elemid,posts,relations,clickbackcall){
+            this.rects=[];
+            this.rectLines=[];
+            this.lineArrows=[];
+            this.preselectedindex=null;
+            this.preselectedarrowindex=null;
+            this.prehoverdname="";
+            this.posts=posts;
+            this.relations=relations;
+            this.clickbackcall=clickbackcall;
+            this.rectwidth=65;
+            this.rectheight=30;
+            this.color="#5A9BD5";
+            this.hovercolor="#4877E1";
+            this.elemid=elemid
+            this.elem=$("#"+elemid);
+            this.height=$("#"+elemid).height()-10;
+            this.width=$("#"+elemid).width();
+            this.elem.html("<div class='followchart_warp'></div>");
+            this.context=$("<canvas/>")
+                .attr({ width: this.width, height: this.height, id: this.elemid+"_followchart" })
+                .appendTo(this.elem.find(".followchart_warp")).get(0).getContext('2d');
+ 
+            this.canvas=$("#"+this.elemid+"_followchart")[0];
+            this.realrectwidth();
+            this.addrect();
+            this.addlinearrow();
+            this.initchart();
+            this.render();
+        }
+        followchart.prototype.render=function(){
+            this.canvas.onmousedown = this.canvasClick.bind(this);
+            this.canvas.onmousemove = this.canvasHover.bind(this);
+            this.elem.on("click",".charttitle",this.canvasClick.bind(this))
+        }
+        followchart.prototype.initchart=function(){
+            this.context.clearRect(0, 0, this.width, this.height);
+            this.elem.find(".charttitle").remove();
+            this.elem.find(".chartcontent").remove();
+            this.context.fillStyle=this.color;
+            this.context.strokeStyle =this.color;
+            this.drawrect();
+            this.drawrectLine();
+            this.drawarrow();
+        }
+        followchart.prototype.realrectwidth=function(){
+            var areawidth=this.width/this.posts.length;
+            if(areawidth<=75){
+                if(areawidth>45) this.rectwidth=35;
+                else this.rectwidth=1;
+            }
+        }
+        followchart.prototype.addrect=function(){
+            this.rects=[];
+            this.rectLines=[];
+            for(var i=0;i<this.posts.length;i++){
+                var post=this.posts[i];
+                var starty=15;
+                var startx=Math.round(this.width/this.posts.length*i+this.width/this.posts.length/2-this.rectwidth/2);
+                var linestartx=Math.round(startx+this.rectwidth/2);
+                var linestarty=Math.round(starty+this.rectheight);
+                var lineendx=linestartx;
+                var lineendy=Math.round(this.height-starty);
+                var rect=new Rect(post,startx,starty,false,this.color);
+                var rectline=new RectLine(post,linestartx,linestarty,lineendx,lineendy,false,this.color);
+                this.rects.push(rect);
+                this.rectLines.push(rectline);
+            }
+ 
+        }
+        followchart.prototype.addlinearrow=function(){
+            this.lineArrows=[];
+            for(var i=0;i<this.relations.length;i++){
+                var relation=this.relations[i];
+                var fromname=relation.from;
+                var toname=relation.to;
+                var content=relation.content;
+                var fromx=0,fromy=0,tox=0,toy=0;
+                for(var j=0;j<this.rectLines.length;j++){
+                    var rectline=this.rectLines[j];
+ 
+                    if(rectline.name==fromname){
+                        fromx=rectline.x;
+                    }
+                    if(rectline.name==toname){
+                        tox=rectline.x;
+                    }
+                }
+                fromy=Math.round((this.height-30-this.rectheight)/this.relations.length*i
+                    +(this.height-30-this.rectheight)/this.relations.length/2)+15+this.rectheight;
+                toy=fromy;
+                var color=this.color;
+                if(content.flag==0) color="red";
+                var arrow=new LineArrow(fromname,toname,fromx,fromy,tox,toy,false,color,content);
+                this.lineArrows.push(arrow);
+            }
+        }
+ 
+        followchart.prototype.drawrect=function(){
+            for(var i=0;i<this.rects.length;i++){
+                var rect=this.rects[i];
+                this.context.fillStyle=rect.color;
+                this.context.fillRect(rect.x,rect.y,this.rectwidth,this.rectheight);
+                this.context.stroke();
+                if(rect.isSelected){
+                    this.context.lineWidth = 1;//边框宽度
+                    this.context.strokeStyle = "#00f";//边框颜色
+                    this.context.strokeRect(rect.x,rect.y,this.rectwidth,this.rectheight);
+                }
+ 
+                this.drawtitle(rect.x,rect.y,this.rectwidth,this.rectheight,this.posts[i])
+ 
+ 
+            }
+        }
+        followchart.prototype.drawrectLine=function(){
+            for(var i=0;i<this.rectLines.length;i++){
+                var rectline=this.rectLines[i];
+                this.context.beginPath()
+                this.context.moveTo(rectline.x,rectline.y);
+                this.context.lineTo(rectline.endx,rectline.endy);
+                this.context.lineWidth = 1;
+                this.context.strokeStyle =rectline.color;
+                if(rectline.isSelected){
+                    this.context.lineWidth = 2;
+                    this.context.strokeStyle =this.hovercolor;
+                }
+ 
+                this.context.stroke();
+                this.context.closePath();
+            }
+ 
+        }
+ 
+        followchart.prototype.drawtitle=function(x,y,width,height,title){
+            this.elem.append("<div class=\"charttitle\" style=\"left:"+x+"px;top:"+y+"px;width:"+width+"px;height:"+height+"px;line-height:"+height+"px;\">"+title+"</div>");
+        }
+        followchart.prototype.drawarrow=function(){
+            for(var i=0;i<this.lineArrows.length;i++){
+                var arrow=this.lineArrows[i];
+                drawArrow(this.context,arrow.fromx,arrow.fromy,arrow.tox,arrow.toy,30,10,3,arrow.color);
+ 
+                var startx=arrow.tox<arrow.fromx?arrow.tox:arrow.fromx;
+                var contentx=Math.abs(arrow.tox-arrow.fromx)/2+startx;
+                if((contentx-40)>startx){
+                    contentx=contentx-40;
+                }else{
+                    contentx=startx;
+                }
+                this.drawcontent(contentx,arrow.fromy-50,arrow.content);
+            }
+        }
+        followchart.prototype.drawcontent=function(x,y,content){
+            var html="<div class=\"chartcontent\" style=\"left:"+x+"px;top:"+y+"px; \">";
+            var str = JSON.stringify(content);
+            var objKey = JSON.parse(str);
+            var propertys = Object.keys(objKey);
+            for(var i=0;i<propertys.length;i++){
+                html+="<span";
+                if(propertys[i]=="flag"){
+                    html+=" class=\"flag_"+content[propertys[i]]+"\""
+                }
+                html+=">"+content[propertys[i]]+"</span>"
+            }
+ 
+            html+="</div>"
+            this.elem.append(html);
+        }
+        followchart.prototype.canvasClick=function(e){
+            var clickX = e.pageX - this.elem[0].offsetLeft;
+            var clickY = e.pageY - this.elem[0].offsetTop;
+            var i=0,hasfind=false,findarrow=false,selectindex=0;
+            for( i=0;i<this.rects.length;i++){
+                var rect=this.rects[i];
+                if(clickX>=rect.x&&clickX<=(rect.x+this.rectwidth)&&clickY>=rect.y&&clickY<=(rect.y+this.rectheight)){
+                    rect.isSelected=true;
+                    this.rectLines[i].isSelected=true;
+                    hasfind=true;
+                    selectindex=i;
+                    if(this.preselectedindex!=selectindex)this.setunselect(this.preselectedindex);
+                    this.preselectedindex=selectindex;
+                    break;
+                }
+            }
+            if(!hasfind){
+                for( i=0;i<this.rectLines.length;i++){
+                    var rectLine=this.rectLines[i];
+                    if(clickX>=(rectLine.x-1)&&clickX<=(rectLine.x+1)&&clickY>=rectLine.y&&clickY<=rectLine.endy){
+                        rectLine.isSelected=true;
+                        this.rects[i].isSelected=true;
+                        hasfind=true;
+                        selectindex=i;
+                        if(this.preselectedindex!=selectindex)this.setunselect(this.preselectedindex);
+                        this.preselectedindex=selectindex;
+                        break;
+                    }
+                }
+            }
+            if(!hasfind){
+                for( i=0;i<this.lineArrows.length;i++){
+                    var arrow=this.lineArrows[i];
+                    var minx=arrow.tox<arrow.fromx?arrow.tox:arrow.fromx;
+                    var max=arrow.tox>arrow.fromx?arrow.tox:arrow.fromx;
+                    if(clickX>=minx&&clickX<=max&&clickY>=(arrow.fromy-3)&&clickY<=(arrow.toy+3)){
+                        arrow.isSelected=true;
+                        findarrow=true;
+                        selectindex=i;
+                        if(this.preselectedarrowindex!=null&&this.preselectedarrowindex!=selectindex)
+                            this.relations[this.preselectedarrowindex].isSelected=false;
+                        this.preselectedarrowindex=selectindex;
+                        break;
+                    }
+                }
+            }
+            if(hasfind){
+                if(typeof(this.clickbackcall)=="function"){
+                    this.clickbackcall(this.posts[selectindex],"item");
+                }
+            }
+            if(findarrow){
+                if(typeof(this.clickbackcall)=="function"){
+                    this.clickbackcall(this.relations[selectindex],"relation");
+                }
+            }
+            this.initchart();
+        }
+        followchart.prototype.setunselect=function(index){
+            if(index!=null){
+                this.rectLines[index].isSelected=false;
+                this.rects[index].isSelected=false;
+            }
+        }
+        followchart.prototype.canvasHover=function(e){
+            var clickX = e.pageX - this.elem[0].offsetLeft;
+            var clickY = e.pageY - this.elem[0].offsetTop;
+            this.setunhover(this.rects);
+            this.setunhover(this.rectLines);
+            this.setunhover(this.lineArrows);
+            var i=0,hasfind=false,selectname="";
+            for( i=0;i<this.rects.length;i++){
+                var rect=this.rects[i];
+                if(clickX>=rect.x&&clickX<=(rect.x+this.rectwidth)&&clickY>=rect.y&&clickY<=(rect.y+this.rectheight)){
+                    rect.isSelected.color=this.hovercolor;
+                    this.rectLines[i].color=this.hovercolor;
+                    hasfind=true;
+                    selectname=rect.name;
+                    break;
+                }
+            }
+            if(!hasfind){
+                for( i=0;i<this.rectLines.length;i++){
+                    var rectLine=this.rectLines[i];
+                    if(clickX>=(rectLine.x-1)&&clickX<=(rectLine.x+1)&&clickY>=(rectLine.y-1)&&clickY<=rectLine.endy){
+                        rectLine.color=this.hovercolor;
+                        this.rects[i].color=this.hovercolor;
+                        hasfind=true;
+                        selectname=rect.name;
+                        break;
+                    }
+                }
+            }
+            if(!hasfind){
+                for( i=0;i<this.lineArrows.length;i++){
+                    var arrow=this.lineArrows[i];
+                    var minx=arrow.tox<arrow.fromx?arrow.tox:arrow.fromx;
+                    var max=arrow.tox>arrow.fromx?arrow.tox:arrow.fromx;
+                    if(clickX>=minx&&clickX<=max&&clickY>=(arrow.fromy-3)&&clickY<=(arrow.toy+3)){
+                        arrow.color=this.hovercolor;
+                        if(arrow.content.flag==0){
+                            arrow.color="red";
+                        }
+                        hasfind=true;
+                        selectname=arrow.fromname+"-"+arrow.toname;
+                        break;
+                    }
+                }
+            }
+            if(selectname!=this.prehoverdname){
+ 
+                if(selectname==""){
+                    this.elem.css("cursor","default")
+                }else{
+                    this.elem.css("cursor","pointer")
+                }
+                this.prehoverdname=selectname;
+                this.initchart();
+            }
+ 
+        }
+        followchart.prototype.setunhover=function(objs){
+            for(var i=0;i<objs.length;i++){
+                objs[i].color=this.color;
+                if(objs[i].content!=undefined&&objs[i].content.flag==0){
+                    objs[i].color="red";
+                }
+            }
+        }
+        followchart.prototype.redraw=function(){
+            this.elem.find(".followchart_warp").empty();
+            this.height=this.elem.height()-10;
+            this.width=this.elem.width();
+            this.context=$("<canvas/>")
+                .attr({ width: this.width, height: this.height, id: this.elemid+"_followchart" })
+                .appendTo(this.elem.find(".followchart_warp")).get(0).getContext('2d');
+ 
+            this.canvas=$("#"+this.elemid+"_followchart")[0];
+            this.realrectwidth();
+            this.realrectwidth();
+            this.addrect();
+            this.addlinearrow();
+            this.initchart();
+            this.render();
+        }
+    </script>
+    </body>
+</html>

@@ -6,7 +6,7 @@
     <!-- <canvas id="myCanvas" width="400" height="400"></canvas> -->
 
     <div id="grap_top">
-        <button id="add2" onclick="addAView()">添加</button>
+        <button onclick="addAnArrow()">添加</button>
     </div>
 
     <div id="container"></div>
@@ -18,9 +18,15 @@
     <canvas id="left" width="200" height="24"></canvas>
 
     <canvas id="right" width="200" height="24"></canvas>
-
+<!-- 
     <div id="123" style="position:absolute;left:125px;top:300px;width:210px;height: 25px;">
 
+    </div> -->
+
+    <div id="canvas_container" style="width: 1050px;height: 1000px;padding: 100px;cursor: default">
+        <div id="canvas_draw_paper" style="background-color: rgb(242, 242, 242)">
+            <canvas id="canvas_background" width="1050" height="1000"></canvas>
+        </div>
     </div>
 
 
@@ -29,9 +35,10 @@
     <script type="text/javascript" charset="UTF-8" src="js/drawArrow.js"></script>
     <script type="text/javascript" charset="UTF-8" src="js/dragMove.js"></script>
     <script type="text/javascript" charset="UTF-8" src="js/arrowInit.js"></script>
-    <script type="text/javascript" charset="UTF-8" src="js/add.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="js/addArrow.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="js/elementInit.js"></script>
 
-    <script>
+    <!-- <script>
         var div = document.getElementById('123');
 
         var canvas = document.createElement("canvas");
@@ -56,7 +63,7 @@
 
         drawArrow2Left(canvas)
 
-    </script>
+    </script> -->
 
 
 </body>
