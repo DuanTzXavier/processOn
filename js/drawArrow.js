@@ -1,5 +1,5 @@
-function drawArrow2(myCanvas2, fromX, fromY, toX, toY, theta, headlen, width, color) {
-    var ctx = myCanvas2.getContext('2d');
+function drawArrow2(canvas, fromX, fromY, toX, toY, theta, headlen, width, color) {
+    var ctx = canvas.getContext('2d');
 
     theta = typeof (theta) != 'undefined' ? theta : 30;
     headlen = typeof (theta) != 'undefined' ? headlen : 10;
@@ -13,21 +13,29 @@ function drawArrow2(myCanvas2, fromX, fromY, toX, toY, theta, headlen, width, co
         topY = headlen * Math.sin(angle1),
         botX = headlen * Math.cos(angle2),
         botY = headlen * Math.sin(angle2);
+
+    
+        console.log(angle)
     ctx.save();
     ctx.beginPath();
-    var arrowX = fromX - topX, arrowY = fromY - topY;
-    ctx.moveTo(arrowX, arrowY);
+
+    //Draw Line
     ctx.moveTo(fromX, fromY);
     ctx.lineTo(toX, toY);
+
+    //Draw anchor
     arrowX = toX + topX;
     arrowY = toY + topY;
     ctx.moveTo(arrowX, arrowY);
     ctx.lineTo(toX, toY);
+
     arrowX = toX + botX;
     arrowY = toY + botY;
     ctx.lineTo(arrowX, arrowY);
+
     ctx.strokeStyle = color;
     ctx.lineWidth = width;
+
     ctx.stroke();
     ctx.restore();
 }

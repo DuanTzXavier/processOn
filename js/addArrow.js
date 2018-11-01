@@ -15,10 +15,13 @@ function dragAnchor(divObj, builtID) {
             if (moveFlag) {
                 var rootElement = document.getElementById(builtID)
                 divObj.style.top = moveEvent.clientY - startTop + "px";
+                divObj.style.left = moveEvent.clientX - startLeft + "px";
                 rootElement.style.height = moveEvent.clientY - startTop + "px";
+                // rootElement.style.width = moveEvent.clientX - startLeft + "px";
                 var canvas = rootElement.getElementsByTagName("canvas")
                 canvas[0].height = moveEvent.clientY - startTop
-                drawArrow2Down(canvas[0])
+                canvas[0].width = moveEvent.clientX - startLeft
+                drawCanvasLine(canvas[0], true)
             }
         }
 
@@ -51,14 +54,14 @@ function addAnArrow() {
 
     //init原件父布局
     var rootElement = document.createElement("div");
-    rootElement.style = "position: absolute;left: 520px;top: 420px;width:150px;height:150px"
+    rootElement.style = "position: absolute;left: 520px;top: 420px;width:20px;height:150px"
     rootElement.id = (new Date()).valueOf();
     //init原件背景
     var backgd = document.createElement("canvas");
     backgd.height = 150
-    backgd.width = 150
+    backgd.width = 20
     backgd.style = "position:absolute"
-    drawArrow2Down(backgd)
+    drawCanvasLine(backgd, true)
 
     //init原件文字内容
     var text = document.createElement("textarea");

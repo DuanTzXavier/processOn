@@ -1,4 +1,11 @@
 LINE_WIDTH = 20
+THETA = 40
+HEADLEN = 10
+
+UP_ARROW = 90
+DOWN_ARROW = -90
+LEFT_ARROW = 0
+RIGHT_ARROW = 180
 
 function drawLine() {
 
@@ -56,6 +63,12 @@ function drawLine() {
     // backgd4.style = "position:absolute"
     drawCanvasLine(backgd4, true)
 
+    var backgd5 = document.createElement("canvas");
+    backgd5.height = 20
+    backgd5.width = 100
+    // backgd4.style = "position:absolute"
+    drawCanvasLine(backgd5, false)
+
     //组装所有布局
     rootContainer.appendChild(rootElement);
     rootElement.appendChild(backgd);
@@ -63,6 +76,7 @@ function drawLine() {
     rootElement.appendChild(backgd2);
     rootElement.appendChild(backgd3);
     rootElement.appendChild(backgd4);
+    rootElement.appendChild(backgd5);
 }
 
 function drawCanvasLine(canvas, isVertical){
@@ -115,6 +129,9 @@ function drawCanvasLine(canvas, isVertical){
 
             point = getPointByIsVertical(endPoint, base, isVertical)
             ctx.lineTo(point.x, point.y)
+
+            var angle = isVertical ? DOWN_ARROW : RIGHT_ARROW;
+            drawLastArrow(ctx, point, angle)
         }else{
             //单折线
             var startPoint = LINE_WIDTH / 2
@@ -129,16 +146,43 @@ function drawCanvasLine(canvas, isVertical){
             
             point = getPointByIsVertical(endPoint, halfPoint, isVertical)
             ctx.lineTo(point.x, point.y)
+            var angle = isVertical ? RIGHT_ARROW : DOWN_ARROW;
+            drawLastArrow(ctx, point, angle)
         }
     }else{
         //直线
         ctx.moveTo(10, 0);
         ctx.lineTo(10, canvas.height);
+
+        point = getPointByIsVertical(10, canvas.height, isVertical)
+        var angle = isVertical ? DOWN_ARROW : RIGHT_ARROW;
+        drawLastArrow(ctx, point, angle)
     }
     //沿着坐标点顺序的路径绘制直线
     ctx.stroke();
     //关闭当前的绘制路径
     ctx.closePath();
+}
+
+function drawLastArrow(ctx, lastPoint, toAngle){
+    var angle = toAngle;
+    // isVertical ? angle = -90 : angle = 180,
+    angle1 = (angle + THETA) * Math.PI / 180,
+    angle2 = (angle - THETA) * Math.PI / 180,
+    topX = HEADLEN * Math.cos(angle1),
+    topY = HEADLEN * Math.sin(angle1),
+    botX = HEADLEN * Math.cos(angle2),
+    botY = HEADLEN * Math.sin(angle2);
+
+    arrowX = lastPoint.x + topX;
+    arrowY = lastPoint.y + topY;
+    ctx.moveTo(lastPoint.x, lastPoint.y);
+    ctx.lineTo(arrowX, arrowY);
+
+    arrowX = lastPoint.x + botX;
+    arrowY = lastPoint.y + botY;
+    ctx.moveTo(lastPoint.x, lastPoint.y);
+    ctx.lineTo(arrowX, arrowY);
 }
 
 function getPointByIsVertical(base, reference, isVertical){
