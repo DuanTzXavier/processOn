@@ -9,7 +9,7 @@ function dragAnchor(divObj, builtID) {
         var clickEvent = window.event || e;
         startLeft = clickEvent.clientX - divObj.offsetLeft;
         startTop = clickEvent.clientY - divObj.offsetTop;
-
+         
         document.onmousemove = function (e) {
             var moveEvent = window.event || e;
             if (moveFlag) {
@@ -20,13 +20,70 @@ function dragAnchor(divObj, builtID) {
                 // rootElement.style.width = moveEvent.clientX - startLeft + "px";
                 var canvas = rootElement.getElementsByTagName("canvas")
                 canvas[0].height = moveEvent.clientY - startTop
-                canvas[0].width = moveEvent.clientX - startLeft
+                canvas[0].width = moveEvent.clientX - startLeft + 10
                 drawCanvasLine(canvas[0], true)
             }
         }
 
         document.onmouseup = function () {
             moveFlag = false;
+        }
+    }
+}
+
+// dragArrow
+function dragArrow(divObj) {
+    var moveFlag = false;
+    var startLeft;
+    var startTop;
+    // 拖拽函数
+    divObj.onmousedown = function (e) {
+        moveFlag = true;
+        var clickEvent = window.event || e;
+        startLeft = clickEvent.clientX - divObj.offsetLeft;
+        startTop = clickEvent.clientY - divObj.offsetTop;
+         
+        document.onmousemove = function (e) {
+            var moveEvent = window.event || e;
+            if (moveFlag) {
+                var heightTMP = moveEvent.pageY - parseInt(divObj.style.top) + 10
+                var widthTMP = moveEvent.pageX - parseInt(divObj.style.left) + 10
+                divObj.style.height = heightTMP + "px";
+                divObj.style.width = widthTMP + "px";
+                // rootElement.style.width = moveEvent.clientX - startLeft + "px";
+                var canvas = divObj.getElementsByTagName("canvas")
+                canvas[0].height = heightTMP
+                var width = widthTMP
+                if(width > 20){
+                    canvas[0].width = width
+                }else{
+                    canvas[0].width = 20
+                }
+                
+                drawCanvasLine(canvas[0], true)
+            }
+        }
+
+        document.onmouseup = function () {
+            moveFlag = false;
+        }
+    }
+}
+
+function catMousemove(divObj, canvasObj){
+    canvasObj.onmousemove = function (e) {
+        var moveEvent = window.event || e;
+        var y = moveEvent.pageY - parseInt(divObj.style.top)
+        var x = moveEvent.pageX - parseInt(divObj.style.left)
+        var positionY = parseInt(divObj.style.height) - y
+        var positionX = parseInt(divObj.style.width) - x
+        console.log("divObj.style.width:" + canvasObj.width)
+        console.log("moveEvent.pageX:" + moveEvent.pageX + " divObj.style.left:" + divObj.style.left + " positionX:" + positionX)
+        if(positionY < 20 && positionX < 20){
+            divObj.style.cursor = "move"
+            dragArrow(divObj)
+        }else{
+            divObj.style.cursor = "default"
         }
     }
 }
@@ -72,10 +129,11 @@ function addAnArrow() {
     //组装所有布局
     rootContainer.appendChild(rootElement);
     rootElement.appendChild(backgd);
-    rootElement.appendChild(text);
+    // rootElement.appendChild(text);
     rootElement.onclick = function (e){
         addContourForElement(rootElement.id)
     }
+    catMousemove(rootElement, backgd)
     // dragElement(rootElement)
 
 }
