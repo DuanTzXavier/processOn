@@ -34,28 +34,28 @@ function dragAnchor(divObj, builtID) {
 // dragArrow
 function dragArrow(divObj) {
     var moveFlag = false;
-    var startLeft;
-    var startTop;
     // 拖拽函数
     divObj.onmousedown = function (e) {
         moveFlag = true;
-        var clickEvent = window.event || e;
-        startLeft = clickEvent.clientX - divObj.offsetLeft;
-        startTop = clickEvent.clientY - divObj.offsetTop;
          
         document.onmousemove = function (e) {
             var moveEvent = window.event || e;
             if (moveFlag) {
                 var heightTMP = moveEvent.pageY - parseInt(divObj.style.top) + 10
                 var widthTMP = moveEvent.pageX - parseInt(divObj.style.left) + 10
+
+                if(widthTMP < 0){
+                    divObj.style.left = parseInt(divObj.style.left) + widthTMP + "px"
+                }
+
                 divObj.style.height = heightTMP + "px";
-                divObj.style.width = widthTMP + "px";
-                // rootElement.style.width = moveEvent.clientX - startLeft + "px";
+                divObj.style.width = Math.abs(widthTMP) + "px";
                 var canvas = divObj.getElementsByTagName("canvas")
+
+                console.log("heightTMP: " + heightTMP + " widthTMP: " + widthTMP)
                 canvas[0].height = heightTMP
-                var width = widthTMP
-                if(width > 20){
-                    canvas[0].width = width
+                if(widthTMP > 20){
+                    canvas[0].width = widthTMP
                 }else{
                     canvas[0].width = 20
                 }
@@ -77,8 +77,8 @@ function catMousemove(divObj, canvasObj){
         var x = moveEvent.pageX - parseInt(divObj.style.left)
         var positionY = parseInt(divObj.style.height) - y
         var positionX = parseInt(divObj.style.width) - x
-        console.log("divObj.style.width:" + canvasObj.width)
-        console.log("moveEvent.pageX:" + moveEvent.pageX + " divObj.style.left:" + divObj.style.left + " positionX:" + positionX)
+        // console.log("divObj.style.width:" + canvasObj.width)
+        // console.log("moveEvent.pageX:" + moveEvent.pageX + " divObj.style.left:" + divObj.style.left + " positionX:" + positionX)
         if(positionY < 20 && positionX < 20){
             divObj.style.cursor = "move"
             dragArrow(divObj)
@@ -104,15 +104,18 @@ function addAnArrow() {
      * |_____________________|
      * 
      */
-
+    var left = 520
+    var top = 420
 
     //包含原件的布局
     var rootContainer = document.getElementById("canvas_draw_paper");
 
     //init原件父布局
     var rootElement = document.createElement("div");
-    rootElement.style = "position: absolute;left: 520px;top: 420px;width:20px;height:150px"
+    rootElement.style = "position: absolute;left: " + left + "px;top: " + top + "px;width:20px;height:150px"
     rootElement.id = (new Date()).valueOf();
+    rootElement.__startPositionX = left
+    rootElement.__startPositionY = top
     //init原件背景
     var backgd = document.createElement("canvas");
     backgd.height = 150
@@ -131,7 +134,7 @@ function addAnArrow() {
     rootElement.appendChild(backgd);
     // rootElement.appendChild(text);
     rootElement.onclick = function (e){
-        addContourForElement(rootElement.id)
+        // addContourForElement(rootElement.id)
     }
     catMousemove(rootElement, backgd)
     // dragElement(rootElement)
