@@ -2,8 +2,6 @@ var __LINE_WIDTH = 20
 var __CANVAS_LINE_WIDTH = 4
 
 function drawCanvasLineV2(canvas) {
-    // arr
-
     //获取对应的CanvasRenderingContext2D对象(画笔)
     var ctx = canvas.getContext("2d");
 
@@ -27,7 +25,7 @@ function drawCanvasLineV2(canvas) {
          */
         var base = 0
         var reference = 0
-        if (isVertical) {
+        if (canvas.__isVertical) {
             base = canvas.height
             reference = canvas.width
         } else {
@@ -37,22 +35,61 @@ function drawCanvasLineV2(canvas) {
 
         if (base >= reference) {
             //双折线
-            var startPoint = LINE_WIDTH / 2
-            var halfPoint = base / 2
-            var endPoint = reference - startPoint
-            var point = getPointByIsVertical(startPoint, 0, isVertical)
-            ctx.moveTo(point.x, point.y)
 
-            point = getPointByIsVertical(startPoint, halfPoint, isVertical)
+            /*
+             * startPoint 开始的位置，根据canvas.__startPosition界定起始点
+             * 距离边界为__LINE_WIDTH / 2(线宽一半)
+             * __________________
+             * | 0            1 |
+             * |                |
+             * | 2            3 |
+             * |________________|
+             * 
+             * __isVertical = ture: 从Y = 0、Y=canvas.height开始
+             * 0：(x: __LINE_WIDTH / 2, y: 0)
+             * 1：(x: canvas.width - __LINE_WIDTH / 2, y: 0)
+             * 2：(x: __LINE_WIDTH / 2, y: canvas.height)
+             * 3：(x: canvas.width - __LINE_WIDTH / 2, y: canvas.height)
+             * 
+             * __isVertical = false:从X = 0、X=canvas.width开始
+             * 0：(x: 0, y: __LINE_WIDTH / 2)
+             * 1：(x: 0, y: canvas.height - __LINE_WIDTH / 2)
+             * 2：(x: canvas.width, y: __LINE_WIDTH / 2)
+             * 3：(x: canvas.width, y: canvas.height - __LINE_WIDTH / 2)
+             * 
+             * TODO -> 太复杂，优化！！！！
+             * 
+             * 
+             */
+            var harfWidth = __LINE_WIDTH / 2
+            var startPoint = {
+                "x": canvas.__isVertical ? 
+                (canvas.__startPoint & 1 == 0 ? harfWidth : reference - harfWidth): (canvas.__startPoint > 1 ? 0 : base), 
+                "y": canvas.__isVertical ? 
+                (canvas.__startPoint > 1 ? 0 : base): (canvas.__startPoint & 1 == 0 ? harfWidth : reference - __LINE_WIDTH / 2)
+            }
+            var halfPosition = {
+                "x": canvas.__isVertical ? 
+                (canvas.__startPoint & 1 == 0 ? harfWidth : reference - harfWidth): (canvas.__startPoint > 1 ? 0 : base), 
+                "y": canvas.__isVertical ? 
+                (canvas.__startPoint > 1 ? 0 : base): (canvas.__startPoint & 1 == 0 ? harfWidth : reference - __LINE_WIDTH / 2)
+            }
+            var endPoint = {
+                "y": canvas.__isVertical ? 
+                (canvas.__startPoint & 1 == 0 ? harfWidth : reference - harfWidth): (canvas.__startPoint > 1 ? 0 : base), 
+                "x": canvas.__isVertical ? 
+                (canvas.__startPoint > 1 ? 0 : base): (canvas.__startPoint & 1 == 0 ? harfWidth : reference - __LINE_WIDTH / 2)
+            }
+            ctx.moveTo(startPoint.x, startPoint.y)
+
             ctx.lineTo(point.x, point.y)
             ctx.moveTo(point.x, point.y)
 
             point = getPointByIsVertical(endPoint, halfPoint, isVertical)
             ctx.lineTo(point.x, point.y)
-            ctx.moveTo(point.x, point.y)
 
             point = getPointByIsVertical(endPoint, base, isVertical)
-            ctx.lineTo(point.x, point.y)
+            ctx.lineTo(endPoint.x, endPoint.y)
 
             var angle = isVertical ? DOWN_ARROW : RIGHT_ARROW;
             drawLastArrow(ctx, point, angle)
@@ -105,7 +142,6 @@ function buildLabel(id) {
      * 
      */
 
-
     //包含原件的布局
     var rootContainer = document.getElementById("canvas_draw_paper");
     //init原件父布局
@@ -119,13 +155,6 @@ function buildLabel(id) {
     rootElement.appendChild(backgd)
 
     bindDivObj(rootElement, backgd)
-
-    // rootElement.style.left = Math.min(startPoint.x, endPoint.x) + "px";
-    // rootElement.style.top = Math.min(startPoint.y, endPoint.y) + "px";
-    // rootElement.style.width = Math.abs(startPoint.x - endPoint.x) + "px";
-    // rootElement.style.height = Math.abs(startPoint.y - endPoint.y) + "px";
-    // rootElement.__startPoint = startPoint;
-    // rootElement.__endPoint = endPoint;
 }
 
 function initStartPoint(id, startPoint) {
@@ -135,7 +164,7 @@ function initStartPoint(id, startPoint) {
 
 function moveEndPoint(id, endPoint) {
     var divObj = document.getElementById(id);
-    rootElement.__endPoint = endPoint;
+    divObj.__endPoint = endPoint;
 }
 
 function drawLastArrowV2(ctx, lastPoint, toAngle) {
@@ -266,15 +295,15 @@ function bindDivObj(divObj, canvas) {
      * 如果为false，则为横线，横线的起点边应为竖边
      * 
      */
-    Object.defineProperty(canvas, "isVertical", {
+    Object.defineProperty(canvas, "__isVertical", {
         get: function () {
-            if (canvas.isVertical == null || !canvas.isVertical instanceof Boolean) {
-                canvas.isVertical = true
+            if (canvas.__isVertical == null || !canvas.__isVertical instanceof Boolean) {
+                canvas.__isVertical = true
             }
-            return canvas.isVertical;
+            return canvas.__isVertical;
         },
         set: function (isVertical) {
-            canvas = isVertical;
+            canvas = __isVertical;
         },
         enumerable: true,
         configurable: true
