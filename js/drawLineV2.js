@@ -12,7 +12,7 @@ function drawCanvasLineV2(canvas) {
         /**
          * 设置参照物
          * 若为竖线，则base为高度
-         * 若为横线，则base为宽度
+         * 若为横线，则base为宽度           
          * 
          * reference > base时为单折线，
          *  |_______
@@ -68,27 +68,34 @@ function drawCanvasLineV2(canvas) {
                 "y": canvas.__isVertical ? 
                 (canvas.__startPoint > 1 ? 0 : base): (canvas.__startPoint & 1 == 0 ? harfWidth : reference - __LINE_WIDTH / 2)
             }
-            var halfPosition = {
-                "x": canvas.__isVertical ? 
-                (canvas.__startPoint & 1 == 0 ? harfWidth : reference - harfWidth): (canvas.__startPoint > 1 ? 0 : base), 
-                "y": canvas.__isVertical ? 
-                (canvas.__startPoint > 1 ? 0 : base): (canvas.__startPoint & 1 == 0 ? harfWidth : reference - __LINE_WIDTH / 2)
-            }
             var endPoint = {
+                "x": canvas.__isVertical ? 
+                (canvas.__startPoint > 1 ? 0 : base): (canvas.__startPoint & 1 == 0 ? harfWidth : reference - __LINE_WIDTH / 2),
                 "y": canvas.__isVertical ? 
                 (canvas.__startPoint & 1 == 0 ? harfWidth : reference - harfWidth): (canvas.__startPoint > 1 ? 0 : base), 
-                "x": canvas.__isVertical ? 
-                (canvas.__startPoint > 1 ? 0 : base): (canvas.__startPoint & 1 == 0 ? harfWidth : reference - __LINE_WIDTH / 2)
             }
+
+            var harfX = (endPoint.x - startPoint.x)/2 
+            var harfY = (endPoint.y - startPoint.y)/2 
+
+            var halfPositionFirst = {
+                "x": canvas.__isVertical ? 
+                startPoint.x: startPoint.x + harfX, 
+                "y": canvas.__isVertical ? 
+                startPoint.y + harfY: startPoint.y
+            }
+
+            var halfPositionSecond = {
+                "x": canvas.__isVertical ? 
+                endPoint.x: startPoint.x + harfX, 
+                "y": canvas.__isVertical ? 
+                startPoint.y + harfY: endPoint.y
+            }
+
             ctx.moveTo(startPoint.x, startPoint.y)
-
             ctx.lineTo(point.x, point.y)
-            ctx.moveTo(point.x, point.y)
-
-            point = getPointByIsVertical(endPoint, halfPoint, isVertical)
-            ctx.lineTo(point.x, point.y)
-
-            point = getPointByIsVertical(endPoint, base, isVertical)
+            ctx.lineTo(halfPositionFirst.x, halfPositionFirst.y)
+            ctx.lineTo(halfPositionSecond.x, halfPositionSecond.y)
             ctx.lineTo(endPoint.x, endPoint.y)
 
             var angle = isVertical ? DOWN_ARROW : RIGHT_ARROW;
@@ -105,19 +112,24 @@ function drawCanvasLineV2(canvas) {
             ctx.lineTo(point.x, point.y)
             ctx.moveTo(point.x, point.y)
 
-            point = getPointByIsVertical(endPoint, halfPoint, isVertical)
-            ctx.lineTo(point.x, point.y)
-            var angle = isVertical ? RIGHT_ARROW : DOWN_ARROW;
-            drawLastArrow(ctx, point, angle)
+            // point = getPointByIsVertical(endPoint, halfPoint, isVertical)
+            // ctx.lineTo(point.x, point.y)
+            // var angle = isVertical ? RIGHT_ARROW : DOWN_ARROW;
+            // drawLastArrow(ctx, point, angle)
         }
     } else {
         //直线
-        ctx.moveTo(10, 0);
-        ctx.lineTo(10, canvas.height);
-
-        point = getPointByIsVertical(10, canvas.height, isVertical)
-        var angle = isVertical ? DOWN_ARROW : RIGHT_ARROW;
-        drawLastArrow(ctx, point, angle)
+        var harfWidth = __LINE_WIDTH / 2
+        if (canvas.__isVertical){
+            ctx.moveTo(harfWidth, 0);
+            ctx.lineTo(harfWidth, canvas.height);
+        }else{
+            ctx.moveTo(0, harfWidth);
+            ctx.lineTo(canvas.width, harfWidth);
+        }
+        // point = getPointByIsVertical(10, canvas.height, isVertical)
+        // var angle = isVertical ? DOWN_ARROW : RIGHT_ARROW;
+        // drawLastArrow(ctx, point, angle)
     }
     //沿着坐标点顺序的路径绘制直线
     ctx.stroke();
@@ -278,8 +290,8 @@ function bindDivObj(divObj, canvas) {
             if (divObj.__startPoint == null || divObj.__endPoint == null) {
                 bitmmap = 0
             } else {
-                bitmmap = divObj.__startPoint.x < divObj.__endPoint.x ? 1 : 0
-                bitmmap = bitmmap | (divObj.__startPoint.y < divObj.__endPoint.y ? 2 : 0)
+                bitmmap = divObj.__startPoint.x > divObj.__endPoint.x ? 1 : 0
+                bitmmap = bitmmap | (divObj.__startPoint.y > divObj.__endPoint.y ? 2 : 0)
             }
             return pbitmmap
         },
