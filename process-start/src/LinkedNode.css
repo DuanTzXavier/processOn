@@ -1,0 +1,9 @@
+.Linked-Node {
+    width: 20px;
+    height: 20px;
+    background: #f7f7f7;
+    position: relative;
+    left: 100px;
+    top: 100px;
+    cursor: move;
+  }

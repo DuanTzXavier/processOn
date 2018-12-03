@@ -1,0 +1,6 @@
+.Draw-Board {
+  min-width: 400px;
+  height: 400px;
+  margin: 100px;
+  background: rgba(254, 209, 54, .9);
+}
