@@ -10,18 +10,21 @@ class DrawBoard extends Component {
     }
   }
 
-  addLinkedNode(){
+  addElement(element){
     const elements = this.state.elements;
     this.setState({
       elements: elements.concat(
-        <LinkedNode/>
+        element
       )
     })
   }
 
   render() {
     return (
-      <div className="Draw-Board" onClick={(e)=>this.addLinkedNode()}>
+      <div className="Draw-Board">
+        <LinkedNode
+          addElement={(element) => this.addElement(element)}
+        />
         {this.state.elements}
       </div>
     );
