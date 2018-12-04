@@ -9,8 +9,7 @@ class LinkedArrow extends Component {
         super(props);
         this.state = {
             isActive: false,
-            startPoint:this.props.startPoint,
-            endPoint:this.props.endPoint,
+            bindLink: this.props.bindLink,
             style: {
                 left: "146px",
                 top: "156px",
@@ -18,14 +17,15 @@ class LinkedArrow extends Component {
                 height: "16px"
             },
         }
-        this.props.reactCallback(this.updateProps, this)
+        console.log(this.props.bindLink)
+        console.log("reactCallback1")
+        this.props.bindLink.reactCallback(this.updateProps, this)
         this.initArrow = this.initArrow.bind(this)
     }
 
-    updateProps(props, that){
-        that.setState({
-            startPoint:props.startPoint,
-            endPoint:props.endPoint,
+    updateProps(bindLink){
+        bindLink.that.setState({
+            bindLink: bindLink,
         });
     }
     
@@ -71,13 +71,11 @@ class LinkedArrow extends Component {
 
     render() {
         // build div style
-        console.log(this.props)
-
-        let left = Math.min(this.state.startPoint.X, this.state.endPoint.X) - this.harfArrowWidth * 1 + "px"
-        let top = Math.min(this.state.startPoint.Y, this.state.endPoint.Y) + "px"
+        let left = Math.min(this.state.bindLink.startPoint.X, this.state.bindLink.endPoint.X) - this.harfArrowWidth * 1 + "px"
+        let top = Math.min(this.state.bindLink.startPoint.Y, this.state.bindLink.endPoint.Y) + "px"
         
-        let width = Math.abs(this.state.startPoint.X - this.state.endPoint.X) + this.harfArrowWidth * 2
-        let height = Math.abs(this.state.startPoint.Y - this.state.endPoint.Y)
+        let width = Math.abs(this.state.bindLink.startPoint.X - this.state.bindLink.endPoint.X) + this.harfArrowWidth * 2
+        let height = Math.abs(this.state.bindLink.startPoint.Y - this.state.bindLink.endPoint.Y)
 
         var style = {
             left: left,

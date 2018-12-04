@@ -15,14 +15,15 @@ class LinkedNode extends Component {
         left: "150px",
         top: "150px",
       },
-      startPoint:{
+      startPoint: {
         X: 153,
         Y: 156,
       },
-      endPoint:{
-        X:153,
-        Y:156,
+      endPoint: {
+        X: 153,
+        Y: 156,
       },
+      bindLinks: new Map()
     }
   }
 
@@ -78,52 +79,82 @@ class LinkedNode extends Component {
 
   addLinkedArrow(e) {
     const key = new ViewUtils().getUnicodeID(10)
-    this.props.addElement(
-      <LinkedArrow
-        key={key}
-        startPoint={this.state.startPoint}
-        endPoint={this.state.endPoint}
-        reactCallback={(func,that) => this.saveCallBackFun(func, that)}
-      />
-    )
-    
+    //初始化Element
+    let element = this.initLinkElement(key)
+    console.log(element)
+    //将Element添加到UI树中
+    this.props.addElement(element)
 
-    this.setState({
-      isActive: true,
-    })
+    document.onmousemove = e => this.modifyEndPoint(e, [key])
 
-    document.onmousemove = e => this.setMoveLocationX(e)
-
-    document.onmouseup = () => this.setStateFalse()
+    document.onmouseup = () => this.endModifyPoint([key])
   }
 
-  saveCallBackFun(func, that){
+  initLinkElement(key) {
+
+    const bindLinks = new Map(this.state.bindLinks)
+    let point = {
+      X: 153,
+      Y: 156,
+    }
+    let reactCallback = function (func, that) {
+      this.callback = func
+      this.that = that
+      this.isInited = true
+      this.isActive = true
+      console.log("reactCallback")
+      console.log(this)
+    }
+
+    let bindLink = {
+      uniqueKey: key,
+      startPoint: point,
+      endPoint: point,
+      reactCallback: reactCallback,
+      isInited: false,
+      isActive: false,
+    }
+    bindLinks[bindLink.uniqueKey] = bindLink
+    console.log(bindLinks[bindLink.uniqueKey])
     this.setState({
-      callback: func,
-      that: that
+      bindLinks: bindLinks
+    })
+
+    console.log(this)
+
+    return <LinkedArrow key={bindLink.uniqueKey} bindLink={bindLink} />;
+  }
+
+  modifyEndPoint(e, keys) {
+    const moveEvent = window.event || e;
+
+    let copiedLinks = this.state.bindLinks
+    keys.forEach(function (key, _) {
+      if (typeof (copiedLinks[key].isActive) != undefined && copiedLinks[key].isActive) {
+        let activeLink = copiedLinks[key]
+        var endPoint = {
+          X: moveEvent.clientX,
+          Y: moveEvent.clientY,
+        }
+        activeLink.endPoint = endPoint
+        activeLink.callback(activeLink)
+      } 
     })
   }
 
-  setMoveLocationX(e){
-    if (!this.state.isActive) {
-      return
-    }
-    const clickEvent = window.event || e;
-    var point = {
-      X: clickEvent.clientX,
-      Y: clickEvent.clientY,
-    }
-    this.setState({
-      endPoint:point,
+  endModifyPoint(keys) {
+    console.log("endModifyPoint")
+    console.log(this.state.bindLinks)
+
+    let copiedLinks = this.state.bindLinks
+
+    keys.forEach(function (key, index) {
+      copiedLinks[key].isActive = false
     })
-
-    var props = {
-      startPoint: this.state.startPoint,
-      endPoint:point
-    }
-
-    this.state.callback(props, this.state.that)
   }
+
 }
+
+
 
 export default LinkedNode;
