@@ -148,7 +148,7 @@ class LinkedNode extends Component {
 
     let copiedLinks = this.state.bindLinks
 
-    keys.forEach(function (key, index) {
+    keys.forEach(function (key, _) {
       copiedLinks[key].isActive = false
     })
   }
