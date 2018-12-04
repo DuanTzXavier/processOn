@@ -43,14 +43,15 @@ class LinkedArrow extends Component {
             return
         }
         const moveEvent = window.event || event;
+        var style = this.state.style;
+        let _obj = JSON.stringify(style),
+        objClone = JSON.parse(_obj);
+        
+        objClone.left = moveEvent.clientX - this.state.fromX + "px"
 
-        var style = {
-            left: moveEvent.clientX - this.state.fromX + "px",
-            top: moveEvent.clientY - this.state.fromY + "px",
-        }
-
+        objClone.top = moveEvent.clientY - this.state.fromY + "px"
         this.setState({
-            style: style
+            style: objClone
         })
     }
 
@@ -94,70 +95,8 @@ class LinkedArrow extends Component {
 
         //如果 canvas 宽度大于 线宽则为折线，否则为直线
         if (canvas.width > LINE_WIDTH) {
-            // //折线
-
-            // /**
-            //  * 设置参照物
-            //  * 若为竖线，则base为高度
-            //  * 若为横线，则base为宽度
-            //  * 
-            //  * reference > base时为单折线，
-            //  *  |_______
-            //  * 
-            //  * base >= reference时为双折线
-            //  * | 
-            //  * |____
-            //  *      |
-            //  *      |
-            //  */
-            // var base = 0
-            // var reference = 0
-            // if (isVertical) {
-            //     base = canvas.height
-            //     reference = canvas.width
-            // } else {
-            //     base = canvas.width
-            //     reference = canvas.height
-            // }
-
-            // if (base >= reference) {
-            //     //双折线
-            //     var startPoint = LINE_WIDTH / 2
-            //     var halfPoint = base / 2
-            //     var endPoint = reference - startPoint
-            //     var point = getPointByIsVertical(startPoint, 0, isVertical)
-            //     ctx.moveTo(point.x, point.y)
-
-            //     point = getPointByIsVertical(startPoint, halfPoint, isVertical)
-            //     ctx.lineTo(point.x, point.y)
-            //     ctx.moveTo(point.x, point.y)
-
-            //     point = getPointByIsVertical(endPoint, halfPoint, isVertical)
-            //     ctx.lineTo(point.x, point.y)
-            //     ctx.moveTo(point.x, point.y)
-
-            //     point = getPointByIsVertical(endPoint, base, isVertical)
-            //     ctx.lineTo(point.x, point.y)
-
-            //     var angle = isVertical ? DOWN_ARROW : RIGHT_ARROW;
-            //     drawLastArrow(ctx, point, angle)
-            // } else {
-            //     //单折线
-            //     var startPoint = LINE_WIDTH / 2
-            //     var halfPoint = base - startPoint
-            //     var endPoint = reference
-            //     var point = getPointByIsVertical(startPoint, 0, isVertical)
-            //     ctx.moveTo(point.x, point.y)
-
-            //     point = getPointByIsVertical(startPoint, halfPoint, isVertical)
-            //     ctx.lineTo(point.x, point.y)
-            //     ctx.moveTo(point.x, point.y)
-
-            //     point = getPointByIsVertical(endPoint, halfPoint, isVertical)
-            //     ctx.lineTo(point.x, point.y)
-            //     var angle = isVertical ? RIGHT_ARROW : DOWN_ARROW;
-            //     drawLastArrow(ctx, point, angle)
-            // }
+            ctx.moveTo(10, 0);
+            ctx.lineTo(10, canvas.height);
         } else {
             //直线
             ctx.moveTo(10, 0);
