@@ -71,11 +71,11 @@ class LinkedArrow extends Component {
 
     render() {
         // build div style
-        let left = Math.min(this.state.bindLink.startPoint.X, this.state.bindLink.endPoint.X) - this.harfArrowWidth * 1 + "px"
-        let top = Math.min(this.state.bindLink.startPoint.Y, this.state.bindLink.endPoint.Y) + "px"
+        let left = Math.min(this.state.bindLink.startPoint.X, this.state.bindLink.endPoint.X) - this.harfArrowWidth + "px"
+        let top = Math.min(this.state.bindLink.startPoint.Y, this.state.bindLink.endPoint.Y) - this.harfArrowWidth + "px"
         
         let width = Math.abs(this.state.bindLink.startPoint.X - this.state.bindLink.endPoint.X) + this.harfArrowWidth * 2
-        let height = Math.abs(this.state.bindLink.startPoint.Y - this.state.bindLink.endPoint.Y)
+        let height = Math.abs(this.state.bindLink.startPoint.Y - this.state.bindLink.endPoint.Y) + this.harfArrowWidth * 2
 
         var style = {
             left: left,
