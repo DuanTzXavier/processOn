@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import LinkedArrow from './LinkedArrow';
-import {ViewUtils} from './utils/ViewUtils'
+import { ViewUtils } from './utils/ViewUtils'
 import './LinkedNode.css'
 
 class LinkedNode extends Component {
@@ -15,8 +15,14 @@ class LinkedNode extends Component {
         left: "150px",
         top: "150px",
       },
-      startX:0,
-      startY:0,
+      startPoint:{
+        X: 153,
+        Y: 156,
+      },
+      endPoint:{
+        X:153,
+        Y:156,
+      },
     }
   }
 
@@ -70,11 +76,53 @@ class LinkedNode extends Component {
     );
   }
 
-  addLinkedArrow(e){
+  addLinkedArrow(e) {
     const key = new ViewUtils().getUnicodeID(10)
-      this.props.addElement(
-        <LinkedArrow key= {key}/>
-      )
+    this.props.addElement(
+      <LinkedArrow
+        key={key}
+        startPoint={this.state.startPoint}
+        endPoint={this.state.endPoint}
+        reactCallback={(func,that) => this.saveCallBackFun(func, that)}
+      />
+    )
+    
+
+    this.setState({
+      isActive: true,
+    })
+
+    document.onmousemove = e => this.setMoveLocationX(e)
+
+    document.onmouseup = () => this.setStateFalse()
+  }
+
+  saveCallBackFun(func, that){
+    this.setState({
+      callback: func,
+      that: that
+    })
+  }
+
+  setMoveLocationX(e){
+    if (!this.state.isActive) {
+      return
+    }
+    const clickEvent = window.event || e;
+    var point = {
+      X: clickEvent.clientX,
+      Y: clickEvent.clientY,
+    }
+    this.setState({
+      endPoint:point,
+    })
+
+    var props = {
+      startPoint: this.state.startPoint,
+      endPoint:point
+    }
+
+    this.state.callback(props, this.state.that)
   }
 }
 

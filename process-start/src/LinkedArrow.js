@@ -1,26 +1,34 @@
 import React, { Component } from 'react';
-import { ViewUtils } from './utils/ViewUtils'
 import './LinkedArrow.css'
 
 class LinkedArrow extends Component {
-    constructor() {
-        super();
+
+    harfArrowWidth = 7
+
+    constructor(props) {
+        super(props);
         this.state = {
             isActive: false,
-            startX: 0,
-            startY: 0,
-            fromX: 0,
-            fromY: 0,
+            startPoint:this.props.startPoint,
+            endPoint:this.props.endPoint,
             style: {
                 left: "146px",
                 top: "156px",
-                width: "16px",
+                width: "10px",
                 height: "16px"
             },
         }
-
+        this.props.reactCallback(this.updateProps, this)
         this.initArrow = this.initArrow.bind(this)
     }
+
+    updateProps(props, that){
+        that.setState({
+            startPoint:props.startPoint,
+            endPoint:props.endPoint,
+        });
+    }
+    
 
     onMouseDown(e) {
         const clickEvent = window.event || e;
@@ -62,11 +70,26 @@ class LinkedArrow extends Component {
     }
 
     render() {
+        // build div style
+        console.log(this.props)
+
+        let left = Math.min(this.state.startPoint.X, this.state.endPoint.X) - this.harfArrowWidth * 1 + "px"
+        let top = Math.min(this.state.startPoint.Y, this.state.endPoint.Y) + "px"
+        
+        let width = Math.abs(this.state.startPoint.X - this.state.endPoint.X) + this.harfArrowWidth * 2
+        let height = Math.abs(this.state.startPoint.Y - this.state.endPoint.Y)
+
+        var style = {
+            left: left,
+            top: top,
+            width: width,
+            height: height,
+        }
         return (
             <div
                 className="Linked-Arrow"
                 onMouseDown={(e) => this.onMouseDown(e)}
-                style={this.state.style}>
+                style={style}>
 
                 <canvas id="arrow_origin" />
 
