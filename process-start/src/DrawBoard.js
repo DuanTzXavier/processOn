@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import LinkedNode from './LinkedNode';
+import Pattern from './Pattern';
 import './DrawBoard.css'
 
 class DrawBoard extends Component {
@@ -22,7 +22,7 @@ class DrawBoard extends Component {
   render() {
     return (
       <div className="Draw-Board">
-        <LinkedNode
+        <Pattern
           addElement={(element) => this.addElement(element)}
         />
         {this.state.elements}

@@ -5,16 +5,13 @@ import './LinkedNode.css'
 
 class LinkedNode extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       isActive: false,
       fromX: 0,
       fromY: 0,
-      style: {
-        left: "150px",
-        top: "150px",
-      },
+      style: props.style,
       startPoint: {
         X: 153,
         Y: 156,

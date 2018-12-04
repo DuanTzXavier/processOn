@@ -1,0 +1,7 @@
+.Size-Node {
+    width: 6px;
+    height: 6px;
+    background: #f3b918;
+    position: absolute;
+    cursor: move;
+}
