@@ -35,29 +35,29 @@ class Pattern extends Component {
             top: parseInt(patternActStyle.height) - this.halfNodeWidth + "px",
         }
 
-        let customStyle = {
-            parentStyle: patternStyle,
-            styleType: 1
-        }
         return (
             <div className="Pattern" style={patternStyle}>
                 <canvas className="Pattern-Shape" style={patternShapeStyle} />
                 <LinkedNode
+                    key={"1"}
                     parentStyle={patternStyle}
                     styleType={"top"}
                     addElement={this.props.addElement}
                 />
                 <LinkedNode
+                    key={"2"}
                     parentStyle={patternStyle}
                     styleType={"left"}
                     addElement={this.props.addElement}
                 />
                 <LinkedNode
+                    key={"3"}
                     parentStyle={patternStyle}
                     styleType={"bottom"}
                     addElement={this.props.addElement}
                 />
                 <LinkedNode
+                    key={"4"}
                     parentStyle={patternStyle}
                     styleType={"right"}
                     addElement={this.props.addElement}

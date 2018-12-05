@@ -16,7 +16,6 @@ class LinkedNode extends Component {
       isActive: false,
       fromX: 0,
       fromY: 0,
-      style: props.style,
       startPoint: {
         X: parseInt(props.parentStyle.left) + parseInt(style.left) + this.halfNodeWidth,
         Y: parseInt(props.parentStyle.top) + parseInt(style.top) + this.halfNodeWidth,
@@ -26,7 +25,7 @@ class LinkedNode extends Component {
     }
   }
 
-  initStyle(){
+  initStyle() {
     let style = {}
     switch (this.props.styleType) {
       case "top":
@@ -121,19 +120,25 @@ class LinkedNode extends Component {
 
   addLinkedArrow(e) {
     const key = new ViewUtils().getUnicodeID(10)
+
+    console.log(this)
     //初始化Element
     let element = this.initLinkElement(key)
     //将Element添加到UI树中
     this.props.addElement(element)
-
+    console.log(this.state)
     document.onmousemove = e => this.modifyEndPoint(e, [key])
 
     document.onmouseup = () => this.endModifyPoint([key])
   }
 
   initLinkElement(key) {
-
-    const bindLinks = new Map(this.state.bindLinks)
+    const copiedLinks = this.state.bindLinks
+    let bindLinks = new Map(copiedLinks)
+    console.log(copiedLinks)
+    console.log("initLinkElement")
+    console.log(bindLinks)
+    console.log("initLinkElement1")
     let point = this.state.startPoint
     let reactCallback = function (func, that) {
       this.callback = func
@@ -151,7 +156,9 @@ class LinkedNode extends Component {
       isActive: false,
       isVertical: this.state.style.isVertical,
     }
-    bindLinks[bindLink.uniqueKey] = bindLink
+    bindLinks.set(key, bindLink)
+    console.log("initLinkElement11")
+    console.log(bindLinks.size)
     this.setState({
       bindLinks: bindLinks
     })
@@ -159,12 +166,15 @@ class LinkedNode extends Component {
   }
 
   modifyEndPoint(e, keys) {
+
     const moveEvent = window.event || e;
 
     let copiedLinks = this.state.bindLinks
+    console.log(copiedLinks)
+
     keys.forEach(function (key, _) {
-      if (typeof (copiedLinks[key].isActive) != undefined && copiedLinks[key].isActive) {
-        let activeLink = copiedLinks[key]
+      if (typeof (copiedLinks.get(key).isActive) != undefined && copiedLinks.get(key).isActive) {
+        let activeLink = copiedLinks.get(key)
         var endPoint = {
           X: moveEvent.clientX,
           Y: moveEvent.clientY,
@@ -179,7 +189,7 @@ class LinkedNode extends Component {
     let copiedLinks = this.state.bindLinks
 
     keys.forEach(function (key, _) {
-      copiedLinks[key].isActive = false
+      copiedLinks.get(key).isActive = false
     })
   }
 

@@ -78,10 +78,9 @@ class LinkedArrow extends Component {
         return (
             <div
                 className="Linked-Arrow"
-                onMouseDown={(e) => this.onMouseDown(e)}
                 style={style}>
 
-                <canvas id="arrow_origin" />
+                <canvas id={this.props.bindLink.uniqueKey} />
 
             </div>
         );
@@ -95,7 +94,7 @@ class LinkedArrow extends Component {
     }
 
     initArrow() {
-        const canvas = document.getElementById("arrow_origin")
+        const canvas = document.getElementById(this.props.bindLink.uniqueKey)
 
         //config params
         const isVertical = this.props.bindLink.isVertical
