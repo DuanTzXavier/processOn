@@ -1,63 +1,74 @@
 import React, { Component } from 'react';
-import LinkedNode from './LinkedNode';
-import SizeNode from './SizeNode';
 import './Pattern.css'
 import { CopyUtils } from './utils/CopyUtils';
 
 
 class Pattern extends Component {
-
-    halfNodeWidth = 3
-
-    render() {
+    constructor(props) {
+        super(props);
         let patternActStyle = this.props.pattern.patternStyle
-
         let patternStyle = new CopyUtils().copy(patternActStyle)
-
         let patternShapeStyle = new CopyUtils().copy(patternActStyle)
-
         patternShapeStyle.left = 0 + "px"
         patternShapeStyle.top = 0 + "px"
+
+        this.state = {
+            pattern: props.pattern,
+            style: patternStyle,
+            shapeStyle: patternShapeStyle,
+        }
+    }
+
+    render() {
         return (
-            <div className="Pattern" style={patternStyle}>
-                <canvas className="Pattern-Shape" style={patternShapeStyle} />
-                <LinkedNode
-                    parentStyle={patternStyle}
-                    styleType={"top"}
-                    addElement={this.props.addElement}
-                />
-                <LinkedNode
-                    parentStyle={patternStyle}
-                    styleType={"left"}
-                    addElement={this.props.addElement}
-                />
-                <LinkedNode
-                    parentStyle={patternStyle}
-                    styleType={"bottom"}
-                    addElement={this.props.addElement}
-                />
-                <LinkedNode
-                    parentStyle={patternStyle}
-                    styleType={"right"}
-                    addElement={this.props.addElement}
-                />
-                <SizeNode
-                    parentStyle={patternStyle}
-                    styleType={1} />
-
-                <SizeNode
-                    parentStyle={patternStyle}
-                    styleType={2} />
-
-                <SizeNode
-                    parentStyle={patternStyle}
-                    styleType={3} />
-
-                <SizeNode
-                    parentStyle={patternStyle}
-                    styleType={4} />
+            <div className="Pattern" style={this.state.style} onClick={(e) => this.selectPattern(e)} onMouseDown={(e) => this.onMouseDown(e)}>
+                <canvas className="Pattern-Shape" style={this.state.shapeStyle} />
             </div>
         );
+    }
+
+    selectPattern(e) {
+        console.log(e)
+    }
+
+    onMouseDown(e) {
+        const clickEvent = window.event || e;
+        const fromX = clickEvent.pageX - parseInt(this.state.style.left);
+        const fromY = clickEvent.pageY - parseInt(this.state.style.top);
+        this.setState({
+            isActive: true,
+            fromX: fromX,
+            fromY: fromY,
+        })
+
+        document.onmousemove = e => this.setMoveLocation(e)
+
+        document.onmouseup = () => this.setStateFalse()
+
+    }
+
+    setMoveLocation(event) {
+        console.log(event)
+
+        if (!this.state.isActive) {
+            return
+        }
+        const moveEvent = window.event || event;
+
+        var style = {
+            left: moveEvent.pageX - parseInt(this.state.fromX) + "px",
+            top: moveEvent.pageY - parseInt(this.state.fromX) + "px",
+        }
+
+        this.setState({
+            style: style
+        })
+    }
+
+    setStateFalse() {
+        this.setState({
+            isActive: false
+        })
     }
 }
 
