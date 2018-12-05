@@ -98,7 +98,7 @@ class LinkedArrow extends Component {
         const canvas = document.getElementById("arrow_origin")
 
         //config params
-        const isVertical = false
+        const isVertical = this.props.bindLink.isVertical
 
         //initParams
         let width = Math.abs(this.state.bindLink.startPoint.X - this.state.bindLink.endPoint.X) + this.harfArrowWidth * 2

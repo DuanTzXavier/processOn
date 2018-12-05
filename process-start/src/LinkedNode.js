@@ -33,30 +33,35 @@ class LinkedNode extends Component {
         style = {
           left: parseInt(this.props.parentStyle.width) / 2 + "px",
           top: - this.halfNodeWidth + "px",
+          isVertical: true,
         }
         break;
       case "left":
         style = {
           left: - this.halfNodeWidth + "px",
           top: parseInt(this.props.parentStyle.height) / 2 + "px",
+          isVertical: false,
         }
         break;
       case "right":
         style = {
           left: parseInt(this.props.parentStyle.width) - this.halfNodeWidth + "px",
           top: parseInt(this.props.parentStyle.height) / 2 + "px",
+          isVertical: false,
         }
         break;
       case "bottom":
         style = {
           left: parseInt(this.props.parentStyle.width) / 2 + "px",
           top: parseInt(this.props.parentStyle.height) - this.halfNodeWidth + "px",
+          isVertical: true,
         }
         break;
       default:
         style = {
           left: parseInt(this.props.parentStyle.width) / 2 + "px",
           top: - this.halfNodeWidth + "px",
+          isVertical: true,
         }
         break
     }
@@ -144,6 +149,7 @@ class LinkedNode extends Component {
       reactCallback: reactCallback,
       isInited: false,
       isActive: false,
+      isVertical: this.state.style.isVertical,
     }
     bindLinks[bindLink.uniqueKey] = bindLink
     this.setState({
