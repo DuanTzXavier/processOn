@@ -121,12 +121,10 @@ class LinkedNode extends Component {
   addLinkedArrow(e) {
     const key = new ViewUtils().getUnicodeID(10)
 
-    console.log(this)
     //初始化Element
     let element = this.initLinkElement(key)
     //将Element添加到UI树中
     this.props.addElement(element)
-    console.log(this.state)
     document.onmousemove = e => this.modifyEndPoint(e, [key])
 
     document.onmouseup = () => this.endModifyPoint([key])
@@ -135,10 +133,6 @@ class LinkedNode extends Component {
   initLinkElement(key) {
     const copiedLinks = this.state.bindLinks
     let bindLinks = new Map(copiedLinks)
-    console.log(copiedLinks)
-    console.log("initLinkElement")
-    console.log(bindLinks)
-    console.log("initLinkElement1")
     let point = this.state.startPoint
     let reactCallback = function (func, that) {
       this.callback = func
@@ -157,8 +151,6 @@ class LinkedNode extends Component {
       isVertical: this.state.style.isVertical,
     }
     bindLinks.set(key, bindLink)
-    console.log("initLinkElement11")
-    console.log(bindLinks.size)
     this.setState({
       bindLinks: bindLinks
     })
@@ -170,7 +162,6 @@ class LinkedNode extends Component {
     const moveEvent = window.event || e;
 
     let copiedLinks = this.state.bindLinks
-    console.log(copiedLinks)
 
     keys.forEach(function (key, _) {
       if (typeof (copiedLinks.get(key).isActive) != undefined && copiedLinks.get(key).isActive) {
