@@ -11,8 +11,6 @@ class LinkedArrow extends Component {
             isActive: false,
             bindLink: this.props.bindLink,
         }
-        console.log(this.props.bindLink)
-        console.log("reactCallback1")
         this.props.bindLink.reactCallback(this.updateProps, this)
         this.initArrow = this.initArrow.bind(this)
     }
@@ -121,29 +119,25 @@ class LinkedArrow extends Component {
         var ctx = canvas.getContext("2d");
 
         let points = []
-        console.log("startPosition" + startPosition)
-        console.log("endPosition" + endPosition)
         points[0] = {
-            x: (startPosition & 1 == 1) ? (canvas.width - haw) : haw,
+            x: (startPosition & 1) === 1 ? (canvas.width - haw) : haw,
             y: startPosition < 2 ? haw : canvas.height - haw
         }
 
         points[1] = {
-            x: isVertical ? (startPosition & 1 == 1) ? (canvas.width - haw) : haw : canvas.width / 2,
+            x: isVertical ? (startPosition & 1) === 1? (canvas.width - haw) : haw : canvas.width / 2,
             y: isVertical ? canvas.height / 2 : startPosition < 2 ? haw : canvas.height - haw,
         }
 
         points[2] = {
-            x: isVertical ? (startPosition & 1 == 1) ? haw : (canvas.width - haw) : canvas.width / 2,
+            x: isVertical ? (startPosition & 1) === 1 ? haw : (canvas.width - haw) : canvas.width / 2,
             y: isVertical ? canvas.height / 2 : startPosition > 1 ? haw : canvas.height - haw,
         }
 
         points[3] = {
-            x: (endPosition & 1 == 1) ? (canvas.width - haw) : haw,
+            x: (endPosition & 1) === 1 ? (canvas.width - haw) : haw,
             y: endPosition < 2 ? haw : canvas.height - haw
         }
-
-        console.log(points)
 
         ctx.moveTo(points[0].x, points[0].y)
         points.forEach((value, _) => {

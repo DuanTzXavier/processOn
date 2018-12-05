@@ -20,9 +20,18 @@ class DrawBoard extends Component {
   }
 
   render() {
+    var pattern = {
+      patternStyle: {
+        width: "200px",
+        height: "200px",
+        left: "200px",
+        top: "200px",
+      },
+    }
     return (
       <div className="Draw-Board">
         <Pattern
+          pattern={pattern}
           addElement={(element) => this.addElement(element)}
         />
         {this.state.elements}

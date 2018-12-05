@@ -1,17 +1,9 @@
 .Pattern {
-  width: 206px;
-  height: 206px;
   background: #02ec3c;
   position: absolute;
-  left: 200px;
-  top: 200px;
 }
 .Pattern-Shape {
-  width: 200px;
-  height: 200px;
   background: #bed8d8;
   position: absolute;
   cursor: move;
-  left: 3px;
-  top: 3px;
 }

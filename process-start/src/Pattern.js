@@ -2,76 +2,74 @@ import React, { Component } from 'react';
 import LinkedNode from './LinkedNode';
 import SizeNode from './SizeNode';
 import './Pattern.css'
+import { CopyUtils } from './utils/CopyUtils';
 
 
 class Pattern extends Component {
-    constructor() {
-        super();
-        this.state = {
-            elements: []
-        }
-    }
+
+    halfNodeWidth = 3
 
     render() {
-        let topStyle = {
-            left : "103px",
-            top: "0px"
-        }
-        let leftStyle = {
-            left : "0px",
-            top: "103px"
-        }
-        let bottomStyle = {
-            left : "103px",
-            top: "200px"
-        }
-        let rightStyle = {
-            left : "200px",
-            top: "103px"
-        }
+        let patternActStyle = this.props.pattern.patternStyle
 
+        let patternStyle = new CopyUtils().copy(patternActStyle)
+
+        let patternShapeStyle = new CopyUtils().copy(patternActStyle)
+
+        patternShapeStyle.left = 0 + "px"
+        patternShapeStyle.top = 0 + "px"
         let firstStyle = {
-            left : "0px",
-            top: "0px"
+            left: - this.halfNodeWidth + "px",
+            top: - this.halfNodeWidth + "px",
         }
         let secondStyle = {
-            left : "200px",
-            top: "0px"
+            left: parseInt(patternActStyle.width) - this.halfNodeWidth + "px",
+            top: - this.halfNodeWidth + "px",
         }
         let thirdStyle = {
-            left : "0px",
-            top: "200px"
+            left: - this.halfNodeWidth + "px",
+            top: parseInt(patternActStyle.height) - this.halfNodeWidth + "px",
         }
         let fourthStyle = {
-            left : "200px",
-            top: "200px"
+            left: parseInt(patternActStyle.width) - this.halfNodeWidth + "px",
+            top: parseInt(patternActStyle.height) - this.halfNodeWidth + "px",
+        }
+
+        let customStyle = {
+            parentStyle: patternStyle,
+            styleType: 1
         }
         return (
-            <div className="Pattern">
-                <canvas className="Pattern-Shape" />
+            <div className="Pattern" style={patternStyle}>
+                <canvas className="Pattern-Shape" style={patternShapeStyle} />
                 <LinkedNode
-                    style={topStyle}
+                    parentStyle={patternStyle}
+                    styleType={"top"}
                     addElement={this.props.addElement}
                 />
                 <LinkedNode
-                style={leftStyle}
+                    parentStyle={patternStyle}
+                    styleType={"left"}
                     addElement={this.props.addElement}
                 />
                 <LinkedNode
-                style={bottomStyle}
+                    parentStyle={patternStyle}
+                    styleType={"bottom"}
                     addElement={this.props.addElement}
                 />
                 <LinkedNode
-                style={rightStyle}
+                    parentStyle={patternStyle}
+                    styleType={"right"}
                     addElement={this.props.addElement}
                 />
-                <SizeNode style={firstStyle}/>
+                <SizeNode
+                    style={firstStyle} />
 
-                <SizeNode style={secondStyle}/>
+                <SizeNode style={secondStyle} />
 
-                <SizeNode style={thirdStyle}/>
+                <SizeNode style={thirdStyle} />
 
-                <SizeNode style={fourthStyle}/>
+                <SizeNode style={fourthStyle} />
             </div>
         );
     }
