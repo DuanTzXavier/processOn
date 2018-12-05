@@ -13,7 +13,6 @@ class LinkedNode extends Component {
 
     parseInt(props.parentStyle.left)
     this.state = {
-      isActive: false,
       fromX: 0,
       fromY: 0,
       startPoint: {

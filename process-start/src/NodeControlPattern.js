@@ -4,40 +4,38 @@ import LinkedNode from './LinkedNode';
 
 class NodeControlPattern extends Component {
 
-    render() {
-        let topStyle = {
-            left: "103px",
-            top: "0px"
-        }
-        let leftStyle = {
-            left: "0px",
-            top: "103px"
-        }
-        let bottomStyle = {
-            left: "103px",
-            top: "200px"
-        }
-        let rightStyle = {
-            left: "200px",
-            top: "103px"
-        }
-        return (
-            <div className="Node-Control-Pattern" style={this.props.style}>
+    halfNodeWidth = 3
 
+    render() {
+        let patternActStyle = this.props.pattern.patternStyle
+
+        let patternStyle = new CopyUtils().copy(patternActStyle)
+
+        let patternShapeStyle = new CopyUtils().copy(patternActStyle)
+
+        patternShapeStyle.left = 0 + "px"
+        patternShapeStyle.top = 0 + "px"
+        return (
+            <div className="Pattern" style={patternStyle}>
+                <canvas className="Pattern-Shape" style={patternShapeStyle} />
                 <LinkedNode
-                    style={topStyle}
+                    parentStyle={patternStyle}
+                    styleType={"top"}
                     addElement={this.props.addElement}
                 />
                 <LinkedNode
-                    style={leftStyle}
+                    parentStyle={patternStyle}
+                    styleType={"left"}
                     addElement={this.props.addElement}
                 />
                 <LinkedNode
-                    style={bottomStyle}
+                    parentStyle={patternStyle}
+                    styleType={"bottom"}
                     addElement={this.props.addElement}
                 />
                 <LinkedNode
-                    style={rightStyle}
+                    parentStyle={patternStyle}
+                    styleType={"right"}
                     addElement={this.props.addElement}
                 />
             </div>

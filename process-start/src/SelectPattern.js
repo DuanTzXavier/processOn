@@ -5,65 +5,55 @@ import SizeNode from './SizeNode';
 
 
 class SelectPattern extends Component {
+    halfNodeWidth = 3
+
     render() {
-        let topStyle = {
-            left : "103px",
-            top: "0px"
-        }
-        let leftStyle = {
-            left : "0px",
-            top: "103px"
-        }
-        let bottomStyle = {
-            left : "103px",
-            top: "200px"
-        }
-        let rightStyle = {
-            left : "200px",
-            top: "103px"
-        }
+        let patternActStyle = this.props.pattern.patternStyle
 
-        let firstStyle = {
-            left : "0px",
-            top: "0px"
-        }
-        let secondStyle = {
-            left : "200px",
-            top: "0px"
-        }
-        let thirdStyle = {
-            left : "0px",
-            top: "200px"
-        }
-        let fourthStyle = {
-            left : "200px",
-            top: "200px"
-        }
+        let patternStyle = new CopyUtils().copy(patternActStyle)
+
+        let patternShapeStyle = new CopyUtils().copy(patternActStyle)
+
+        patternShapeStyle.left = 0 + "px"
+        patternShapeStyle.top = 0 + "px"
         return (
-            <div className="Select-Pattern" style={this.props.style}>
+            <div className="Pattern" style={patternStyle}>
+                <canvas className="Pattern-Shape" style={patternShapeStyle} />
                 <LinkedNode
-                    style={topStyle}
+                    parentStyle={patternStyle}
+                    styleType={"top"}
                     addElement={this.props.addElement}
                 />
                 <LinkedNode
-                style={leftStyle}
+                    parentStyle={patternStyle}
+                    styleType={"left"}
                     addElement={this.props.addElement}
                 />
                 <LinkedNode
-                style={bottomStyle}
+                    parentStyle={patternStyle}
+                    styleType={"bottom"}
                     addElement={this.props.addElement}
                 />
                 <LinkedNode
-                style={rightStyle}
+                    parentStyle={patternStyle}
+                    styleType={"right"}
                     addElement={this.props.addElement}
                 />
-                <SizeNode style={firstStyle}/>
+                <SizeNode
+                    parentStyle={patternStyle}
+                    styleType={1} />
 
-                <SizeNode style={secondStyle}/>
+                <SizeNode
+                    parentStyle={patternStyle}
+                    styleType={2} />
 
-                <SizeNode style={thirdStyle}/>
+                <SizeNode
+                    parentStyle={patternStyle}
+                    styleType={3} />
 
-                <SizeNode style={fourthStyle}/>
+                <SizeNode
+                    parentStyle={patternStyle}
+                    styleType={4} />
             </div>
         );
     }

@@ -18,58 +18,44 @@ class Pattern extends Component {
 
         patternShapeStyle.left = 0 + "px"
         patternShapeStyle.top = 0 + "px"
-        let firstStyle = {
-            left: - this.halfNodeWidth + "px",
-            top: - this.halfNodeWidth + "px",
-        }
-        let secondStyle = {
-            left: parseInt(patternActStyle.width) - this.halfNodeWidth + "px",
-            top: - this.halfNodeWidth + "px",
-        }
-        let thirdStyle = {
-            left: - this.halfNodeWidth + "px",
-            top: parseInt(patternActStyle.height) - this.halfNodeWidth + "px",
-        }
-        let fourthStyle = {
-            left: parseInt(patternActStyle.width) - this.halfNodeWidth + "px",
-            top: parseInt(patternActStyle.height) - this.halfNodeWidth + "px",
-        }
-
         return (
             <div className="Pattern" style={patternStyle}>
                 <canvas className="Pattern-Shape" style={patternShapeStyle} />
                 <LinkedNode
-                    key={"1"}
                     parentStyle={patternStyle}
                     styleType={"top"}
                     addElement={this.props.addElement}
                 />
                 <LinkedNode
-                    key={"2"}
                     parentStyle={patternStyle}
                     styleType={"left"}
                     addElement={this.props.addElement}
                 />
                 <LinkedNode
-                    key={"3"}
                     parentStyle={patternStyle}
                     styleType={"bottom"}
                     addElement={this.props.addElement}
                 />
                 <LinkedNode
-                    key={"4"}
                     parentStyle={patternStyle}
                     styleType={"right"}
                     addElement={this.props.addElement}
                 />
                 <SizeNode
-                    style={firstStyle} />
+                    parentStyle={patternStyle}
+                    styleType={1} />
 
-                <SizeNode style={secondStyle} />
+                <SizeNode
+                    parentStyle={patternStyle}
+                    styleType={2} />
 
-                <SizeNode style={thirdStyle} />
+                <SizeNode
+                    parentStyle={patternStyle}
+                    styleType={3} />
 
-                <SizeNode style={fourthStyle} />
+                <SizeNode
+                    parentStyle={patternStyle}
+                    styleType={4} />
             </div>
         );
     }
