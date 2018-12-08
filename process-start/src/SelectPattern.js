@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './SelectPattern.css'
 import LinkedNode from './LinkedNode';
 import SizeNode from './SizeNode';
+import { CopyUtils } from './utils/CopyUtils';
 
 
 class SelectPattern extends Component {
@@ -18,7 +19,7 @@ class SelectPattern extends Component {
 
     render() {
         return (
-            <div className="Select-Pattern" style={this.state.style} onMouseDown={(e) => this.onMouseDown(e)}>
+            <div id="SelectPattern" className="Select-Pattern" style={this.state.style} onMouseDown={(e) => this.onMouseDown(e)}>
                 <LinkedNode
                     parentStyle={this.state.style}
                     styleType={"top"}
@@ -80,11 +81,10 @@ class SelectPattern extends Component {
             return
         }
         const moveEvent = window.event || event;
+        let style = new CopyUtils().copy(this.state.style)
 
-        var style = {
-            left: moveEvent.clientX - this.state.fromX + "px",
-            top: moveEvent.clientY - this.state.fromY + "px",
-        }
+        style.left = moveEvent.clientX - this.state.fromX + "px"
+        style.top = moveEvent.clientY - this.state.fromY + "px"
 
         this.props.modifyPosition(this.props.that, style.left, style.top)
 

@@ -30,7 +30,11 @@ class Pattern extends Component {
     }
 
     selectPattern(e) {
-        this.addSelectPattern()
+        let select = document.getElementsByClassName("Select-Pattern")
+
+        if(select.length === 0){
+            this.addSelectPattern()
+        }
     }
 
     addSelectPattern(){
