@@ -33,8 +33,8 @@ class Pattern extends Component {
 
     onMouseDown(e) {
         const clickEvent = window.event || e;
-        const fromX = clickEvent.pageX - parseInt(this.state.style.left);
-        const fromY = clickEvent.pageY - parseInt(this.state.style.top);
+        const fromX = clickEvent.clientX - parseInt(this.state.style.left);
+        const fromY = clickEvent.clientY - parseInt(this.state.style.top);
         this.setState({
             isActive: true,
             fromX: fromX,
@@ -48,16 +48,14 @@ class Pattern extends Component {
     }
 
     setMoveLocation(event) {
-        console.log(event)
-
         if (!this.state.isActive) {
             return
         }
         const moveEvent = window.event || event;
 
         var style = {
-            left: moveEvent.pageX - parseInt(this.state.fromX) + "px",
-            top: moveEvent.pageY - parseInt(this.state.fromX) + "px",
+            left: moveEvent.clientX - this.state.fromX + "px",
+            top: moveEvent.clientY - this.state.fromY + "px",
         }
 
         this.setState({
