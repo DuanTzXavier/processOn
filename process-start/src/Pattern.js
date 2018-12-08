@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './Pattern.css'
 import { CopyUtils } from './utils/CopyUtils';
+import SelectPattern from './SelectPattern';
+import { ViewUtils } from './utils/ViewUtils';
 
 
 class Pattern extends Component {
@@ -21,51 +23,31 @@ class Pattern extends Component {
 
     render() {
         return (
-            <div className="Pattern" style={this.state.style} onClick={(e) => this.selectPattern(e)} onMouseDown={(e) => this.onMouseDown(e)}>
+            <div className="Pattern" style={this.state.style} onClick={(e) => this.selectPattern(e)} >
                 <canvas className="Pattern-Shape" style={this.state.shapeStyle} />
             </div>
         );
     }
 
     selectPattern(e) {
-        console.log(e)
+        this.addSelectPattern()
     }
 
-    onMouseDown(e) {
-        const clickEvent = window.event || e;
-        const fromX = clickEvent.clientX - parseInt(this.state.style.left);
-        const fromY = clickEvent.clientY - parseInt(this.state.style.top);
-        this.setState({
-            isActive: true,
-            fromX: fromX,
-            fromY: fromY,
-        })
-
-        document.onmousemove = e => this.setMoveLocation(e)
-
-        document.onmouseup = () => this.setStateFalse()
-
+    addSelectPattern(){
+        let key = new ViewUtils().getUnicodeID(10)
+        this.props.addElement(
+            <SelectPattern key={key} pattern={this.state.pattern} modifyPosition={this.modifyPosition} that={this}/>
+        )
     }
 
-    setMoveLocation(event) {
-        if (!this.state.isActive) {
-            return
-        }
-        const moveEvent = window.event || event;
+    modifyPosition(that, left, top){
+        let copiedStyle = new CopyUtils().copy(that.state.style)
 
-        var style = {
-            left: moveEvent.clientX - this.state.fromX + "px",
-            top: moveEvent.clientY - this.state.fromY + "px",
-        }
+        copiedStyle.left = left
+        copiedStyle.top = top
 
-        this.setState({
-            style: style
-        })
-    }
-
-    setStateFalse() {
-        this.setState({
-            isActive: false
+        that.setState({
+            style: copiedStyle
         })
     }
 }

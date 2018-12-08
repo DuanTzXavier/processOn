@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './NodeControlPattern.css'
 import LinkedNode from './LinkedNode';
+import { CopyUtils } from './utils/CopyUtils';
+
 
 class NodeControlPattern extends Component {
 
