@@ -12,51 +12,57 @@ class SelectPattern extends Component {
         super(props);
         this.state = {
             pattern: props.pattern,
-            style: this.props.pattern.patternStyle,
+            x: props.x,
+            style: props.pattern.patternStyle,
         }
     }
 
 
     render() {
-        return (
-            <div id="SelectPattern" className="Select-Pattern" style={this.state.style} onMouseDown={(e) => this.onMouseDown(e)}>
-                <LinkedNode
-                    parentStyle={this.state.style}
-                    styleType={"top"}
-                    addElement={this.props.addElement}
-                />
-                <LinkedNode
-                    parentStyle={this.state.style}
-                    styleType={"left"}
-                    addElement={this.props.addElement}
-                />
-                <LinkedNode
-                    parentStyle={this.state.style}
-                    styleType={"bottom"}
-                    addElement={this.props.addElement}
-                />
-                <LinkedNode
-                    parentStyle={this.state.style}
-                    styleType={"right"}
-                    addElement={this.props.addElement}
-                />
-                <SizeNode
-                    parentStyle={this.state.style}
-                    styleType={1} />
+        let dom = null
+        if (true) {
+            dom = (
+                <div id="SelectPattern" className="Select-Pattern" onMouseDown={(e) => this.onMouseDown(e)}>
+                    <LinkedNode
+                        parentStyle={this.state.style}
+                        styleType={"top"}
+                        addElement={this.props.addElement}
+                    />
+                    <h1>{this.state.x}</h1>
+                    <LinkedNode
+                        parentStyle={this.state.style}
+                        styleType={"left"}
+                        addElement={this.props.addElement}
+                    />
+                    <LinkedNode
+                        parentStyle={this.state.style}
+                        styleType={"bottom"}
+                        addElement={this.props.addElement}
+                    />
+                    <LinkedNode
+                        parentStyle={this.state.style}
+                        styleType={"right"}
+                        addElement={this.props.addElement}
+                    />
+                    <SizeNode
+                        parentStyle={this.state.style}
+                        styleType={1} />
 
-                <SizeNode
-                    parentStyle={this.state.style}
-                    styleType={2} />
+                    <SizeNode
+                        parentStyle={this.state.style}
+                        styleType={2} />
 
-                <SizeNode
-                    parentStyle={this.state.style}
-                    styleType={3} />
+                    <SizeNode
+                        parentStyle={this.state.style}
+                        styleType={3} />
 
-                <SizeNode
-                    parentStyle={this.state.style}
-                    styleType={4} />
-            </div>
-        );
+                    <SizeNode
+                        parentStyle={this.state.style}
+                        styleType={4} />
+                </div>
+            )
+        }
+        return dom;
     }
 
     onMouseDown(e) {
@@ -73,7 +79,23 @@ class SelectPattern extends Component {
         document.onmousemove = e => this.setMoveLocation(e)
 
         document.onmouseup = () => this.setStateFalse()
+    }
 
+    shouldComponentUpdate(nextProps, nextState, nextContext){
+
+        console.log(nextProps)
+        return true
+    }
+
+    static getDerivedStateFromProps(props, state) {
+
+        console.log(props.x)
+
+        console.log(state)
+        // Any time the current user changes,
+        // Reset any parts of state that are tied to that user.
+        // In this simple example, that's just the email.
+        return null;
     }
 
     setMoveLocation(event) {

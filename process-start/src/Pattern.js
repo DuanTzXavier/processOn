@@ -18,10 +18,14 @@ class Pattern extends Component {
             pattern: props.pattern,
             style: patternStyle,
             shapeStyle: patternShapeStyle,
+            x:1
         }
+
+        this.addSelectPattern()
     }
 
     render() {
+        // this.addSelectPattern()
         return (
             <div className="Pattern" style={this.state.style} onClick={(e) => this.selectPattern(e)} >
                 <canvas className="Pattern-Shape" style={this.state.shapeStyle} />
@@ -30,21 +34,41 @@ class Pattern extends Component {
     }
 
     selectPattern(e) {
-        let select = document.getElementsByClassName("Select-Pattern")
 
-        if(select.length === 0){
-            this.addSelectPattern()
-        }
+        this.setState({
+            x: 111
+        })
+
+        console.log(this.state.x)
+        // let select = document.getElementsByClassName("Select-Pattern")
+        // console.log(e)
+        // if (select.length === 0) {
+        //     e.isHandled = true
+        //     this.addSelectPattern()
+        // }
     }
 
-    addSelectPattern(){
+    shouldComponentUpdate(nextProps, nextState, nextContext){
+
+        console.log(nextProps)
+        return true
+    }
+
+    addSelectPattern() {
         let key = new ViewUtils().getUnicodeID(10)
+
         this.props.addElement(
-            <SelectPattern key={key} pattern={this.state.pattern} modifyPosition={this.modifyPosition} that={this}/>
+            <SelectPattern
+                key={key}
+                pattern={this.state.pattern}
+                modifyPosition={this.modifyPosition}
+                that={this}
+                x={this.state.x}
+                addElement={this.props.addElement} />
         )
     }
 
-    modifyPosition(that, left, top){
+    modifyPosition(that, left, top) {
         let copiedStyle = new CopyUtils().copy(that.state.style)
 
         copiedStyle.left = left
