@@ -7,10 +7,6 @@ class LinkedArrow extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            isActive: false,
-            bindLink: this.props.bindLink,
-        }
         this.props.bindLink.reactCallback(this.updateProps, this)
         this.initArrow = this.initArrow.bind(this)
     }
@@ -21,53 +17,13 @@ class LinkedArrow extends Component {
         });
     }
 
-
-    onMouseDown(e) {
-        const clickEvent = window.event || e;
-        const fromX = clickEvent.clientX - parseInt(this.state.style.left);
-        const fromY = clickEvent.clientY - parseInt(this.state.style.top);
-        this.setState({
-            isActive: true,
-            fromX: fromX,
-            fromY: fromY,
-        })
-
-        document.onmousemove = e => this.setMoveLocation(e)
-
-        document.onmouseup = () => this.setStateFalse()
-
-    }
-
-    setMoveLocation(event) {
-        if (!this.state.isActive) {
-            return
-        }
-        const moveEvent = window.event || event;
-        var style = this.state.style;
-        let _obj = JSON.stringify(style),
-            objClone = JSON.parse(_obj);
-
-        objClone.left = moveEvent.clientX - this.state.fromX + "px"
-
-        objClone.top = moveEvent.clientY - this.state.fromY + "px"
-        this.setState({
-            style: objClone
-        })
-    }
-
-    setStateFalse() {
-        this.setState({
-            isActive: false
-        })
-    }
-
     render() {
         // build div style
-        let left = Math.min(this.state.bindLink.startPoint.X, this.state.bindLink.endPoint.X) - this.harfArrowWidth + "px"
-        let top = Math.min(this.state.bindLink.startPoint.Y, this.state.bindLink.endPoint.Y) - this.harfArrowWidth + "px"
+        let left = Math.min(this.props.bindLink.startPoint.X, this.props.bindLink.endPoint.X) - this.harfArrowWidth + "px"
+        let top = Math.min(this.props.bindLink.startPoint.Y, this.props.bindLink.endPoint.Y) - this.harfArrowWidth + "px"
 
-        let width = Math.abs(this.state.bindLink.startPoint.X - this.state.bindLink.endPoint.X) + this.harfArrowWidth * 2
-        let height = Math.abs(this.state.bindLink.startPoint.Y - this.state.bindLink.endPoint.Y) + this.harfArrowWidth * 2
+        let width = Math.abs(this.props.bindLink.startPoint.X - this.props.bindLink.endPoint.X) + this.harfArrowWidth * 2
+        let height = Math.abs(this.props.bindLink.startPoint.Y - this.props.bindLink.endPoint.Y) + this.harfArrowWidth * 2
 
         var style = {
             left: left,
@@ -89,9 +45,22 @@ class LinkedArrow extends Component {
     componentDidMount() {
         this.initArrow()
     }
-    componentDidUpdate() {
+
+    componentWillUpdate(nextProps) {
+        console.log(2)
+    }
+    componentDidUpdate(prevProps) {
+        console.log(1)
         this.initArrow()
     }
+    
+    // static getDerivedStateFromProps(props, state) {
+
+    //     console.log(props)
+    //     console.log(state)
+    
+    //     return null
+    //   }
 
     initArrow() {
         const canvas = document.getElementById(this.props.bindLink.uniqueKey)
@@ -100,15 +69,15 @@ class LinkedArrow extends Component {
         const isVertical = this.props.bindLink.isVertical
 
         //initParams
-        let width = Math.abs(this.state.bindLink.startPoint.X - this.state.bindLink.endPoint.X) + this.harfArrowWidth * 2
-        let height = Math.abs(this.state.bindLink.startPoint.Y - this.state.bindLink.endPoint.Y) + this.harfArrowWidth * 2
+        let width = Math.abs(this.props.bindLink.startPoint.X - this.props.bindLink.endPoint.X) + this.harfArrowWidth * 2
+        let height = Math.abs(this.props.bindLink.startPoint.Y - this.props.bindLink.endPoint.Y) + this.harfArrowWidth * 2
 
         canvas.width = width
         canvas.height = height
-        let startX = this.state.bindLink.startPoint.X;
-        let startY = this.state.bindLink.startPoint.Y;
-        let endX = this.state.bindLink.endPoint.X;
-        let endY = this.state.bindLink.endPoint.Y;
+        let startX = this.props.bindLink.startPoint.X;
+        let startY = this.props.bindLink.startPoint.Y;
+        let endX = this.props.bindLink.endPoint.X;
+        let endY = this.props.bindLink.endPoint.Y;
         let startPosition = (startX < endX ? 0 : 1) | (startY < endY ? 0 : 2)
         let endPosition = startPosition ^ 3
 

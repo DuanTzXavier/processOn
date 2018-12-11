@@ -10,15 +10,7 @@ class LinkedNode extends Component {
   constructor(props) {
     super(props);
     let style = this.initStyle()
-
-    parseInt(props.parentStyle.left)
     this.state = {
-      fromX: 0,
-      fromY: 0,
-      startPoint: {
-        X: parseInt(props.parentStyle.left) + parseInt(style.left) + this.halfNodeWidth,
-        Y: parseInt(props.parentStyle.top) + parseInt(style.top) + this.halfNodeWidth,
-      },
       bindLinks: new Map(),
       style: style,
     }
@@ -67,6 +59,53 @@ class LinkedNode extends Component {
     return style;
   }
 
+  componentWillUpdate(nextProps) {
+
+    let copiedLinks = this.state.bindLinks
+    let startPoint = {
+      X: parseInt(nextProps.parentStyle.left) + parseInt(this.state.style.left) + 3,
+      Y: parseInt(nextProps.parentStyle.top) + parseInt(this.state.style.top) + 3,
+    }
+
+
+    copiedLinks.forEach(function (element, index, array) {
+      if (element.startPoint.X !== startPoint.X || element.startPoint.Y !== startPoint.Y) {
+        element.startPoint = startPoint
+      }
+    })
+
+    // this.setState({
+    //   bindLinks:copiedLinks,
+    // })
+    // state.bindLinks = copiedLinks
+
+    console.log(66)
+}
+
+componentWillReceiveProps(nextProps){
+  console.log(nextProps)
+  console.log("componentWillReceiveProps")
+}
+
+  // static getDerivedStateFromProps(props, state) {
+
+  //   let copiedLinks = state.bindLinks
+  //   let startPoint = {
+  //     X: parseInt(props.parentStyle.left) + parseInt(state.style.left) + 3,
+  //     Y: parseInt(props.parentStyle.top) + parseInt(state.style.top) + 3,
+  //   }
+
+
+  //   copiedLinks.forEach(function (element, index, array) {
+  //     if (element.startPoint.X !== startPoint.X || element.startPoint.Y !== startPoint.Y) {
+  //       element.startPoint = startPoint
+  //     }
+  //   })
+  //   state.bindLinks = copiedLinks
+    
+  //   return state;
+  // }
+
   onMouseDown(e) {
     const clickEvent = window.event || e;
     const fromX = clickEvent.clientX - parseInt(this.state.style.left);
@@ -107,11 +146,12 @@ class LinkedNode extends Component {
 
 
   render() {
+    let style = this.initStyle()
     return (
       <div
         className="Linked-Node"
         onMouseDown={(e) => this.addLinkedArrow(e)}
-        style={this.state.style}>
+        style={style}>
 
       </div>
     );
@@ -120,10 +160,10 @@ class LinkedNode extends Component {
   addLinkedArrow(e) {
     const key = new ViewUtils().getUnicodeID(10)
 
-    //初始化Element
+    // //初始化Element
     let element = this.initLinkElement(key)
-    //将Element添加到UI树中
-    this.props.addElement(element)
+    // //将Element添加到UI树中
+    // this.props.addElement(element)
     document.onmousemove = e => this.modifyEndPoint(e, [key])
 
     document.onmouseup = () => this.endModifyPoint([key])
@@ -132,7 +172,10 @@ class LinkedNode extends Component {
   initLinkElement(key) {
     const copiedLinks = this.state.bindLinks
     let bindLinks = new Map(copiedLinks)
-    let point = this.state.startPoint
+    let point = {
+      X: parseInt(this.props.parentStyle.left) + parseInt(this.state.style.left) + this.halfNodeWidth,
+      Y: parseInt(this.props.parentStyle.top) + parseInt(this.state.style.top) + this.halfNodeWidth,
+    }
     let reactCallback = function (func, that) {
       this.callback = func
       this.that = that
@@ -151,36 +194,51 @@ class LinkedNode extends Component {
     }
     bindLinks.set(key, bindLink)
     this.setState({
-      bindLinks: bindLinks
+      bindLink: bindLink
     })
-    return <LinkedArrow key={bindLink.uniqueKey} bindLink={bindLink} />;
+
+    this.props.addBindLink(bindLink)
+    // return <LinkedArrow key={bindLink.uniqueKey} bindLink={bindLink} addElement={this.props.parentStyle}/>;
   }
 
   modifyEndPoint(e, keys) {
 
     const moveEvent = window.event || e;
 
-    let copiedLinks = this.state.bindLinks
+    let bindLink = this.state.bindLink
 
-    keys.forEach(function (key, _) {
-      if (typeof (copiedLinks.get(key).isActive) != undefined && copiedLinks.get(key).isActive) {
-        let activeLink = copiedLinks.get(key)
-        var endPoint = {
-          X: moveEvent.clientX,
-          Y: moveEvent.clientY,
-        }
-        activeLink.endPoint = endPoint
-        activeLink.callback(activeLink)
+    if(bindLink.isActive){
+      var endPoint = {
+        X: moveEvent.clientX,
+        Y: moveEvent.clientY,
       }
-    })
+      bindLink.endPoint = endPoint
+    }
+
+    
+    this.props.modifyBindLinks(bindLink)
+    // keys.forEach(function (key, _) {
+    //   if (typeof (copiedLinks.get(key).isActive) != undefined && copiedLinks.get(key).isActive) {
+    //     let activeLink = copiedLinks.get(key)
+    //     var endPoint = {
+    //       X: moveEvent.clientX,
+    //       Y: moveEvent.clientY,
+    //     }
+    //     activeLink.endPoint = endPoint
+    //     activeLink.callback(activeLink)
+    //   }
+    // })
   }
 
   endModifyPoint(keys) {
-    let copiedLinks = this.state.bindLinks
+    let bindLink = this.state.bindLink
+    bindLink.isActive = false
+    this.props.modifyBindLinks(bindLink)
+    // let copiedLinks = this.state.bindLinks
 
-    keys.forEach(function (key, _) {
-      copiedLinks.get(key).isActive = false
-    })
+    // keys.forEach(function (key, _) {
+    //   copiedLinks.get(key).isActive = false
+    // })
   }
 
 }

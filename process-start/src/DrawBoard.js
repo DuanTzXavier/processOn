@@ -4,6 +4,7 @@ import './DrawBoard.css'
 import Test from './Test';
 import SelectPattern from './SelectPattern';
 import { CopyUtils } from './utils/CopyUtils';
+import LinkedArrow from './LinkedArrow';
 
 
 class DrawBoard extends Component {
@@ -22,6 +23,8 @@ class DrawBoard extends Component {
       elements: [],
       h1: "1",
       pattern: pattern,
+      tests: [1, 2],
+      links: [],
     }
   }
 
@@ -35,17 +38,40 @@ class DrawBoard extends Component {
   }
 
   render() {
+    let elements = []
+    let tests = this.state.tests
+    for (let index in tests) {
+      let element = React.createElement(Test, {
+        "key": index,
+        "h1": index,
+      })
+      elements = elements.concat(element)
+    }
+
+    let links = this.state.links
+    for (let index in links) {
+      let element = React.createElement(LinkedArrow, {
+        "key": index,
+        "bindLink": links[index],
+      })
+      elements = elements.concat(element)
+    }
+    elements = elements.concat(this.state.elements)
     return (
       <div className="Draw-Board" onClick={(e) => this.dismissSelectPattern(e)}>
         <Pattern
           pattern={this.state.pattern}
           setSelectPattern={(pattern) => this.setSelectPattern(pattern)} />
-        {this.state.elements}
+        {elements}
+
         <SelectPattern
           pattern={this.state.pattern}
           modifyPosition={this.modifyPosition}
           x={this.state.x}
-          addElement={this.addElement} />
+          addElement={this.addElement}
+          dismissSelectPattern={(() => this.dismissSelectPattern())}
+          addBindLink={(newBindLink) => this.addBindLink(newBindLink)}
+          modifyBindLinks={(key, bindLink) => this.modifyBindLinks(key, bindLink)} />
 
         <Test h1={this.state.h1} />
 
@@ -53,10 +79,34 @@ class DrawBoard extends Component {
     );
   }
 
-  dismissSelectPattern(e) {
+  handleClick(e) {
     if (e.target.getAttribute("class") !== "Draw-Board") {
       return
     }
+    this.dismissSelectPattern()
+  }
+
+  addBindLink = (newBindLink) => {
+    let links = this.state.links
+    this.setState({
+      links:links.concat(newBindLink)
+    })
+  }
+
+  modifyBindLinks = (key, bindLink) => {
+    let links = this.state.links
+    for(let index in links){
+      if(links[index].uniqueKey === key){
+        links[index] = bindLink
+        break
+      }
+    }
+    this.setState({
+      links:links
+    })
+  }
+
+  dismissSelectPattern = () => {
 
     let pattern = new CopyUtils().copy(this.state.pattern)
     pattern.isSelectedCanShow = false

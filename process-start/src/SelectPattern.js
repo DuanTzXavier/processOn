@@ -7,27 +7,35 @@ import SizeNode from './SizeNode';
 class SelectPattern extends Component {
     render() {
         let dom = null
-        if (this.props.pattern.isSelectedCanShow) {
+        if (true) {
             dom = (
                 <div id="SelectPattern" className="Select-Pattern" style={this.props.pattern.patternStyle} onMouseDown={(e) => this.onMouseDown(e)}>
                     <LinkedNode
                         parentStyle={this.props.pattern.patternStyle}
                         styleType={"top"}
+                        addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
+                        modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
                         addElement={this.props.addElement}
                     />
                     <LinkedNode
                         parentStyle={this.props.pattern.patternStyle}
                         styleType={"left"}
+                        addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
+                        modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
                         addElement={this.props.addElement}
                     />
                     <LinkedNode
                         parentStyle={this.props.pattern.patternStyle}
                         styleType={"bottom"}
+                        addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
+                        modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
                         addElement={this.props.addElement}
                     />
                     <LinkedNode
                         parentStyle={this.props.pattern.patternStyle}
                         styleType={"right"}
+                        addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
+                        modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
                         addElement={this.props.addElement}
                     />
                     <SizeNode
@@ -51,7 +59,12 @@ class SelectPattern extends Component {
         return dom;
     }
 
+
+
     onMouseDown(e) {
+        if (e.target.getAttribute("class") !== "Select-Pattern") {
+            return
+        }
         const clickEvent = window.event || e;
         const fromX = clickEvent.clientX - parseInt(this.props.pattern.patternStyle.left);
         const fromY = clickEvent.clientY - parseInt(this.props.pattern.patternStyle.top);
