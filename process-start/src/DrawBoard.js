@@ -1,19 +1,31 @@
 import React, { Component } from 'react';
 import Pattern from './Pattern';
 import './DrawBoard.css'
-import SelectPattern from './SelectPattern';
 import Test from './Test';
+import SelectPattern from './SelectPattern';
+import { CopyUtils } from './utils/CopyUtils';
+
 
 class DrawBoard extends Component {
   constructor() {
     super();
+    var pattern = {
+      isSelectedCanShow: true,
+      patternStyle: {
+        width: "300px",
+        height: "300px",
+        left: "200px",
+        top: "200px",
+      },
+    }
     this.state = {
       elements: [],
-      h1:"1"
+      h1: "1",
+      pattern: pattern,
     }
   }
 
-  addElement(element) {
+  addElement = (element) => {
     const elements = this.state.elements;
     this.setState({
       elements: elements.concat(
@@ -23,63 +35,53 @@ class DrawBoard extends Component {
   }
 
   render() {
-    var pattern = {
-      patternStyle: {
-        width: "300px",
-        height: "300px",
-        left: "200px",
-        top: "200px",
-      },
-    }
-
     return (
       <div className="Draw-Board" onClick={(e) => this.dismissSelectPattern(e)}>
-        {/* <Pattern
-          pattern={pattern}
-          addElement={(element) => this.addElement(element)}
-         
-        /> */}
-        <Test h1 = {this.state.h1}/>
+        <Pattern
+          pattern={this.state.pattern}
+          setSelectPattern={(pattern) => this.setSelectPattern(pattern)} />
         {this.state.elements}
+        <SelectPattern
+          pattern={this.state.pattern}
+          modifyPosition={this.modifyPosition}
+          x={this.state.x}
+          addElement={this.addElement} />
+
+        <Test h1={this.state.h1} />
+
       </div>
     );
   }
 
   dismissSelectPattern(e) {
+    if (e.target.getAttribute("class") !== "Draw-Board") {
+      return
+    }
+
+    let pattern = new CopyUtils().copy(this.state.pattern)
+    pattern.isSelectedCanShow = false
+    this.setState({
+      h1: "2",
+      pattern: pattern,
+    })
+  }
+
+  setSelectPattern = (patternX) => {
+    let pattern = new CopyUtils().copy(this.state.pattern)
+    pattern.isSelectedCanShow = true
+    this.setState({
+      pattern: pattern,
+    })
+  }
+
+  modifyPosition = (left, top) => {
+    let pattern = new CopyUtils().copy(this.state.pattern)
+    pattern.patternStyle.left = left
+    pattern.patternStyle.top = top
 
     this.setState({
-      h1:"2"
+      pattern: pattern
     })
-    // if (e.target.getAttribute("class") !== "Draw-Board") {
-    //   return
-    // }
-
-    // let elements = this.state.elements
-    // for(let element in elements){
-    //   if(elements[element].type === SelectPattern){
-    //     console.log(elements[element].xxx)
-    //     console.log(elements[element])
-    //   }
-    // }
-
-  
-    
-    // let elements = this.state.elements
-    // elements.splice(0, 1)
-
-    // console.log(elements)
-    // this.setState({
-    //   elements:elements
-    // })
-
-    
-
-    // for (let i = 0; i < elements.length; i++) {
-
-    //   console.log(elements[i].type)
-    //   elements.remove(elements[i])
-
-    // }
   }
 }
 

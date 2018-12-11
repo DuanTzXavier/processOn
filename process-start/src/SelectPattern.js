@@ -2,62 +2,48 @@ import React, { Component } from 'react';
 import './SelectPattern.css'
 import LinkedNode from './LinkedNode';
 import SizeNode from './SizeNode';
-import { CopyUtils } from './utils/CopyUtils';
 
 
 class SelectPattern extends Component {
-    halfNodeWidth = 3
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            pattern: props.pattern,
-            x: props.x,
-            style: props.pattern.patternStyle,
-        }
-    }
-
-
     render() {
         let dom = null
-        if (true) {
+        if (this.props.pattern.isSelectedCanShow) {
             dom = (
-                <div id="SelectPattern" className="Select-Pattern" onMouseDown={(e) => this.onMouseDown(e)}>
+                <div id="SelectPattern" className="Select-Pattern" style={this.props.pattern.patternStyle} onMouseDown={(e) => this.onMouseDown(e)}>
                     <LinkedNode
-                        parentStyle={this.state.style}
+                        parentStyle={this.props.pattern.patternStyle}
                         styleType={"top"}
                         addElement={this.props.addElement}
                     />
-                    <h1>{this.state.x}</h1>
                     <LinkedNode
-                        parentStyle={this.state.style}
+                        parentStyle={this.props.pattern.patternStyle}
                         styleType={"left"}
                         addElement={this.props.addElement}
                     />
                     <LinkedNode
-                        parentStyle={this.state.style}
+                        parentStyle={this.props.pattern.patternStyle}
                         styleType={"bottom"}
                         addElement={this.props.addElement}
                     />
                     <LinkedNode
-                        parentStyle={this.state.style}
+                        parentStyle={this.props.pattern.patternStyle}
                         styleType={"right"}
                         addElement={this.props.addElement}
                     />
                     <SizeNode
-                        parentStyle={this.state.style}
+                        parentStyle={this.props.pattern.patternStyle}
                         styleType={1} />
 
                     <SizeNode
-                        parentStyle={this.state.style}
+                        parentStyle={this.props.pattern.patternStyle}
                         styleType={2} />
 
                     <SizeNode
-                        parentStyle={this.state.style}
+                        parentStyle={this.props.pattern.patternStyle}
                         styleType={3} />
 
                     <SizeNode
-                        parentStyle={this.state.style}
+                        parentStyle={this.props.pattern.patternStyle}
                         styleType={4} />
                 </div>
             )
@@ -67,8 +53,8 @@ class SelectPattern extends Component {
 
     onMouseDown(e) {
         const clickEvent = window.event || e;
-        const fromX = clickEvent.clientX - parseInt(this.state.style.left);
-        const fromY = clickEvent.clientY - parseInt(this.state.style.top);
+        const fromX = clickEvent.clientX - parseInt(this.props.pattern.patternStyle.left);
+        const fromY = clickEvent.clientY - parseInt(this.props.pattern.patternStyle.top);
         this.setState({
             isActive: true,
             isMoved: false,
@@ -81,37 +67,18 @@ class SelectPattern extends Component {
         document.onmouseup = () => this.setStateFalse()
     }
 
-    shouldComponentUpdate(nextProps, nextState, nextContext){
-
-        console.log(nextProps)
-        return true
-    }
-
-    static getDerivedStateFromProps(props, state) {
-
-        console.log(props.x)
-
-        console.log(state)
-        // Any time the current user changes,
-        // Reset any parts of state that are tied to that user.
-        // In this simple example, that's just the email.
-        return null;
-    }
-
     setMoveLocation(event) {
         if (!this.state.isActive) {
             return
         }
         const moveEvent = window.event || event;
-        let style = new CopyUtils().copy(this.state.style)
 
-        style.left = moveEvent.clientX - this.state.fromX + "px"
-        style.top = moveEvent.clientY - this.state.fromY + "px"
+        let left = moveEvent.clientX - this.state.fromX + "px"
+        let top = moveEvent.clientY - this.state.fromY + "px"
 
-        this.props.modifyPosition(this.props.that, style.left, style.top)
+        this.props.modifyPosition(left, top)
 
         this.setState({
-            style: style,
             isMoved: true,
         })
     }
