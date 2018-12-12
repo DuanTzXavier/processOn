@@ -65,6 +65,8 @@ class LinkedNode extends Component {
       Y: parseInt(nextProps.parentStyle.top) + parseInt(this.state.style.top) + 3,
     }
 
+    console.log(startPoint)
+
     copiedLinks.forEach(function (element, index, array) {
       if (element.startPoint.X !== startPoint.X || element.startPoint.Y !== startPoint.Y) {
         element.startPoint = startPoint
@@ -128,16 +130,13 @@ class LinkedNode extends Component {
 
     // //初始化Element
     this.initLinkElement(key)
-    // //将Element添加到UI树中
-    // this.props.addElement(element)
+    
     document.onmousemove = e => this.modifyEndPoint(e, [key])
 
     document.onmouseup = () => this.endModifyPoint([key])
   }
 
   initLinkElement(key) {
-    const copiedLinks = this.state.bindLinks
-    let bindLinks = new Map(copiedLinks)
     let point = {
       X: parseInt(this.props.parentStyle.left) + parseInt(this.state.style.left) + this.halfNodeWidth,
       Y: parseInt(this.props.parentStyle.top) + parseInt(this.state.style.top) + this.halfNodeWidth,
@@ -150,7 +149,6 @@ class LinkedNode extends Component {
       isActive: true,
       isVertical: this.state.style.isVertical,
     }
-    bindLinks.set(key, bindLink)
     this.setState({
       bindLink: bindLink
     })
