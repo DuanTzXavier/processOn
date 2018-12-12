@@ -39,14 +39,14 @@ class DrawBoard extends Component {
 
   render() {
     let elements = []
-    let tests = this.state.tests
-    for (let index in tests) {
-      let element = React.createElement(Test, {
-        "key": index,
-        "h1": index,
-      })
-      elements = elements.concat(element)
-    }
+    // let tests = this.state.tests
+    // for (let index in tests) {
+    //   let element = React.createElement(Test, {
+    //     "key": index,
+    //     "h1": index,
+    //   })
+    //   elements = elements.concat(element)
+    // }
 
     let links = this.state.links
     for (let index in links) {
@@ -69,6 +69,7 @@ class DrawBoard extends Component {
           modifyPosition={this.modifyPosition}
           x={this.state.x}
           addElement={this.addElement}
+          links={this.state.links}
           dismissSelectPattern={(() => this.dismissSelectPattern())}
           addBindLink={(newBindLink) => this.addBindLink(newBindLink)}
           modifyBindLinks={(key, bindLink) => this.modifyBindLinks(key, bindLink)} />

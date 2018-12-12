@@ -13,6 +13,7 @@ class SelectPattern extends Component {
                     <LinkedNode
                         parentStyle={this.props.pattern.patternStyle}
                         styleType={"top"}
+                        links={this.props.links}
                         addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                         modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
                         addElement={this.props.addElement}
@@ -20,6 +21,7 @@ class SelectPattern extends Component {
                     <LinkedNode
                         parentStyle={this.props.pattern.patternStyle}
                         styleType={"left"}
+                        links={this.props.links}
                         addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                         modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
                         addElement={this.props.addElement}
@@ -27,6 +29,7 @@ class SelectPattern extends Component {
                     <LinkedNode
                         parentStyle={this.props.pattern.patternStyle}
                         styleType={"bottom"}
+                        links={this.props.links}
                         addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                         modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
                         addElement={this.props.addElement}
@@ -34,6 +37,7 @@ class SelectPattern extends Component {
                     <LinkedNode
                         parentStyle={this.props.pattern.patternStyle}
                         styleType={"right"}
+                        links={this.props.links}
                         addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                         modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
                         addElement={this.props.addElement}

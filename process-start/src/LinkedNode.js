@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import LinkedArrow from './LinkedArrow';
 import { ViewUtils } from './utils/ViewUtils'
 import './LinkedNode.css'
 
@@ -11,7 +10,6 @@ class LinkedNode extends Component {
     super(props);
     let style = this.initStyle()
     this.state = {
-      bindLinks: new Map(),
       style: style,
     }
   }
@@ -61,50 +59,18 @@ class LinkedNode extends Component {
 
   componentWillUpdate(nextProps) {
 
-    let copiedLinks = this.state.bindLinks
+    let copiedLinks = this.props.links
     let startPoint = {
       X: parseInt(nextProps.parentStyle.left) + parseInt(this.state.style.left) + 3,
       Y: parseInt(nextProps.parentStyle.top) + parseInt(this.state.style.top) + 3,
     }
-
 
     copiedLinks.forEach(function (element, index, array) {
       if (element.startPoint.X !== startPoint.X || element.startPoint.Y !== startPoint.Y) {
         element.startPoint = startPoint
       }
     })
-
-    // this.setState({
-    //   bindLinks:copiedLinks,
-    // })
-    // state.bindLinks = copiedLinks
-
-    console.log(66)
 }
-
-componentWillReceiveProps(nextProps){
-  console.log(nextProps)
-  console.log("componentWillReceiveProps")
-}
-
-  // static getDerivedStateFromProps(props, state) {
-
-  //   let copiedLinks = state.bindLinks
-  //   let startPoint = {
-  //     X: parseInt(props.parentStyle.left) + parseInt(state.style.left) + 3,
-  //     Y: parseInt(props.parentStyle.top) + parseInt(state.style.top) + 3,
-  //   }
-
-
-  //   copiedLinks.forEach(function (element, index, array) {
-  //     if (element.startPoint.X !== startPoint.X || element.startPoint.Y !== startPoint.Y) {
-  //       element.startPoint = startPoint
-  //     }
-  //   })
-  //   state.bindLinks = copiedLinks
-    
-  //   return state;
-  // }
 
   onMouseDown(e) {
     const clickEvent = window.event || e;
@@ -161,7 +127,7 @@ componentWillReceiveProps(nextProps){
     const key = new ViewUtils().getUnicodeID(10)
 
     // //初始化Element
-    let element = this.initLinkElement(key)
+    this.initLinkElement(key)
     // //将Element添加到UI树中
     // this.props.addElement(element)
     document.onmousemove = e => this.modifyEndPoint(e, [key])
@@ -176,20 +142,12 @@ componentWillReceiveProps(nextProps){
       X: parseInt(this.props.parentStyle.left) + parseInt(this.state.style.left) + this.halfNodeWidth,
       Y: parseInt(this.props.parentStyle.top) + parseInt(this.state.style.top) + this.halfNodeWidth,
     }
-    let reactCallback = function (func, that) {
-      this.callback = func
-      this.that = that
-      this.isInited = true
-      this.isActive = true
-    }
 
     let bindLink = {
       uniqueKey: key,
       startPoint: point,
       endPoint: point,
-      reactCallback: reactCallback,
-      isInited: false,
-      isActive: false,
+      isActive: true,
       isVertical: this.state.style.isVertical,
     }
     bindLinks.set(key, bindLink)
@@ -198,7 +156,6 @@ componentWillReceiveProps(nextProps){
     })
 
     this.props.addBindLink(bindLink)
-    // return <LinkedArrow key={bindLink.uniqueKey} bindLink={bindLink} addElement={this.props.parentStyle}/>;
   }
 
   modifyEndPoint(e, keys) {
@@ -217,28 +174,12 @@ componentWillReceiveProps(nextProps){
 
     
     this.props.modifyBindLinks(bindLink)
-    // keys.forEach(function (key, _) {
-    //   if (typeof (copiedLinks.get(key).isActive) != undefined && copiedLinks.get(key).isActive) {
-    //     let activeLink = copiedLinks.get(key)
-    //     var endPoint = {
-    //       X: moveEvent.clientX,
-    //       Y: moveEvent.clientY,
-    //     }
-    //     activeLink.endPoint = endPoint
-    //     activeLink.callback(activeLink)
-    //   }
-    // })
   }
 
   endModifyPoint(keys) {
     let bindLink = this.state.bindLink
     bindLink.isActive = false
     this.props.modifyBindLinks(bindLink)
-    // let copiedLinks = this.state.bindLinks
-
-    // keys.forEach(function (key, _) {
-    //   copiedLinks.get(key).isActive = false
-    // })
   }
 
 }
