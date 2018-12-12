@@ -5,13 +5,14 @@ import Test from './Test';
 import SelectPattern from './SelectPattern';
 import { CopyUtils } from './utils/CopyUtils';
 import LinkedArrow from './LinkedArrow';
-
+import { ViewUtils } from './utils/ViewUtils'
 
 class DrawBoard extends Component {
   constructor() {
     super();
     var pattern = {
       isSelectedCanShow: true,
+      uniqueKey: new ViewUtils().getUnicodeID(10),
       patternStyle: {
         width: "300px",
         height: "300px",
@@ -39,21 +40,13 @@ class DrawBoard extends Component {
 
   render() {
     let elements = []
-    // let tests = this.state.tests
-    // for (let index in tests) {
-    //   let element = React.createElement(Test, {
-    //     "key": index,
-    //     "h1": index,
-    //   })
-    //   elements = elements.concat(element)
-    // }
 
     let links = this.state.links
     for (let index in links) {
       let element = React.createElement(LinkedArrow, {
         "key": index,
         "bindLink": links[index],
-        "onRef":this.onRef,
+        "onRef": this.onRef,
       })
       elements = elements.concat(element)
     }
@@ -91,20 +84,20 @@ class DrawBoard extends Component {
   addBindLink = (newBindLink) => {
     let links = this.state.links
     this.setState({
-      links:links.concat(newBindLink)
+      links: links.concat(newBindLink)
     })
   }
 
   modifyBindLinks = (key, bindLink) => {
     let links = this.state.links
-    for(let index in links){
-      if(links[index].uniqueKey === key){
+    for (let index in links) {
+      if (links[index].uniqueKey === key) {
         links[index] = bindLink
         break
       }
     }
     this.setState({
-      links:links
+      links: links
     })
   }
 

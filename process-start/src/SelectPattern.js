@@ -13,6 +13,7 @@ class SelectPattern extends Component {
                     <LinkedNode
                         parentStyle={this.props.pattern.patternStyle}
                         styleType={"top"}
+                        patternKey={this.props.pattern.uniqueKey}
                         links={this.props.links}
                         addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                         modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
@@ -21,6 +22,7 @@ class SelectPattern extends Component {
                     <LinkedNode
                         parentStyle={this.props.pattern.patternStyle}
                         styleType={"left"}
+                        patternKey={this.props.pattern.uniqueKey}
                         links={this.props.links}
                         addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                         modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
@@ -29,6 +31,7 @@ class SelectPattern extends Component {
                     <LinkedNode
                         parentStyle={this.props.pattern.patternStyle}
                         styleType={"bottom"}
+                        patternKey={this.props.pattern.uniqueKey}
                         links={this.props.links}
                         addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                         modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
@@ -37,6 +40,7 @@ class SelectPattern extends Component {
                     <LinkedNode
                         parentStyle={this.props.pattern.patternStyle}
                         styleType={"right"}
+                        patternKey={this.props.pattern.uniqueKey}
                         links={this.props.links}
                         addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                         modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}

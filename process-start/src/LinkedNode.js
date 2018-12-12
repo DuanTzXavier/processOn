@@ -65,10 +65,10 @@ class LinkedNode extends Component {
       Y: parseInt(nextProps.parentStyle.top) + parseInt(this.state.style.top) + 3,
     }
 
-    console.log(startPoint)
+    let forKey = nextProps.patternKey + "_" + nextProps.styleType
 
-    copiedLinks.forEach(function (element, index, array) {
-      if (element.startPoint.X !== startPoint.X || element.startPoint.Y !== startPoint.Y) {
+    copiedLinks.forEach(function (element, _, __) {
+      if (forKey === element.for && (element.startPoint.X !== startPoint.X || element.startPoint.Y !== startPoint.Y)) {
         element.startPoint = startPoint
       }
     })
@@ -148,7 +148,9 @@ class LinkedNode extends Component {
       endPoint: point,
       isActive: true,
       isVertical: this.state.style.isVertical,
+      for:this.props.patternKey + "_" + this.props.styleType,
     }
+
     this.setState({
       bindLink: bindLink
     })
