@@ -48,18 +48,26 @@ class SelectPattern extends Component {
                         addElement={this.props.addElement}
                     />
                     <SizeNode
+                        pattern={this.props.pattern}
+                        modifyPattern={this.props.modifyPattern}
                         parentStyle={this.props.pattern.patternStyle}
                         styleType={1} />
 
                     <SizeNode
+                        pattern={this.props.pattern}
+                        modifyPattern={this.props.modifyPattern}
                         parentStyle={this.props.pattern.patternStyle}
                         styleType={2} />
 
                     <SizeNode
+                        pattern={this.props.pattern}
+                        modifyPattern={this.props.modifyPattern}
                         parentStyle={this.props.pattern.patternStyle}
                         styleType={3} />
 
                     <SizeNode
+                        pattern={this.props.pattern}
+                        modifyPattern={this.props.modifyPattern}
                         parentStyle={this.props.pattern.patternStyle}
                         styleType={4} />
                 </div>
@@ -96,8 +104,8 @@ class SelectPattern extends Component {
         const moveEvent = window.event || event;
 
         let pattern = new CopyUtils().copy(this.props.pattern)
-        pattern.patternStyle.left =  moveEvent.clientX - this.state.fromX + "px"
-        pattern.patternStyle.top =  moveEvent.clientY - this.state.fromY + "px"
+        pattern.patternStyle.left = moveEvent.clientX - this.state.fromX + "px"
+        pattern.patternStyle.top = moveEvent.clientY - this.state.fromY + "px"
         this.props.modifyPattern(pattern)
 
         this.setState({
