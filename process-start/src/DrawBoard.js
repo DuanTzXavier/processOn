@@ -60,7 +60,7 @@ class DrawBoard extends Component {
 
         <SelectPattern
           pattern={this.state.pattern}
-          modifyPosition={this.modifyPosition}
+          modifyPattern={this.modifyPattern}
           x={this.state.x}
           addElement={this.addElement}
           links={this.state.links}
@@ -124,14 +124,12 @@ class DrawBoard extends Component {
     })
   }
 
-  modifyPosition = (left, top) => {
-    let pattern = new CopyUtils().copy(this.state.pattern)
-    pattern.patternStyle.left = left
-    pattern.patternStyle.top = top
-
-    this.setState({
-      pattern: pattern
-    })
+  modifyPattern = (pattern) => {
+    if(pattern.uniqueKey === this.state.pattern.uniqueKey){
+      this.setState({
+        pattern: pattern
+      })
+    }    
   }
 }
 

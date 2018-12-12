@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './SelectPattern.css'
 import LinkedNode from './LinkedNode';
 import SizeNode from './SizeNode';
+import { CopyUtils } from './utils/CopyUtils';
 
 
 class SelectPattern extends Component {
@@ -94,10 +95,10 @@ class SelectPattern extends Component {
         }
         const moveEvent = window.event || event;
 
-        let left = moveEvent.clientX - this.state.fromX + "px"
-        let top = moveEvent.clientY - this.state.fromY + "px"
-
-        this.props.modifyPosition(left, top)
+        let pattern = new CopyUtils().copy(this.props.pattern)
+        pattern.patternStyle.left =  moveEvent.clientX - this.state.fromX + "px"
+        pattern.patternStyle.top =  moveEvent.clientY - this.state.fromY + "px"
+        this.props.modifyPattern(pattern)
 
         this.setState({
             isMoved: true,
