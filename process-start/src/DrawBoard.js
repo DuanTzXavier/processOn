@@ -53,6 +53,7 @@ class DrawBoard extends Component {
       let element = React.createElement(LinkedArrow, {
         "key": index,
         "bindLink": links[index],
+        "onRef":this.onRef,
       })
       elements = elements.concat(element)
     }
@@ -106,6 +107,11 @@ class DrawBoard extends Component {
       links:links
     })
   }
+
+  onRef = (ref) => {
+    this.child = ref
+  }
+
 
   dismissSelectPattern = () => {
 

@@ -9,6 +9,7 @@ class LinkedArrow extends Component {
         super(props);
         // this.props.bindLink.reactCallback(this.updateProps, this)
         this.initArrow = this.initArrow.bind(this)
+        this.props.onRef(this)
     }
 
     updateProps(bindLink) {
@@ -46,8 +47,9 @@ class LinkedArrow extends Component {
         this.initArrow()
     }
 
-    componentDidUpdate() {
+    componentWillUpdate(){
         this.initArrow()
+
     }
 
     initArrow() {
@@ -74,8 +76,6 @@ class LinkedArrow extends Component {
 
         //获取对应的CanvasRenderingContext2D对象(画笔)
         var ctx = canvas.getContext("2d");
-        ctx.fillStyle="green";
-        ctx.fill();
         let points = []
         points[0] = {
             x: (startPosition & 1) === 1 ? (width - haw) : haw,

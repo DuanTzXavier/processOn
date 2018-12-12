@@ -70,7 +70,7 @@ class LinkedNode extends Component {
         element.startPoint = startPoint
       }
     })
-}
+  }
 
   onMouseDown(e) {
     const clickEvent = window.event || e;
@@ -164,7 +164,7 @@ class LinkedNode extends Component {
 
     let bindLink = this.state.bindLink
 
-    if(bindLink.isActive){
+    if (bindLink.isActive) {
       var endPoint = {
         X: moveEvent.clientX,
         Y: moveEvent.clientY,
@@ -172,7 +172,6 @@ class LinkedNode extends Component {
       bindLink.endPoint = endPoint
     }
 
-    
     this.props.modifyBindLinks(bindLink)
   }
 
