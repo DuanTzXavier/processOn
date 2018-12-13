@@ -18,8 +18,8 @@ class DrawBoard extends Component {
         Y:"200px",
       },
       endPoint:{
-        X:"400px",
-        Y:"400px",
+        X:"401px",
+        Y:"402px",
       },
       patternStyle: {
         width: "200px",

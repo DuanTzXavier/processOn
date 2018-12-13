@@ -64,10 +64,13 @@ class SizeNode extends Component {
             return
         }
         const clickEvent = window.event || e;
-        const fromX = clickEvent.clientX - parseInt(this.props.pattern.patternStyle.left);
-        const fromY = clickEvent.clientY - parseInt(this.props.pattern.patternStyle.top);
-
         let style = new CopyUtils().copy(this.props.pattern.patternStyle)
+
+        const fromX = clickEvent.clientX - parseInt(style.left);
+        const fromY = clickEvent.clientY - parseInt(style.top);
+
+        console.log("style")
+        console.log(style)
         this.setState({
             isActive: true,
             isMoved: false,
@@ -114,7 +117,7 @@ class SizeNode extends Component {
                     Y: this.state.top + this.state.height + "px",
                 }
                 pattern.endPoint = {
-                    X: moveEvent.clientX - this.state.fromX + parseInt(this.props.pattern.patternStyle.left) + "px",
+                    X: moveEvent.clientX - this.state.fromX + parseInt(this.state.width) + "px",
                     Y: moveEvent.clientY - this.state.fromY + "px",
                 }
                 break;
@@ -125,7 +128,7 @@ class SizeNode extends Component {
                 }
                 pattern.endPoint = {
                     X: moveEvent.clientX - this.state.fromX + "px",
-                    Y: moveEvent.clientY - this.state.fromY + parseInt(this.props.pattern.patternStyle.top) + "px",
+                    Y: moveEvent.clientY - this.state.fromY + parseInt(this.state.height) + "px",
                 }
                 break;
             case 4:
@@ -134,8 +137,8 @@ class SizeNode extends Component {
                     Y: this.state.top + "px",
                 }
                 pattern.endPoint = {
-                    X: moveEvent.clientX - this.state.fromX + parseInt(this.props.pattern.patternStyle.left) + "px",
-                    Y: moveEvent.clientY - this.state.fromY + parseInt(this.props.pattern.patternStyle.top) + "px",
+                    X: moveEvent.clientX - this.state.fromX + parseInt(this.state.width) + "px",
+                    Y: moveEvent.clientY - this.state.fromY + parseInt(this.state.height) + "px",
                 }
                 break;
             default:

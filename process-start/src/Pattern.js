@@ -11,8 +11,10 @@ class Pattern extends Component {
     }
 
     componentWillUpdate(nextProps) {
-        console.log(2)
-
+        console.log("startPoint")
+        console.log(nextProps.pattern.startPoint)
+        console.log("endPoint")
+        console.log(nextProps.pattern.endPoint)
         if (nextProps.pattern.startPoint.X !== this.props.pattern.startPoint.X ||
             nextProps.pattern.startPoint.Y !== this.props.pattern.startPoint.Y ||
             nextProps.pattern.endPoint.X !== this.props.pattern.endPoint.X ||
