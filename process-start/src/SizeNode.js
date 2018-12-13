@@ -69,8 +69,6 @@ class SizeNode extends Component {
         const fromX = clickEvent.clientX - parseInt(style.left);
         const fromY = clickEvent.clientY - parseInt(style.top);
 
-        console.log("style")
-        console.log(style)
         this.setState({
             isActive: true,
             isMoved: false,
@@ -90,11 +88,9 @@ class SizeNode extends Component {
     }
 
     setMoveLocation(event) {
-
         if (!this.state.isActive) {
             return
         }
-        console.log(event)
 
         const moveEvent = window.event || event;
 

@@ -76,7 +76,7 @@ class DrawBoard extends Component {
     let links = this.state.links
     for (let index in links) {
       let element = React.createElement(LinkedArrow, {
-        "key": index,
+        "key": index.uniqueKey,
         "bindLink": links[index],
         "onRef": this.onRef,
       })
@@ -114,6 +114,7 @@ class DrawBoard extends Component {
         <NodeControlPattern
           pattern={this.state.nodeControlPattern}
           addElement={this.addElement}
+          modifyPattern={this.modifyPattern}
           links={this.state.links}
           addBindLink={(newBindLink) => this.addBindLink(newBindLink)}
           modifyBindLinks={(key, bindLink) => this.modifyBindLinks(key, bindLink)}
@@ -218,7 +219,6 @@ class DrawBoard extends Component {
   }
 
   modifyPattern = (pattern) => {
-    console.log(1)
     let patterns = new CopyUtils().copy(this.state.patterns)
     for (let index in patterns) {
       if (pattern.uniqueKey === patterns[index].uniqueKey) {
@@ -230,6 +230,7 @@ class DrawBoard extends Component {
     // pattern.isNodeControlPatternShow = false
     this.setState({
       pattern: pattern,
+      nodeControlPattern: pattern,
       patterns:patterns,
     })
     
