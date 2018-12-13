@@ -11,17 +11,10 @@ class Pattern extends Component {
     }
 
     componentWillUpdate(nextProps) {
-        console.log("startPoint")
-        console.log(nextProps.pattern.startPoint)
-        console.log("endPoint")
-        console.log(nextProps.pattern.endPoint)
         if (nextProps.pattern.startPoint.X !== this.props.pattern.startPoint.X ||
             nextProps.pattern.startPoint.Y !== this.props.pattern.startPoint.Y ||
             nextProps.pattern.endPoint.X !== this.props.pattern.endPoint.X ||
             nextProps.pattern.endPoint.Y !== this.props.pattern.endPoint.Y) {
-            console.log(3)
-            console.log(nextProps.pattern.endPoint.Y)
-
             this.updatePatternStyle(nextProps)
         }
     }
@@ -36,11 +29,6 @@ class Pattern extends Component {
             width: Math.abs(parseInt(props.pattern.startPoint.X) - parseInt(props.pattern.endPoint.X)) + "px",
             height: Math.abs(parseInt(props.pattern.startPoint.Y) - parseInt(props.pattern.endPoint.Y)) + "px",
         }
-        // pattern.patternStyle.left = Math.min(parseInt(props.pattern.startPoint.X), parseInt(props.pattern.endPoint.X)) + "px"
-        // pattern.patternStyle.top = Math.min(parseInt(props.pattern.startPoint.Y), parseInt(props.pattern.endPoint.Y)) + "px"
-        // pattern.patternStyle.width = Math.abs(parseInt(props.pattern.startPoint.X) - parseInt(props.pattern.endPoint.X)) + "px"
-        // pattern.patternStyle.height = Math.abs(parseInt(props.pattern.startPoint.Y) - parseInt(props.pattern.endPoint.Y)) + "px"
-        console.log(pattern.patternStyle)
         props.modifyPattern(pattern)
     }
 
@@ -57,8 +45,8 @@ class Pattern extends Component {
             <div
                 className="Pattern"
                 style={this.props.pattern.patternStyle}
-                onClick={(e) => this.props.setSelectPattern(1)}
-                onMouseOver={(e) => this.props.setSelectPattern(1)}>
+                onClick={(e) => this.props.setSelectPattern(this.props.pattern)}
+                onMouseMove={(e) => this.props.setNodeControlPattern(this.props.pattern)}>
                 <canvas className="Pattern-Shape" style={patternShapeStyle} />
             </div>
         );

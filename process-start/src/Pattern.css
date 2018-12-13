@@ -1,8 +1,9 @@
 .Pattern {
-  background: #02ec3c;
+  background: #ec02a6;
   position: absolute;
 }
 .Pattern-Shape {
   background: #bed8d8;
   position: absolute;
+  /* visibility: collapse; */
 }
