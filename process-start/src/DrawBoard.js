@@ -61,15 +61,6 @@ class DrawBoard extends Component {
     }
   }
 
-  addElement = (element) => {
-    const elements = this.state.elements;
-    this.setState({
-      elements: elements.concat(
-        element
-      )
-    })
-  }
-
   render() {
     let elements = []
 
@@ -78,7 +69,6 @@ class DrawBoard extends Component {
       let element = React.createElement(LinkedArrow, {
         "key": index.uniqueKey,
         "bindLink": links[index],
-        "onRef": this.onRef,
       })
       elements = elements.concat(element)
     }
@@ -97,23 +87,17 @@ class DrawBoard extends Component {
     elements = elements.concat(this.state.elements)
     return (
       <div className="Draw-Board" onClick={(e) => this.handleClick(e)}>
-        {/* <Pattern
-          pattern={this.state.pattern}
-          modifyPattern={this.modifyPattern}
-          setSelectPattern={(pattern) => this.setSelectPattern(pattern)} /> */}
         {elements}
 
         <SelectPattern
           pattern={this.state.pattern}
           modifyPattern={this.modifyPattern}
-          addElement={this.addElement}
           links={this.state.links}
           addBindLink={(newBindLink) => this.addBindLink(newBindLink)}
           modifyBindLinks={(key, bindLink) => this.modifyBindLinks(key, bindLink)} />
 
         <NodeControlPattern
           pattern={this.state.nodeControlPattern}
-          addElement={this.addElement}
           modifyPattern={this.modifyPattern}
           links={this.state.links}
           addBindLink={(newBindLink) => this.addBindLink(newBindLink)}
@@ -154,13 +138,7 @@ class DrawBoard extends Component {
     })
   }
 
-  onRef = (ref) => {
-    this.child = ref
-  }
-
-
   dismissSelectPattern = () => {
-
     let pattern = new CopyUtils().copy(this.state.pattern)
     pattern.isSelectedCanShow = false
     this.setState({
@@ -204,12 +182,6 @@ class DrawBoard extends Component {
   }
   
   dismissNodeControlPattern = (patternX) => {
-    let patterns = this.state.patterns
-    for (let index in patterns) {
-      if (patternX.uniqueKey === patterns[index].uniqueKey) {
-
-      }
-    }
     let pattern = new CopyUtils().copy(patternX)
 
     pattern.isNodeControlPatternShow = false
@@ -226,8 +198,6 @@ class DrawBoard extends Component {
       }
     }
 
-    // pattern.isSelectedCanShow = true
-    // pattern.isNodeControlPatternShow = false
     this.setState({
       pattern: pattern,
       nodeControlPattern: pattern,

@@ -7,9 +7,7 @@ class LinkedArrow extends Component {
 
     constructor(props) {
         super(props);
-        // this.props.bindLink.reactCallback(this.updateProps, this)
         this.initArrow = this.initArrow.bind(this)
-        this.props.onRef(this)
     }
 
     updateProps(bindLink) {
