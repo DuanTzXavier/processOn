@@ -13,9 +13,17 @@ class DrawBoard extends Component {
     var pattern = {
       isSelectedCanShow: true,
       uniqueKey: new ViewUtils().getUnicodeID(10),
+      startPoint:{
+        X:"200px",
+        Y:"200px",
+      },
+      endPoint:{
+        X:"400px",
+        Y:"400px",
+      },
       patternStyle: {
-        width: "300px",
-        height: "300px",
+        width: "200px",
+        height: "200px",
         left: "200px",
         top: "200px",
       },
@@ -55,6 +63,7 @@ class DrawBoard extends Component {
       <div className="Draw-Board" onClick={(e) => this.dismissSelectPattern(e)}>
         <Pattern
           pattern={this.state.pattern}
+          modifyPattern={this.modifyPattern}
           setSelectPattern={(pattern) => this.setSelectPattern(pattern)} />
         {elements}
 

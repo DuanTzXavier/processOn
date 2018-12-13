@@ -72,6 +72,15 @@ class LinkedNode extends Component {
         element.startPoint = startPoint
       }
     })
+
+    let style = this.initStyle()
+
+    if(style.left !== this.state.style.left || style.top !== this.state.style.top){
+      this.setState({
+        style: style
+      })
+    }
+
   }
 
   onMouseDown(e) {
@@ -114,12 +123,11 @@ class LinkedNode extends Component {
 
 
   render() {
-    let style = this.initStyle()
     return (
       <div
         className="Linked-Node"
         onMouseDown={(e) => this.addLinkedArrow(e)}
-        style={style}>
+        style={this.state.style}>
 
       </div>
     );
