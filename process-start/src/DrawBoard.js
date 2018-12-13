@@ -12,7 +12,8 @@ class DrawBoard extends Component {
   constructor() {
     super();
     var pattern = {
-      isSelectedCanShow: true,
+      isSelectedCanShow: false,
+      isNodeControlPatternShow: false,
       uniqueKey: new ViewUtils().getUnicodeID(10),
       startPoint: {
         X: "200px",
@@ -31,7 +32,7 @@ class DrawBoard extends Component {
     }
 
     var pattern2 = {
-      isSelectedCanShow: true,
+      isSelectedCanShow: false,
       isNodeControlPatternShow: false,
       uniqueKey: new ViewUtils().getUnicodeID(10),
       startPoint: {
@@ -85,7 +86,7 @@ class DrawBoard extends Component {
     let patterns = this.state.patterns
     for (let index in patterns) {
       let element = React.createElement(Pattern, {
-        "key": patterns[index].uniqueKey,
+        "key": index,
         "pattern": patterns[index],
         "modifyPattern": this.modifyPattern,
         "setSelectPattern": this.setSelectPattern,
@@ -218,6 +219,20 @@ class DrawBoard extends Component {
 
   modifyPattern = (pattern) => {
     console.log(1)
+    let patterns = new CopyUtils().copy(this.state.patterns)
+    for (let index in patterns) {
+      if (pattern.uniqueKey === patterns[index].uniqueKey) {
+        patterns[index] = pattern
+      }
+    }
+
+    // pattern.isSelectedCanShow = true
+    // pattern.isNodeControlPatternShow = false
+    this.setState({
+      pattern: pattern,
+      patterns:patterns,
+    })
+    
     if (pattern.uniqueKey === this.state.pattern.uniqueKey) {
       this.setState({
         pattern: pattern
