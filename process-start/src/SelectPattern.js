@@ -7,69 +7,65 @@ import { CopyUtils } from './utils/CopyUtils';
 
 class SelectPattern extends Component {
     render() {
-        let style = new CopyUtils().copy(this.props.pattern.patternStyle)
-        style.visibility = this.props.pattern.isSelectedCanShow ? "visible" : "collapse"
-        
+        let style
+        if (typeof (this.props.pattern) === 'undefined') {
+            style = {
+                visibility: "collapse",
+            }
+        } else {
+            style = new CopyUtils().copy(this.props.pattern.patternStyle)
+            style.visibility = this.props.pattern.isSelectedCanShow ? "visible" : "collapse"
+        }
+
+
         return (
             <div id="SelectPattern" className="Select-Pattern" style={style} onMouseDown={(e) => this.onMouseDown(e)}>
                 <LinkedNode
-                    parentStyle={this.props.pattern.patternStyle}
+                    pattern={this.props.pattern}
                     styleType={"top"}
-                    patternKey={this.props.pattern.uniqueKey}
                     links={this.props.links}
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                     modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
-                    addElement={this.props.addElement}
                 />
                 <LinkedNode
-                    parentStyle={this.props.pattern.patternStyle}
+                    pattern={this.props.pattern}
                     styleType={"left"}
-                    patternKey={this.props.pattern.uniqueKey}
                     links={this.props.links}
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                     modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
-                    addElement={this.props.addElement}
                 />
                 <LinkedNode
-                    parentStyle={this.props.pattern.patternStyle}
+                    pattern={this.props.pattern}
                     styleType={"bottom"}
-                    patternKey={this.props.pattern.uniqueKey}
                     links={this.props.links}
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                     modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
-                    addElement={this.props.addElement}
                 />
                 <LinkedNode
-                    parentStyle={this.props.pattern.patternStyle}
+                    pattern={this.props.pattern}
                     styleType={"right"}
-                    patternKey={this.props.pattern.uniqueKey}
                     links={this.props.links}
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                     modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
-                    addElement={this.props.addElement}
                 />
                 <SizeNode
                     pattern={this.props.pattern}
                     modifyPattern={this.props.modifyPattern}
-                    parentStyle={this.props.pattern.patternStyle}
                     styleType={1} />
 
                 <SizeNode
                     pattern={this.props.pattern}
                     modifyPattern={this.props.modifyPattern}
-                    parentStyle={this.props.pattern.patternStyle}
                     styleType={2} />
 
                 <SizeNode
                     pattern={this.props.pattern}
                     modifyPattern={this.props.modifyPattern}
-                    parentStyle={this.props.pattern.patternStyle}
                     styleType={3} />
 
                 <SizeNode
                     pattern={this.props.pattern}
                     modifyPattern={this.props.modifyPattern}
-                    parentStyle={this.props.pattern.patternStyle}
                     styleType={4} />
             </div>
         );

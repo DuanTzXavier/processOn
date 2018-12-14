@@ -7,6 +7,9 @@ class SizeNode extends Component {
     halfNodeWidth = 3
 
     initStyle() {
+        if(typeof(this.props.pattern) === 'undefined'){
+            return
+          }
         let style = {}
         switch (this.props.styleType) {
             case 1:
@@ -18,7 +21,7 @@ class SizeNode extends Component {
                 break;
             case 2:
                 style = {
-                    left: parseInt(this.props.parentStyle.width) - this.halfNodeWidth + "px",
+                    left: parseInt(this.props.pattern.patternStyle.width) - this.halfNodeWidth + "px",
                     top: - this.halfNodeWidth + "px",
                     cursor:"ne-resize"
                 }
@@ -26,14 +29,14 @@ class SizeNode extends Component {
             case 3:
                 style = {
                     left: - this.halfNodeWidth + "px",
-                    top: parseInt(this.props.parentStyle.height) - this.halfNodeWidth + "px",
+                    top: parseInt(this.props.pattern.patternStyle.height) - this.halfNodeWidth + "px",
                     cursor:"sw-resize",
                 }
                 break;
             case 4:
                 style = {
-                    left: parseInt(this.props.parentStyle.width) - this.halfNodeWidth + "px",
-                    top: parseInt(this.props.parentStyle.height) - this.halfNodeWidth + "px",
+                    left: parseInt(this.props.pattern.patternStyle.width) - this.halfNodeWidth + "px",
+                    top: parseInt(this.props.pattern.patternStyle.height) - this.halfNodeWidth + "px",
                     cursor:"se-resize",
                 }
                 break;

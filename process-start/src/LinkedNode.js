@@ -5,21 +5,20 @@ import './LinkedNode.css'
 class LinkedNode extends Component {
 
   halfNodeWidth = 3
-
-  constructor(props) {
-    super(props);
-    let style = this.initStyle()
-    this.state = {
-      style: style,
-    }
+  state = {
+    style:{}
   }
 
-  initStyle() {
+  initStyle(props) {
+    if(typeof(props.pattern) === 'undefined'){
+      return
+    }
+
     let style = {}
-    switch (this.props.styleType) {
+    switch (props.styleType) {
       case "top":
         style = {
-          left: parseInt(this.props.parentStyle.width) / 2 + "px",
+          left: parseInt(props.pattern.patternStyle.width) / 2 + "px",
           top: - this.halfNodeWidth + "px",
           isVertical: true,
         }
@@ -27,27 +26,27 @@ class LinkedNode extends Component {
       case "left":
         style = {
           left: - this.halfNodeWidth + "px",
-          top: parseInt(this.props.parentStyle.height) / 2 + "px",
+          top: parseInt(props.pattern.patternStyle.height) / 2 + "px",
           isVertical: false,
         }
         break;
       case "right":
         style = {
-          left: parseInt(this.props.parentStyle.width) - this.halfNodeWidth + "px",
-          top: parseInt(this.props.parentStyle.height) / 2 + "px",
+          left: parseInt(props.pattern.patternStyle.width) - this.halfNodeWidth + "px",
+          top: parseInt(props.pattern.patternStyle.height) / 2 + "px",
           isVertical: false,
         }
         break;
       case "bottom":
         style = {
-          left: parseInt(this.props.parentStyle.width) / 2 + "px",
-          top: parseInt(this.props.parentStyle.height) - this.halfNodeWidth + "px",
+          left: parseInt(props.pattern.patternStyle.width) / 2 + "px",
+          top: parseInt(props.pattern.patternStyle.height) - this.halfNodeWidth + "px",
           isVertical: true,
         }
         break;
       default:
         style = {
-          left: parseInt(this.props.parentStyle.width) / 2 + "px",
+          left: parseInt(props.pattern.patternStyle.width) / 2 + "px",
           top: - this.halfNodeWidth + "px",
           isVertical: true,
         }
@@ -58,22 +57,25 @@ class LinkedNode extends Component {
   }
 
   componentWillUpdate(nextProps) {
+    if(typeof(nextProps.pattern) === 'undefined'){
+      return
+    }
+
+    let style = this.initStyle(nextProps)
 
     let copiedLinks = this.props.links
     let startPoint = {
-      X: parseInt(nextProps.parentStyle.left) + parseInt(this.state.style.left) + 3,
-      Y: parseInt(nextProps.parentStyle.top) + parseInt(this.state.style.top) + 3,
+      X: parseInt(nextProps.pattern.patternStyle.left) + parseInt(style.left) + 3,
+      Y: parseInt(nextProps.pattern.patternStyle.top) + parseInt(style.top) + 3,
     }
 
-    let forKey = nextProps.patternKey + "_" + nextProps.styleType
+    let forKey = nextProps.pattern.uniqueKey + "_" + nextProps.styleType
 
     copiedLinks.forEach(function (element, _, __) {
       if (forKey === element.for && (element.startPoint.X !== startPoint.X || element.startPoint.Y !== startPoint.Y)) {
         element.startPoint = startPoint
       }
     })
-
-    let style = this.initStyle()
 
     if(style.left !== this.state.style.left || style.top !== this.state.style.top){
       this.setState({
@@ -146,8 +148,8 @@ class LinkedNode extends Component {
 
   initLinkElement(key) {
     let point = {
-      X: parseInt(this.props.parentStyle.left) + parseInt(this.state.style.left) + this.halfNodeWidth,
-      Y: parseInt(this.props.parentStyle.top) + parseInt(this.state.style.top) + this.halfNodeWidth,
+      X: parseInt(this.props.pattern.patternStyle.left) + parseInt(this.state.style.left) + this.halfNodeWidth,
+      Y: parseInt(this.props.pattern.patternStyle.top) + parseInt(this.state.style.top) + this.halfNodeWidth,
     }
 
     let bindLink = {
@@ -156,7 +158,7 @@ class LinkedNode extends Component {
       endPoint: point,
       isActive: true,
       isVertical: this.state.style.isVertical,
-      for:this.props.patternKey + "_" + this.props.styleType,
+      for:this.props.pattern.uniqueKey + "_" + this.props.styleType,
     }
 
     this.setState({

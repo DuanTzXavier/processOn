@@ -53,8 +53,8 @@ class DrawBoard extends Component {
     this.state = {
       elements: [],
       h1: "1",
-      pattern: pattern,
-      nodeControlPattern:pattern,
+      selectPatternKey:"",
+      nodeControlPatternKey:"",
       patterns: [pattern, pattern2],
       tests: [1, 2],
       links: [],
@@ -67,7 +67,7 @@ class DrawBoard extends Component {
     let links = this.state.links
     for (let index in links) {
       let element = React.createElement(LinkedArrow, {
-        "key": index.uniqueKey,
+        "key": links[index].uniqueKey,
         "bindLink": links[index],
       })
       elements = elements.concat(element)
@@ -85,19 +85,22 @@ class DrawBoard extends Component {
       elements = elements.concat(element)
     }
     elements = elements.concat(this.state.elements)
+
+    let selectPattern = this.getPatternByKey(this.state.selectPatternKey)
+    let nodeControlPattern = this.getPatternByKey(this.state.nodeControlPatternKey)
     return (
       <div className="Draw-Board" onClick={(e) => this.handleClick(e)}>
         {elements}
 
         <SelectPattern
-          pattern={this.state.pattern}
+          pattern={selectPattern}
           modifyPattern={this.modifyPattern}
           links={this.state.links}
           addBindLink={(newBindLink) => this.addBindLink(newBindLink)}
           modifyBindLinks={(key, bindLink) => this.modifyBindLinks(key, bindLink)} />
 
         <NodeControlPattern
-          pattern={this.state.nodeControlPattern}
+          pattern={nodeControlPattern}
           modifyPattern={this.modifyPattern}
           links={this.state.links}
           addBindLink={(newBindLink) => this.addBindLink(newBindLink)}
@@ -139,55 +142,64 @@ class DrawBoard extends Component {
   }
 
   dismissSelectPattern = () => {
-    let pattern = new CopyUtils().copy(this.state.pattern)
+    let selectPattern = this.getPatternByKey(this.state.selectPatternKey)
+    if(typeof(selectPattern) === 'undefined'){
+      return
+    }
+    let pattern = new CopyUtils().copy(selectPattern)
     pattern.isSelectedCanShow = false
-    this.setState({
-      h1: "2",
-      pattern: pattern,
-    })
+
+    this.modifyPattern(pattern)
   }
 
   setNodeControlPattern = (patternX) => {
-    let patterns = this.state.patterns
-    for (let index in patterns) {
-      if (patternX.uniqueKey === patterns[index].uniqueKey) {
-
-      }
+    let patterns = []
+    let disSelectPattern = this.getPatternByKey(this.state.nodeControlPatternKey)
+    if(typeof(disSelectPattern) !== 'undefined'){
+      disSelectPattern.isNodeControlPatternShow = false
+      patterns = patterns.concat(disSelectPattern)
     }
-    let pattern = new CopyUtils().copy(patternX)
 
+    let pattern = new CopyUtils().copy(patternX)
     if(!pattern.isSelectedCanShow){
       pattern.isNodeControlPatternShow = true
     }
+    patterns = patterns.concat(pattern)
+
+    this.modifyPatterns(patterns)
     this.setState({
-      nodeControlPattern: pattern,
+      nodeControlPatternKey: patternX.uniqueKey,
     })
   }
 
   setSelectPattern = (patternX) => {
-    let patterns = new CopyUtils().copy(this.state.patterns)
-    for (let index in patterns) {
-      if (patternX.uniqueKey !== patterns[index].uniqueKey) {
-        patterns[index].isSelectedCanShow = false
-      }
+    let patterns = []
+    let disSelectPattern = this.getPatternByKey(this.state.selectPatternKey)
+    if(typeof(disSelectPattern) !== 'undefined'){
+      disSelectPattern.isSelectedCanShow = false
+      patterns = patterns.concat(disSelectPattern)
     }
-    let pattern = new CopyUtils().copy(patternX)
 
+    let pattern = new CopyUtils().copy(patternX)
     pattern.isSelectedCanShow = true
     pattern.isNodeControlPatternShow = false
+    patterns = patterns.concat(pattern)
+
+    this.modifyPatterns(patterns)
     this.setState({
-      pattern: pattern,
-      patterns:patterns,
+      selectPatternKey: patternX.uniqueKey,
     })
   }
   
   dismissNodeControlPattern = (patternX) => {
-    let pattern = new CopyUtils().copy(patternX)
+    let nodeControlPattern = this.getPatternByKey(this.state.nodeControlPatternKey)
+    if(typeof(nodeControlPattern) === 'undefined'){
+      return
+    }
 
+    let pattern = new CopyUtils().copy(patternX)
     pattern.isNodeControlPatternShow = false
-    this.setState({
-      nodeControlPattern: pattern,
-    })
+    this.modifyPattern(pattern)
   }
 
   modifyPattern = (pattern) => {
@@ -199,15 +211,35 @@ class DrawBoard extends Component {
     }
 
     this.setState({
-      pattern: pattern,
-      nodeControlPattern: pattern,
       patterns:patterns,
     })
-    
-    if (pattern.uniqueKey === this.state.pattern.uniqueKey) {
-      this.setState({
-        pattern: pattern
-      })
+  }
+
+  modifyPatterns = (modifiedPatterns) => {
+    let patterns = new CopyUtils().copy(this.state.patterns)
+    for(let indexM in modifiedPatterns){
+      for (let index in patterns) {
+        if (modifiedPatterns[indexM].uniqueKey === patterns[index].uniqueKey) {
+          patterns[index] = modifiedPatterns[indexM]
+        }
+      }
+    }
+
+    this.setState({
+      patterns:patterns,
+    })
+  }
+
+  getPatternByKey(key){
+    if(typeof(key) === 'undefined' || key === ""){
+      return
+    }
+
+    let patterns = this.state.patterns
+    for(let index in patterns){
+      if(key === patterns[index].uniqueKey){
+        return patterns[index]
+      }
     }
   }
 }

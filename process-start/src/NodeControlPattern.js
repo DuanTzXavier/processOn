@@ -9,57 +9,56 @@ class NodeControlPattern extends Component {
     halfNodeWidth = 3
 
     render() {
-        let style = new CopyUtils().copy(this.props.pattern.patternStyle)
-        style.visibility = this.props.pattern.isNodeControlPatternShow ? "visible" : "collapse"
+        let style
+        if (typeof (this.props.pattern) === 'undefined') {
+            style = {
+                visibility: "collapse",
+            }
+        } else {
+            style = new CopyUtils().copy(this.props.pattern.patternStyle)
+            style.visibility = this.props.pattern.isNodeControlPatternShow ? "visible" : "collapse"
+        }
+
         return (
             <div className="Node-Control-Pattern" style={style} onMouseDown={(e) => this.onMouseDown(e)} onMouseLeave={(e) => this.props.dismissNodeControlPattern(this.props.pattern)} onClick={(e) => this.handleOnClick(e)}>
                 <LinkedNode
-                        parentStyle={this.props.pattern.patternStyle}
-                        styleType={"top"}
-                        patternKey={this.props.pattern.uniqueKey}
-                        links={this.props.links}
-                        addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
-                        modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
-                        addElement={this.props.addElement}
-                    />
-                    <LinkedNode
-                        parentStyle={this.props.pattern.patternStyle}
-                        styleType={"left"}
-                        patternKey={this.props.pattern.uniqueKey}
-                        links={this.props.links}
-                        addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
-                        modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
-                        addElement={this.props.addElement}
-                    />
-                    <LinkedNode
-                        parentStyle={this.props.pattern.patternStyle}
-                        styleType={"bottom"}
-                        patternKey={this.props.pattern.uniqueKey}
-                        links={this.props.links}
-                        addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
-                        modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
-                        addElement={this.props.addElement}
-                    />
-                    <LinkedNode
-                        parentStyle={this.props.pattern.patternStyle}
-                        styleType={"right"}
-                        patternKey={this.props.pattern.uniqueKey}
-                        links={this.props.links}
-                        addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
-                        modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
-                        addElement={this.props.addElement}
-                    />
+                    pattern={this.props.pattern}
+                    styleType={"top"}
+                    links={this.props.links}
+                    addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
+                    modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
+                />
+                <LinkedNode
+                    pattern={this.props.pattern}
+                    styleType={"left"}
+                    links={this.props.links}
+                    addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
+                    modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
+                />
+                <LinkedNode
+                    pattern={this.props.pattern}
+                    styleType={"bottom"}
+                    links={this.props.links}
+                    addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
+                    modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
+                />
+                <LinkedNode
+                    pattern={this.props.pattern}
+                    styleType={"right"}
+                    links={this.props.links}
+                    addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
+                    modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
+                />
             </div>
         );
     }
 
-    handleOnClick(e){
+    handleOnClick(e) {
         if (e.target.getAttribute("class") === "Node-Control-Pattern" && this.state.isMoved) {
             return
         }
 
         this.props.setSelectPattern(this.props.pattern)
-        this.props.dismissNodeControlPattern(this.props.pattern)
     }
 
     onMouseDown(e) {
