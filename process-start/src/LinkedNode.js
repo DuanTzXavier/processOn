@@ -6,11 +6,11 @@ class LinkedNode extends Component {
 
   halfNodeWidth = 3
   state = {
-    style:{}
+    style: {}
   }
 
   initStyle(props) {
-    if(typeof(props.pattern) === 'undefined'){
+    if (typeof (props.pattern) === 'undefined') {
       return
     }
 
@@ -57,7 +57,7 @@ class LinkedNode extends Component {
   }
 
   componentWillUpdate(nextProps) {
-    if(typeof(nextProps.pattern) === 'undefined'){
+    if (typeof (nextProps.pattern) === 'undefined') {
       return
     }
 
@@ -69,15 +69,19 @@ class LinkedNode extends Component {
       Y: parseInt(nextProps.pattern.patternStyle.top) + parseInt(style.top) + 3,
     }
 
-    let forKey = nextProps.pattern.uniqueKey + "_" + nextProps.styleType
+    let bindLinkKey = nextProps.pattern.uniqueKey + "_" + nextProps.styleType
 
     copiedLinks.forEach(function (element, _, __) {
-      if (forKey === element.for && (element.startPoint.X !== startPoint.X || element.startPoint.Y !== startPoint.Y)) {
+      if (bindLinkKey === element.startFrom && (element.startPoint.X !== startPoint.X || element.startPoint.Y !== startPoint.Y)) {
         element.startPoint = startPoint
+      }
+
+      if (bindLinkKey === element.endTo && (element.endPoint.X !== startPoint.X || element.endPoint.Y !== startPoint.Y)) {
+        element.endPoint = startPoint
       }
     })
 
-    if(style.left !== this.state.style.left || style.top !== this.state.style.top){
+    if (style.left !== this.state.style.left || style.top !== this.state.style.top) {
       this.setState({
         style: style
       })
@@ -140,7 +144,7 @@ class LinkedNode extends Component {
 
     // //初始化Element
     this.initLinkElement(key)
-    
+
     document.onmousemove = e => this.modifyEndPoint(e, [key])
 
     document.onmouseup = () => this.endModifyPoint([key])
@@ -158,7 +162,7 @@ class LinkedNode extends Component {
       endPoint: point,
       isActive: true,
       isVertical: this.state.style.isVertical,
-      for:this.props.pattern.uniqueKey + "_" + this.props.styleType,
+      startFrom: this.props.pattern.uniqueKey + "_" + this.props.styleType,
     }
 
     this.setState({
@@ -180,6 +184,21 @@ class LinkedNode extends Component {
         Y: moveEvent.clientY,
       }
       bindLink.endPoint = endPoint
+    }
+
+    let bindedState = this.props.getBindedState()
+    let bindedPattern = this.props.getPatternByKey(bindedState.patternKey)
+    if (typeof (bindedPattern) !== 'undefined') {
+      let fakeProps = {}
+      fakeProps.pattern = bindedPattern
+      fakeProps.styleType = "right"
+      let style = this.initStyle(fakeProps)
+      let point = {
+        X: parseInt(bindedPattern.patternStyle.left) + parseInt(style.left) + this.halfNodeWidth,
+        Y: parseInt(bindedPattern.patternStyle.top) + parseInt(style.top) + this.halfNodeWidth,
+      }
+      bindLink.endPoint = point
+      bindLink.endTo = bindedPattern.uniqueKey + "_" + fakeProps.styleType
     }
 
     this.props.modifyBindLinks(bindLink)

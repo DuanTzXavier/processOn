@@ -46,10 +46,14 @@ class Pattern extends Component {
                 className="Pattern"
                 style={this.props.pattern.patternStyle}
                 onClick={(e) => this.props.setSelectPattern(this.props.pattern)}
-                onMouseMove={(e) => this.props.setNodeControlPattern(this.props.pattern)}>
+                onMouseOver={(e)=> this.handleOnMouseOver(e)}>
                 <canvas className="Pattern-Shape" style={patternShapeStyle} />
             </div>
         );
+    }
+
+    handleOnMouseOver(e){
+        this.props.setNodeControlPattern(this.props.pattern)
     }
 }
 

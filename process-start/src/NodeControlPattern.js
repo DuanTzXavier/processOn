@@ -8,6 +8,10 @@ class NodeControlPattern extends Component {
 
     halfNodeWidth = 3
 
+    state = {
+        isMoved: false,
+    }
+
     render() {
         let style
         if (typeof (this.props.pattern) === 'undefined') {
@@ -20,12 +24,21 @@ class NodeControlPattern extends Component {
         }
 
         return (
-            <div className="Node-Control-Pattern" style={style} onMouseDown={(e) => this.onMouseDown(e)} onMouseLeave={(e) => this.props.dismissNodeControlPattern(this.props.pattern)} onClick={(e) => this.handleOnClick(e)}>
+            <div
+                className="Node-Control-Pattern"
+                style={style}
+                onMouseDown={(e) => this.onMouseDown(e)}
+                onMouseLeave={(e) => this.handleOnMouseLeave(e)}
+                onMouseOver={(e) => this.handleOnMouseOver(e)}
+                onClick={(e) => this.handleOnClick(e)}>
+
                 <LinkedNode
                     pattern={this.props.pattern}
                     styleType={"top"}
                     links={this.props.links}
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
+                    getBindedState={this.props.getBindedState}
+                    getPatternByKey={this.props.getPatternByKey}
                     modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
                 />
                 <LinkedNode
@@ -33,6 +46,8 @@ class NodeControlPattern extends Component {
                     styleType={"left"}
                     links={this.props.links}
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
+                    getBindedState={this.props.getBindedState}
+                    getPatternByKey={this.props.getPatternByKey}
                     modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
                 />
                 <LinkedNode
@@ -40,6 +55,8 @@ class NodeControlPattern extends Component {
                     styleType={"bottom"}
                     links={this.props.links}
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
+                    getBindedState={this.props.getBindedState}
+                    getPatternByKey={this.props.getPatternByKey}
                     modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
                 />
                 <LinkedNode
@@ -47,6 +64,8 @@ class NodeControlPattern extends Component {
                     styleType={"right"}
                     links={this.props.links}
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
+                    getBindedState={this.props.getBindedState}
+                    getPatternByKey={this.props.getPatternByKey}
                     modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
                 />
             </div>
@@ -102,6 +121,25 @@ class NodeControlPattern extends Component {
         this.setState({
             isActive: false
         })
+    }
+
+    handleOnMouseOver(e) {
+        let bindedState = {
+            patternKey:this.props.pattern.uniqueKey,
+            position:3,
+            percentPosition:50,
+        }
+        this.props.setBindedState(bindedState)
+    }
+
+    handleOnMouseLeave(e) {
+        this.props.dismissNodeControlPattern(this.props.pattern)
+        let bindedState = {
+            patternKey:"",
+            position:0,
+            percentPosition:0,
+        }
+        this.props.setBindedState(bindedState)
     }
 }
 

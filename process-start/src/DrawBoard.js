@@ -53,11 +53,16 @@ class DrawBoard extends Component {
     this.state = {
       elements: [],
       h1: "1",
-      selectPatternKey:"",
-      nodeControlPatternKey:"",
+      selectPatternKey: "",
+      nodeControlPatternKey: "",
       patterns: [pattern, pattern2],
       tests: [1, 2],
       links: [],
+      bindedState: {
+        patternKey: "",
+        position: 1,
+        percentPosition: 50,
+      },
     }
   }
 
@@ -80,7 +85,7 @@ class DrawBoard extends Component {
         "pattern": patterns[index],
         "modifyPattern": this.modifyPattern,
         "setSelectPattern": this.setSelectPattern,
-        "setNodeControlPattern":this.setNodeControlPattern,
+        "setNodeControlPattern": this.setNodeControlPattern,
       })
       elements = elements.concat(element)
     }
@@ -97,6 +102,8 @@ class DrawBoard extends Component {
           modifyPattern={this.modifyPattern}
           links={this.state.links}
           addBindLink={(newBindLink) => this.addBindLink(newBindLink)}
+          getBindedState={this.getBindedState}
+          getPatternByKey={this.getPatternByKey}
           modifyBindLinks={(key, bindLink) => this.modifyBindLinks(key, bindLink)} />
 
         <NodeControlPattern
@@ -106,6 +113,9 @@ class DrawBoard extends Component {
           addBindLink={(newBindLink) => this.addBindLink(newBindLink)}
           modifyBindLinks={(key, bindLink) => this.modifyBindLinks(key, bindLink)}
           dismissNodeControlPattern={this.dismissNodeControlPattern}
+          setBindedState={this.setBindedState}
+          getBindedState={this.getBindedState}
+          getPatternByKey={this.getPatternByKey}
           setSelectPattern={(pattern) => this.setSelectPattern(pattern)} />
 
         <Test h1={this.state.h1} />
@@ -143,7 +153,7 @@ class DrawBoard extends Component {
 
   dismissSelectPattern = () => {
     let selectPattern = this.getPatternByKey(this.state.selectPatternKey)
-    if(typeof(selectPattern) === 'undefined'){
+    if (typeof (selectPattern) === 'undefined') {
       return
     }
     let pattern = new CopyUtils().copy(selectPattern)
@@ -155,13 +165,13 @@ class DrawBoard extends Component {
   setNodeControlPattern = (patternX) => {
     let patterns = []
     let disSelectPattern = this.getPatternByKey(this.state.nodeControlPatternKey)
-    if(typeof(disSelectPattern) !== 'undefined'){
+    if (typeof (disSelectPattern) !== 'undefined') {
       disSelectPattern.isNodeControlPatternShow = false
       patterns = patterns.concat(disSelectPattern)
     }
 
     let pattern = new CopyUtils().copy(patternX)
-    if(!pattern.isSelectedCanShow){
+    if (!pattern.isSelectedCanShow) {
       pattern.isNodeControlPatternShow = true
     }
     patterns = patterns.concat(pattern)
@@ -175,7 +185,7 @@ class DrawBoard extends Component {
   setSelectPattern = (patternX) => {
     let patterns = []
     let disSelectPattern = this.getPatternByKey(this.state.selectPatternKey)
-    if(typeof(disSelectPattern) !== 'undefined'){
+    if (typeof (disSelectPattern) !== 'undefined') {
       disSelectPattern.isSelectedCanShow = false
       patterns = patterns.concat(disSelectPattern)
     }
@@ -190,10 +200,10 @@ class DrawBoard extends Component {
       selectPatternKey: patternX.uniqueKey,
     })
   }
-  
+
   dismissNodeControlPattern = (patternX) => {
     let nodeControlPattern = this.getPatternByKey(this.state.nodeControlPatternKey)
-    if(typeof(nodeControlPattern) === 'undefined'){
+    if (typeof (nodeControlPattern) === 'undefined') {
       return
     }
 
@@ -211,13 +221,13 @@ class DrawBoard extends Component {
     }
 
     this.setState({
-      patterns:patterns,
+      patterns: patterns,
     })
   }
 
   modifyPatterns = (modifiedPatterns) => {
     let patterns = new CopyUtils().copy(this.state.patterns)
-    for(let indexM in modifiedPatterns){
+    for (let indexM in modifiedPatterns) {
       for (let index in patterns) {
         if (modifiedPatterns[indexM].uniqueKey === patterns[index].uniqueKey) {
           patterns[index] = modifiedPatterns[indexM]
@@ -226,22 +236,34 @@ class DrawBoard extends Component {
     }
 
     this.setState({
-      patterns:patterns,
+      patterns: patterns,
     })
   }
 
-  getPatternByKey(key){
-    if(typeof(key) === 'undefined' || key === ""){
+  getPatternByKey = (key) => {
+    if (typeof (key) === 'undefined' || key === "") {
       return
     }
 
     let patterns = this.state.patterns
-    for(let index in patterns){
-      if(key === patterns[index].uniqueKey){
+    for (let index in patterns) {
+      if (key === patterns[index].uniqueKey) {
         return patterns[index]
       }
     }
   }
+
+  setBindedState = (bindedState) => {
+    this.setState({
+      bindedState: bindedState
+    })
+  }
+
+  getBindedState = () => {
+    return this.state.bindedState
+  }
+
+
 }
 
 export default DrawBoard;

@@ -25,6 +25,8 @@ class SelectPattern extends Component {
                     styleType={"top"}
                     links={this.props.links}
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
+                    getBindedState={this.props.getBindedState}
+                    getPatternByKey={this.props.getPatternByKey}
                     modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
                 />
                 <LinkedNode
@@ -32,6 +34,8 @@ class SelectPattern extends Component {
                     styleType={"left"}
                     links={this.props.links}
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
+                    getBindedState={this.props.getBindedState}
+                    getPatternByKey={this.props.getPatternByKey}
                     modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
                 />
                 <LinkedNode
@@ -39,6 +43,8 @@ class SelectPattern extends Component {
                     styleType={"bottom"}
                     links={this.props.links}
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
+                    getBindedState={this.props.getBindedState}
+                    getPatternByKey={this.props.getPatternByKey}
                     modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
                 />
                 <LinkedNode
@@ -46,6 +52,8 @@ class SelectPattern extends Component {
                     styleType={"right"}
                     links={this.props.links}
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
+                    getBindedState={this.props.getBindedState}
+                    getPatternByKey={this.props.getPatternByKey}
                     modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
                 />
                 <SizeNode
