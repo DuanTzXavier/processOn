@@ -29,7 +29,7 @@ class NodeControlPattern extends Component {
                 style={style}
                 onMouseDown={(e) => this.onMouseDown(e)}
                 onMouseLeave={(e) => this.handleOnMouseLeave(e)}
-                onMouseOver={(e) => this.handleOnMouseOver(e)}
+                onMouseMove={(e) => this.handleOnMouseOver(e)}
                 onClick={(e) => this.handleOnClick(e)}>
 
                 <LinkedNode
@@ -123,11 +123,35 @@ class NodeControlPattern extends Component {
         })
     }
 
-    handleOnMouseOver(e) {
+    handleOnMouseOver(event) {
+        let e = event || window.event;
+        let scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+        let scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+        let x = e.pageX || e.clientX + scrollX;
+        let y = e.pageY || e.clientY + scrollY;
+        x -= e.currentTarget.offsetLeft
+        y -= e.currentTarget.offsetTop
+
+        let mousePosition = { X: x, Y: y }
+
+        let centerPosition = {
+            X: parseInt(this.props.pattern.patternStyle.width) / 2,
+            Y: parseInt(this.props.pattern.patternStyle.height) / 2,
+        }
+
+        let transX = parseInt(this.props.pattern.patternStyle.width) - mousePosition.X
+
+        let patternTan = centerPosition.X / centerPosition.Y
+        let mouseTan = mousePosition.X / mousePosition.Y
+        let mouseCot = transX / mousePosition.Y
+
+        let position = patternTan > mouseTan ? 1 : 0
+        position |= patternTan > mouseCot ? 2 : 0
+
         let bindedState = {
-            patternKey:this.props.pattern.uniqueKey,
-            position:3,
-            percentPosition:50,
+            patternKey: this.props.pattern.uniqueKey,
+            position: position + 1,
+            percentPosition: 50,
         }
         this.props.setBindedState(bindedState)
     }
@@ -135,9 +159,9 @@ class NodeControlPattern extends Component {
     handleOnMouseLeave(e) {
         this.props.dismissNodeControlPattern(this.props.pattern)
         let bindedState = {
-            patternKey:"",
-            position:0,
-            percentPosition:0,
+            patternKey: "",
+            position: 0,
+            percentPosition: 0,
         }
         this.props.setBindedState(bindedState)
     }
