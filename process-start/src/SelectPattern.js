@@ -22,7 +22,7 @@ class SelectPattern extends Component {
             <div id="SelectPattern" className="Select-Pattern" style={style} onMouseDown={(e) => this.onMouseDown(e)}>
                 <LinkedNode
                     pattern={this.props.pattern}
-                    styleType={"top"}
+                    styleType={1}
                     links={this.props.links}
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                     getBindedState={this.props.getBindedState}
@@ -31,7 +31,7 @@ class SelectPattern extends Component {
                 />
                 <LinkedNode
                     pattern={this.props.pattern}
-                    styleType={"left"}
+                    styleType={2}
                     links={this.props.links}
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                     getBindedState={this.props.getBindedState}
@@ -40,7 +40,7 @@ class SelectPattern extends Component {
                 />
                 <LinkedNode
                     pattern={this.props.pattern}
-                    styleType={"bottom"}
+                    styleType={4}
                     links={this.props.links}
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                     getBindedState={this.props.getBindedState}
@@ -49,7 +49,7 @@ class SelectPattern extends Component {
                 />
                 <LinkedNode
                     pattern={this.props.pattern}
-                    styleType={"right"}
+                    styleType={3}
                     links={this.props.links}
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                     getBindedState={this.props.getBindedState}

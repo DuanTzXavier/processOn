@@ -16,28 +16,28 @@ class LinkedNode extends Component {
 
     let style = {}
     switch (props.styleType) {
-      case "top":
+      case 1:
         style = {
           left: parseInt(props.pattern.patternStyle.width) / 2 + "px",
           top: - this.halfNodeWidth + "px",
           isVertical: true,
         }
         break;
-      case "left":
+      case 2:
         style = {
           left: - this.halfNodeWidth + "px",
           top: parseInt(props.pattern.patternStyle.height) / 2 + "px",
           isVertical: false,
         }
         break;
-      case "right":
+      case 3:
         style = {
           left: parseInt(props.pattern.patternStyle.width) - this.halfNodeWidth + "px",
           top: parseInt(props.pattern.patternStyle.height) / 2 + "px",
           isVertical: false,
         }
         break;
-      case "bottom":
+      case 4:
         style = {
           left: parseInt(props.pattern.patternStyle.width) / 2 + "px",
           top: parseInt(props.pattern.patternStyle.height) - this.halfNodeWidth + "px",
@@ -173,25 +173,28 @@ class LinkedNode extends Component {
   }
 
   modifyEndPoint(e, keys) {
+    
 
     const moveEvent = window.event || e;
 
     let bindLink = this.state.bindLink
 
-    if (bindLink.isActive) {
-      var endPoint = {
-        X: moveEvent.clientX,
-        Y: moveEvent.clientY,
-      }
-      bindLink.endPoint = endPoint
+    if (!bindLink.isActive) {
+      return
     }
+
+    var endPoint = {
+      X: moveEvent.clientX,
+      Y: moveEvent.clientY,
+    }
+    bindLink.endPoint = endPoint
 
     let bindedState = this.props.getBindedState()
     let bindedPattern = this.props.getPatternByKey(bindedState.patternKey)
     if (typeof (bindedPattern) !== 'undefined') {
       let fakeProps = {}
       fakeProps.pattern = bindedPattern
-      fakeProps.styleType = "right"
+      fakeProps.styleType = bindedState.position
       let style = this.initStyle(fakeProps)
       let point = {
         X: parseInt(bindedPattern.patternStyle.left) + parseInt(style.left) + this.halfNodeWidth,
