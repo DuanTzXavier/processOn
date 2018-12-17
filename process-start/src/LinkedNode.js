@@ -20,35 +20,30 @@ class LinkedNode extends Component {
         style = {
           left: parseInt(props.pattern.patternStyle.width) / 2 + "px",
           top: - this.halfNodeWidth + "px",
-          isVertical: true,
         }
         break;
       case 2:
         style = {
           left: - this.halfNodeWidth + "px",
           top: parseInt(props.pattern.patternStyle.height) / 2 + "px",
-          isVertical: false,
         }
         break;
       case 3:
         style = {
           left: parseInt(props.pattern.patternStyle.width) - this.halfNodeWidth + "px",
           top: parseInt(props.pattern.patternStyle.height) / 2 + "px",
-          isVertical: false,
         }
         break;
       case 4:
         style = {
           left: parseInt(props.pattern.patternStyle.width) / 2 + "px",
           top: parseInt(props.pattern.patternStyle.height) - this.halfNodeWidth + "px",
-          isVertical: true,
         }
         break;
       default:
         style = {
           left: parseInt(props.pattern.patternStyle.width) / 2 + "px",
           top: - this.halfNodeWidth + "px",
-          isVertical: true,
         }
         break
     }
@@ -161,7 +156,6 @@ class LinkedNode extends Component {
       startPoint: point,
       endPoint: point,
       isActive: true,
-      isVertical: this.state.style.isVertical,
       startFrom: this.props.pattern.uniqueKey + "_" + this.props.styleType,
     }
 
@@ -172,10 +166,9 @@ class LinkedNode extends Component {
     this.props.addBindLink(bindLink)
   }
 
-  modifyEndPoint(e, keys) {
-    
+  modifyEndPoint(event, keys) {
 
-    const moveEvent = window.event || e;
+    const e = window.event || event;
 
     let bindLink = this.state.bindLink
 
@@ -183,27 +176,35 @@ class LinkedNode extends Component {
       return
     }
 
+    let scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+        let scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+        let x = e.pageX || e.clientX + scrollX;
+        let y = e.pageY || e.clientY + scrollY;
+
     var endPoint = {
-      X: moveEvent.clientX,
-      Y: moveEvent.clientY,
+      X: x,
+      Y: y,
     }
     bindLink.endPoint = endPoint
 
     let bindedState = this.props.getBindedState()
-    let bindedPattern = this.props.getPatternByKey(bindedState.patternKey)
-    if (typeof (bindedPattern) !== 'undefined') {
-      let fakeProps = {}
-      fakeProps.pattern = bindedPattern
-      fakeProps.styleType = bindedState.position
-      let style = this.initStyle(fakeProps)
-      let point = {
-        X: parseInt(bindedPattern.patternStyle.left) + parseInt(style.left) + this.halfNodeWidth,
-        Y: parseInt(bindedPattern.patternStyle.top) + parseInt(style.top) + this.halfNodeWidth,
-      }
-      bindLink.endPoint = point
-      bindLink.endTo = bindedPattern.uniqueKey + "_" + fakeProps.styleType
-    }
 
+    if(bindedState.patternKey !== bindLink.startFrom.split("_")[0]){
+      let bindedPattern = this.props.getPatternByKey(bindedState.patternKey)
+      if (typeof (bindedPattern) !== 'undefined') {
+        let fakeProps = {}
+        fakeProps.pattern = bindedPattern
+        fakeProps.styleType = bindedState.position
+        let style = this.initStyle(fakeProps)
+        let point = {
+          X: parseInt(bindedPattern.patternStyle.left) + parseInt(style.left) + this.halfNodeWidth,
+          Y: parseInt(bindedPattern.patternStyle.top) + parseInt(style.top) + this.halfNodeWidth,
+        }
+        bindLink.endPoint = point
+        bindLink.endTo = bindedPattern.uniqueKey + "_" + fakeProps.styleType
+      }
+    }
+    
     this.props.modifyBindLinks(bindLink)
   }
 

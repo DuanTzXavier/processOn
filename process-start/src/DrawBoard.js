@@ -72,8 +72,9 @@ class DrawBoard extends Component {
     let links = this.state.links
     for (let index in links) {
       let element = React.createElement(LinkedArrow, {
-        "key": links[index].uniqueKey,
-        "bindLink": links[index],
+        key: links[index].uniqueKey,
+        bindLink: links[index],
+        getPatternByKey: this.getPatternByKey,
       })
       elements = elements.concat(element)
     }
@@ -81,11 +82,11 @@ class DrawBoard extends Component {
     let patterns = this.state.patterns
     for (let index in patterns) {
       let element = React.createElement(Pattern, {
-        "key": index,
-        "pattern": patterns[index],
-        "modifyPattern": this.modifyPattern,
-        "setSelectPattern": this.setSelectPattern,
-        "setNodeControlPattern": this.setNodeControlPattern,
+        key: index,
+        pattern: patterns[index],
+        modifyPattern: this.modifyPattern,
+        setSelectPattern: this.setSelectPattern,
+        setNodeControlPattern: this.setNodeControlPattern,
       })
       elements = elements.concat(element)
     }
@@ -95,6 +96,7 @@ class DrawBoard extends Component {
     let nodeControlPattern = this.getPatternByKey(this.state.nodeControlPatternKey)
     return (
       <div className="Draw-Board" onClick={(e) => this.handleClick(e)}>
+        <canvas id="myCanvas" className="Draw-Board-BG" />
         {elements}
 
         <SelectPattern
@@ -118,14 +120,50 @@ class DrawBoard extends Component {
           getPatternByKey={this.getPatternByKey}
           setSelectPattern={(pattern) => this.setSelectPattern(pattern)} />
 
-        <Test h1={this.state.h1} />
+        {/* <Test h1={this.state.h1} /> */}
 
       </div>
     );
   }
 
+  componentDidMount() {
+    this.drawbg()
+  }
+
+  componentWillUpdate() {
+    // this.drawbg()
+
+  }
+
+  drawbg() {
+    let myCanvas = document.getElementById("myCanvas")
+    let ctx = myCanvas.getContext('2d')
+    myCanvas.width = window.screen.availWidth
+    myCanvas.height = window.screen.availHeight
+    this.drawGrid(ctx, myCanvas.width, myCanvas.height, '#eeeeee', 20)
+  }
+
+  // Draw grid
+  drawGrid(ctx, w, h, strokeStyle, step) {
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (var x = 0.5; x < w; x += step) {
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, h);
+    }
+
+    for (var y = 0.5; y < h; y += step) {
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y);
+    }
+
+    ctx.strokeStyle = strokeStyle;
+    ctx.stroke();
+  }
+
+
   handleClick(e) {
-    if (e.target.getAttribute("class") !== "Draw-Board") {
+    if (e.target.getAttribute("class") !== "Draw-Board" && e.target.getAttribute("id") !== "myCanvas") {
       return
     }
     this.dismissSelectPattern()
@@ -138,10 +176,10 @@ class DrawBoard extends Component {
     })
   }
 
-  modifyBindLinks = (key, bindLink) => {
+  modifyBindLinks = (bindLink) => {
     let links = this.state.links
     for (let index in links) {
-      if (links[index].uniqueKey === key) {
+      if (links[index].uniqueKey === bindLink.uniqueKey) {
         links[index] = bindLink
         break
       }
