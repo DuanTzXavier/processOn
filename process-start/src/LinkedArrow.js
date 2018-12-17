@@ -5,6 +5,10 @@ class LinkedArrow extends Component {
 
     harfArrowWidth = 7
 
+    state = {
+
+    }
+
     constructor(props) {
         super(props);
         this.initArrow = this.initArrow.bind(this)
@@ -35,10 +39,39 @@ class LinkedArrow extends Component {
                 className="Linked-Arrow"
                 style={style}>
 
-                <canvas id={this.props.bindLink.uniqueKey} />
+                <canvas id={this.props.bindLink.uniqueKey} onMouseMove={(e)=>this.handleOnMouseMove(e)} style={this.state.canvasStyle} />
 
             </div>
         );
+    }
+
+    handleOnMouseMove = (event) => {
+        let e = event || window.event;
+        let scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+        let scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+        let x = e.pageX || e.clientX + scrollX;
+        let y = e.pageY || e.clientY + scrollY;
+        let left = Math.min(this.props.bindLink.startPoint.X, this.props.bindLink.endPoint.X) - this.harfArrowWidth
+        let top = Math.min(this.props.bindLink.startPoint.Y, this.props.bindLink.endPoint.Y) - this.harfArrowWidth
+        x -= left
+        y -= top
+        let ctx = e.currentTarget.getContext('2d')
+
+        if(ctx.isPointInPath(x, y)){
+            this.setState({
+                canvasStyle:{
+                    cursor: "wait",
+                }
+            })
+        }else{
+            this.setState({
+                canvasStyle:{
+                    cursor: "default",
+                }
+            })
+
+            // e.currentTarget.style += "cursor: default;"
+        }
     }
 
     componentDidMount() {

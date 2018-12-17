@@ -177,9 +177,9 @@ class LinkedNode extends Component {
     }
 
     let scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
-        let scrollY = document.documentElement.scrollTop || document.body.scrollTop;
-        let x = e.pageX || e.clientX + scrollX;
-        let y = e.pageY || e.clientY + scrollY;
+    let scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+    let x = e.pageX || e.clientX + scrollX;
+    let y = e.pageY || e.clientY + scrollY;
 
     var endPoint = {
       X: x,
@@ -189,7 +189,7 @@ class LinkedNode extends Component {
 
     let bindedState = this.props.getBindedState()
 
-    if(bindedState.patternKey !== bindLink.startFrom.split("_")[0]){
+    if (bindedState.patternKey !== bindLink.startFrom.split("_")[0]) {
       let bindedPattern = this.props.getPatternByKey(bindedState.patternKey)
       if (typeof (bindedPattern) !== 'undefined') {
         let fakeProps = {}
@@ -204,7 +204,7 @@ class LinkedNode extends Component {
         bindLink.endTo = bindedPattern.uniqueKey + "_" + fakeProps.styleType
       }
     }
-    
+
     this.props.modifyBindLinks(bindLink)
   }
 
