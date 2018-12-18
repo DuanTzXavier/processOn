@@ -159,35 +159,35 @@ class LinkedArrow extends Component {
         var ctx = canvas.getContext("2d");
         let points = []
 
-        points[0] = {
-            x: (startPosition & 1) === 1 ? (width - haw) : haw,
-            y: startPosition < 2 ? haw : height - haw - this.shouldBeIncreas
-        }
-        points[1] = {
-            x: isVertical ? (startPosition & 1) === 1 ? (width - haw) : haw : width / 2,
-            y: isVertical ? height - haw : startPosition < 2 ? haw : height - haw,
-        }
+        // points[0] = {
+        //     x: (startPosition & 1) === 1 ? (width - haw) : haw,
+        //     y: startPosition < 2 ? haw : height - haw - this.shouldBeIncreas
+        // }
+        // points[1] = {
+        //     x: isVertical ? (startPosition & 1) === 1 ? (width - haw) : haw : width / 2,
+        //     y: isVertical ? height - haw : startPosition < 2 ? haw : height - haw,
+        // }
 
-        points[2] = {
-            x: isVertical ? (startPosition & 1) === 1 ? haw : (width - haw) : width / 2,
-            y: isVertical ? height - haw : startPosition > 1 ? haw : height - haw,
-        }
+        // points[2] = {
+        //     x: isVertical ? (startPosition & 1) === 1 ? haw : (width - haw) : width / 2,
+        //     y: isVertical ? height - haw : startPosition > 1 ? haw : height - haw,
+        // }
 
-        let y = 0
-        switch (fromPosition) {
-            case 3:
-                y = height - haw - this.shouldBeIncreas
-                break;
-            case 2:
-                y = height - haw
-                break;
-            default:
-                break;
-        }
-        points[3] = {
-            x: (endPosition & 1) === 1 ? (width - haw) : haw,
-            y: y
-        }
+        // let y = 0
+        // switch (fromPosition) {
+        //     case 3:
+        //         y = height - haw - this.shouldBeIncreas
+        //         break;
+        //     case 2:
+        //         y = height - haw
+        //         break;
+        //     default:
+        //         break;
+        // }
+        // points[3] = {
+        //     x: (endPosition & 1) === 1 ? (width - haw) : haw,
+        //     y: y
+        // }
 
         console.log("fromPosition" + fromPosition)
         console.log("endPosition" + endPosition)
@@ -236,21 +236,21 @@ class LinkedArrow extends Component {
             case 2:
                 points[0] = {
                     x: (startPosition & 1) === 1 ? (width - haw - this.shouldBeIncreas) : haw,
-                    y: haw,
-                }
-
-                points[1] = {
-                    x: width - haw,
                     y: startPosition < 2 ? haw : height - haw,
                 }
-                points[2] = {
-                    x: width - haw,
-                    y: height - haw,
+                points[1] = {
+                    x: isVertical ? (startPosition & 1) === 1 ? (width - haw) : width - haw : width - haw,
+                    y: isVertical ? height - haw : startPosition < 2 ? haw : height - haw,
                 }
+                points[2] = {
+                    x: isVertical ? (startPosition & 1) === 1 ? haw : (width - haw) : width - haw,
+                    y: isVertical ? haw : startPosition > 1 ? haw : height - haw,
+                }
+                
 
                 points[3] = {
                     x: (endPosition & 1) === 1 ? (width - haw - this.shouldBeIncreas) : haw,
-                    y: height - haw
+                    y: endPosition < 2 ?  haw :  height - haw
                 }
                 break
             case 3:
@@ -275,7 +275,7 @@ class LinkedArrow extends Component {
             default:
                 break;
         }
-        console.log(points[0])
+        
         ctx.moveTo(points[0].x, points[0].y)
         points.forEach((value, _) => {
             ctx.lineTo(value.x, value.y)
