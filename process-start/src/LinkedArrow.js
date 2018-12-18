@@ -36,7 +36,7 @@ class LinkedArrow extends Component {
             toPosition = endTo.split("_")[1]
         }
 
-        let left = Math.min(this.props.bindLink.startPoint.X, this.props.bindLink.endPoint.X) - this.harfArrowWidth + "px"
+        let left = Math.min(this.props.bindLink.startPoint.X, this.props.bindLink.endPoint.X) - this.harfArrowWidth - (toPosition === "2" && fromPosition === "2" ? this.shouldBeIncreas : 0) + "px"
         let top = Math.min(this.props.bindLink.startPoint.Y, this.props.bindLink.endPoint.Y) - this.harfArrowWidth - (toPosition === "1" && fromPosition === "1" ? this.shouldBeIncreas : 0) + "px"
 
         let width = Math.abs(this.props.bindLink.startPoint.X - this.props.bindLink.endPoint.X) + this.harfArrowWidth * 2 + "px"
@@ -146,20 +146,6 @@ class LinkedArrow extends Component {
         canvas.width = width
         canvas.height = height
 
-        switch (fromPosition) {
-            case 0:
-                break
-            case 1:
-                break
-            case 2:
-                break
-            case 3:
-            console.log(4)
-                break
-            default:
-                break;
-        }
-
         let startX = this.props.bindLink.startPoint.X;
         let startY = this.props.bindLink.startPoint.Y;
         let endX = this.props.bindLink.endPoint.X;
@@ -172,11 +158,11 @@ class LinkedArrow extends Component {
         //获取对应的CanvasRenderingContext2D对象(画笔)
         var ctx = canvas.getContext("2d");
         let points = []
+
         points[0] = {
             x: (startPosition & 1) === 1 ? (width - haw) : haw,
             y: startPosition < 2 ? haw : height - haw - this.shouldBeIncreas
         }
-
         points[1] = {
             x: isVertical ? (startPosition & 1) === 1 ? (width - haw) : haw : width / 2,
             y: isVertical ? height - haw : startPosition < 2 ? haw : height - haw,
@@ -186,7 +172,6 @@ class LinkedArrow extends Component {
             x: isVertical ? (startPosition & 1) === 1 ? haw : (width - haw) : width / 2,
             y: isVertical ? height - haw : startPosition > 1 ? haw : height - haw,
         }
-        console.log(startPosition)
 
         let y = 0
         switch (fromPosition) {
@@ -204,8 +189,93 @@ class LinkedArrow extends Component {
             y: y
         }
 
-        console.log(endPosition)
+        console.log("fromPosition" + fromPosition)
+        console.log("endPosition" + endPosition)
+        console.log("startPosition" + startPosition)
 
+        switch (fromPosition) {
+            case 0:
+                points[0] = {
+                    x: (startPosition & 1) === 1 ? (width - haw) : haw,
+                    y: startPosition < 2 ? haw + this.shouldBeIncreas : height - haw
+                }
+
+                points[1] = {
+                    x: isVertical ? (startPosition & 1) === 1 ? (width - haw) : haw : width / 2,
+                    y: isVertical ? haw : startPosition < 2 ? haw : height - haw,
+                }
+
+                points[2] = {
+                    x: isVertical ? (startPosition & 1) === 1 ? haw : (width - haw) : width / 2,
+                    y: isVertical ? haw : startPosition > 1 ? haw : height - haw,
+                }
+                points[3] = {
+                    x: (endPosition & 1) === 1 ? (width - haw) : haw,
+                    y: endPosition < 2 ? haw + this.shouldBeIncreas : height - haw
+                }
+                break
+            case 1:
+                points[0] = {
+                    x: (startPosition & 1) === 1 ? (width - haw) : haw + this.shouldBeIncreas,
+                    y: startPosition < 2 ? haw : height - haw,
+                }
+                points[1] = {
+                    x: isVertical ? (startPosition & 1) === 1 ? (width - haw) : haw : haw,
+                    y: isVertical ? height - haw : startPosition < 2 ? haw : height - haw,
+                }
+                points[2] = {
+                    x: isVertical ? (startPosition & 1) === 1 ? haw : (width - haw) : haw,
+                    y: isVertical ? haw : startPosition > 1 ? haw : height - haw,
+                }
+
+                points[3] = {
+                    x: (endPosition & 1) === 1 ? (width - haw) : haw + this.shouldBeIncreas,
+                    y: endPosition < 2 ? haw : height - haw
+                }
+                break
+            case 2:
+                points[0] = {
+                    x: (startPosition & 1) === 1 ? (width - haw - this.shouldBeIncreas) : haw,
+                    y: haw,
+                }
+
+                points[1] = {
+                    x: width - haw,
+                    y: startPosition < 2 ? haw : height - haw,
+                }
+                points[2] = {
+                    x: width - haw,
+                    y: height - haw,
+                }
+
+                points[3] = {
+                    x: (endPosition & 1) === 1 ? (width - haw - this.shouldBeIncreas) : haw,
+                    y: height - haw
+                }
+                break
+            case 3:
+                points[0] = {
+                    x: (startPosition & 1) === 1 ? (width - haw) : haw,
+                    y: startPosition < 2 ? haw : height - haw - this.shouldBeIncreas
+                }
+                points[1] = {
+                    x: isVertical ? (startPosition & 1) === 1 ? (width - haw) : haw : width / 2,
+                    y: isVertical ? height - haw : startPosition < 2 ? haw : height - haw,
+                }
+
+                points[2] = {
+                    x: isVertical ? (startPosition & 1) === 1 ? haw : (width - haw) : width / 2,
+                    y: isVertical ? height - haw : startPosition > 1 ? haw : height - haw,
+                }
+                points[3] = {
+                    x: (endPosition & 1) === 1 ? (width - haw) : haw,
+                    y: endPosition < 2 ? haw : height - haw - this.shouldBeIncreas
+                }
+                break
+            default:
+                break;
+        }
+        console.log(points[0])
         ctx.moveTo(points[0].x, points[0].y)
         points.forEach((value, _) => {
             ctx.lineTo(value.x, value.y)
