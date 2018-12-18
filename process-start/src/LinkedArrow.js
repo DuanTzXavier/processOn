@@ -5,6 +5,8 @@ class LinkedArrow extends Component {
 
     harfArrowWidth = 7
 
+    shouldBeIncreas = 50
+
     state = {
 
     }
@@ -22,8 +24,20 @@ class LinkedArrow extends Component {
 
     render() {
         // build div style
+        let startFrom = this.props.bindLink.startFrom
+        let endTo = this.props.bindLink.endTo
+        let fromPosition = 0
+        if (typeof (startFrom) !== 'undefined') {
+            fromPosition = startFrom.split("_")[1]
+        }
+
+        let toPosition = 0
+        if (typeof (endTo) !== 'undefined') {
+            toPosition = endTo.split("_")[1]
+        }
+
         let left = Math.min(this.props.bindLink.startPoint.X, this.props.bindLink.endPoint.X) - this.harfArrowWidth + "px"
-        let top = Math.min(this.props.bindLink.startPoint.Y, this.props.bindLink.endPoint.Y) - this.harfArrowWidth + "px"
+        let top = Math.min(this.props.bindLink.startPoint.Y, this.props.bindLink.endPoint.Y) - this.harfArrowWidth - (toPosition === "1" && fromPosition === "1" ? this.shouldBeIncreas : 0) + "px"
 
         let width = Math.abs(this.props.bindLink.startPoint.X - this.props.bindLink.endPoint.X) + this.harfArrowWidth * 2 + "px"
         let height = Math.abs(this.props.bindLink.startPoint.Y - this.props.bindLink.endPoint.Y) + this.harfArrowWidth * 2 + "px"
@@ -39,7 +53,7 @@ class LinkedArrow extends Component {
                 className="Linked-Arrow"
                 style={style}>
 
-                <canvas id={this.props.bindLink.uniqueKey} onMouseMove={(e)=>this.handleOnMouseMove(e)} style={this.state.canvasStyle} />
+                <canvas id={this.props.bindLink.uniqueKey} onMouseMove={(e) => this.handleOnMouseMove(e)} style={this.state.canvasStyle} />
 
             </div>
         );
@@ -57,15 +71,15 @@ class LinkedArrow extends Component {
         y -= top
         let ctx = e.currentTarget.getContext('2d')
 
-        if(ctx.isPointInPath(x, y)){
+        if (ctx.isPointInPath(x, y)) {
             this.setState({
-                canvasStyle:{
+                canvasStyle: {
                     cursor: "wait",
                 }
             })
-        }else{
+        } else {
             this.setState({
-                canvasStyle:{
+                canvasStyle: {
                     cursor: "default",
                 }
             })
@@ -103,25 +117,48 @@ class LinkedArrow extends Component {
             toPosition = endTo.split("_")[1] - 1
         }
 
-        const isVertical = fromPosition & 2 === 0
+        //TODO find the logic please
+        const isVertical = fromPosition === 0 || fromPosition === 3
 
         if (toKey === "" || (fromPosition + toPosition) === 3) {
             this.drawDirectLine(canvas, isVertical)
         } else if (fromPosition === toPosition) {
-            this.drawSamePositionLine(canvas, isVertical)
+            this.drawSamePositionLine(canvas, fromPosition)
         } else {
             this.drawCrossLine(canvas, isVertical)
         }
 
     }
 
-    drawSamePositionLine(canvas, isVertical) {
+    drawSamePositionLine(canvas, fromPosition) {
+        //this is U style Link line
+        const isVertical = fromPosition === 0 || fromPosition === 3
         //initParams
         let width = Math.abs(this.props.bindLink.startPoint.X - this.props.bindLink.endPoint.X) + this.harfArrowWidth * 2
         let height = Math.abs(this.props.bindLink.startPoint.Y - this.props.bindLink.endPoint.Y) + this.harfArrowWidth * 2
 
+        if (isVertical) {
+            height += this.shouldBeIncreas
+        } else {
+            width += this.shouldBeIncreas
+        }
+
         canvas.width = width
         canvas.height = height
+
+        switch (fromPosition) {
+            case 0:
+                break
+            case 1:
+                break
+            case 2:
+                break
+            case 3:
+            console.log(4)
+                break
+            default:
+                break;
+        }
 
         let startX = this.props.bindLink.startPoint.X;
         let startY = this.props.bindLink.startPoint.Y;
@@ -137,23 +174,37 @@ class LinkedArrow extends Component {
         let points = []
         points[0] = {
             x: (startPosition & 1) === 1 ? (width - haw) : haw,
-            y: startPosition < 2 ? haw : height - haw
+            y: startPosition < 2 ? haw : height - haw - this.shouldBeIncreas
         }
 
         points[1] = {
             x: isVertical ? (startPosition & 1) === 1 ? (width - haw) : haw : width / 2,
-            y: isVertical ? height / 2 : startPosition < 2 ? haw : height - haw,
+            y: isVertical ? height - haw : startPosition < 2 ? haw : height - haw,
         }
 
         points[2] = {
             x: isVertical ? (startPosition & 1) === 1 ? haw : (width - haw) : width / 2,
-            y: isVertical ? height / 2 : startPosition > 1 ? haw : height - haw,
+            y: isVertical ? height - haw : startPosition > 1 ? haw : height - haw,
         }
+        console.log(startPosition)
 
+        let y = 0
+        switch (fromPosition) {
+            case 3:
+                y = height - haw - this.shouldBeIncreas
+                break;
+            case 2:
+                y = height - haw
+                break;
+            default:
+                break;
+        }
         points[3] = {
             x: (endPosition & 1) === 1 ? (width - haw) : haw,
-            y: endPosition < 2 ? haw : height - haw
+            y: y
         }
+
+        console.log(endPosition)
 
         ctx.moveTo(points[0].x, points[0].y)
         points.forEach((value, _) => {

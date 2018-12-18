@@ -36,12 +36,12 @@ class DrawBoard extends Component {
       isNodeControlPatternShow: false,
       uniqueKey: new ViewUtils().getUnicodeID(10),
       startPoint: {
-        X: "700px",
-        Y: "300px",
+        X: "500px",
+        Y: "100px",
       },
       endPoint: {
-        X: "901px",
-        Y: "502px",
+        X: "601px",
+        Y: "202px",
       },
       patternStyle: {
         width: "200px",
