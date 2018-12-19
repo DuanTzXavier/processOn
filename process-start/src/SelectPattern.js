@@ -19,7 +19,7 @@ class SelectPattern extends Component {
 
 
         return (
-            <div id="SelectPattern" className="Select-Pattern" style={style} onMouseDown={(e) => this.onMouseDown(e)}>
+            <div id="SelectPattern" className="Select-Pattern" style={style} onMouseDown={(e) => this.onMouseDown(e)} onDoubleClick={(e)=>this.handleDoubleClick(e)}>
                 <LinkedNode
                     pattern={this.props.pattern}
                     styleType={1}
@@ -77,6 +77,11 @@ class SelectPattern extends Component {
                     styleType={4} />
             </div>
         );
+    }
+
+    handleDoubleClick(e){
+        let input = document.getElementById(this.props.pattern.uniqueKey + "input")
+        input.focus()
     }
 
 
