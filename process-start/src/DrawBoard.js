@@ -94,8 +94,13 @@ class DrawBoard extends Component {
 
     let selectPattern = this.getPatternByKey(this.state.selectPatternKey)
     let nodeControlPattern = this.getPatternByKey(this.state.nodeControlPatternKey)
+    let s = {
+      // width:"75%",
+      float:"left",
+  }
     return (
-      <div className="Draw-Board" onClick={(e) => this.handleClick(e)}>
+      
+      <div className="Draw-Board" style={s} onClick={(e) => this.handleClick(e)}>
         <canvas id="myCanvas" className="Draw-Board-BG" />
         {elements}
 
@@ -138,7 +143,7 @@ class DrawBoard extends Component {
   drawbg() {
     let myCanvas = document.getElementById("myCanvas")
     let ctx = myCanvas.getContext('2d')
-    myCanvas.width = window.screen.availWidth
+    myCanvas.width = window.screen.availWidth - 163
     myCanvas.height = window.screen.availHeight
     this.drawGrid(ctx, myCanvas.width, myCanvas.height, '#eeeeee', 20)
   }
@@ -174,6 +179,8 @@ class DrawBoard extends Component {
     this.setState({
       links: links.concat(newBindLink)
     })
+
+    this.dismissSelectPattern()
   }
 
   modifyBindLinks = (bindLink) => {

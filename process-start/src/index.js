@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import DrawBoard from './DrawBoard';
+import Designer from './Designer';
 // import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<DrawBoard />, document.getElementById('root'));
+ReactDOM.render(<Designer />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
