@@ -1,6 +1,18 @@
 .Pattern-Bar {
-    background: #ededed;
-    position: absolute;
-    width: 163px;
-    height: 1000px;
-  }
+  background: #ededed;
+  position: absolute;
+  width: 163px;
+  height: 1000px;
+}
+
+.InLineItem {
+  display: inline-block;
+  width: 32%;
+  height: 53px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.InLineRow {
+  height: 53px;
+}
