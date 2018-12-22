@@ -6,7 +6,11 @@ class LinkedNode extends Component {
 
   halfNodeWidth = 3
   state = {
-    style: {}
+    style: {},
+    from: {
+      x: 0,
+      y: 0,
+    }
   }
 
   initStyle(props) {
@@ -84,44 +88,6 @@ class LinkedNode extends Component {
 
   }
 
-  onMouseDown(e) {
-    const clickEvent = window.event || e;
-    const fromX = clickEvent.clientX - parseInt(this.state.style.left);
-    const fromY = clickEvent.clientY - parseInt(this.state.style.top);
-    this.setState({
-      isActive: true,
-      fromX: fromX,
-      fromY: fromY,
-    })
-
-    document.onmousemove = e => this.setMoveLocation(e)
-
-    document.onmouseup = () => this.setStateFalse()
-
-  }
-
-  setMoveLocation(event) {
-    if (!this.state.isActive) {
-      return
-    }
-    const moveEvent = window.event || event;
-
-    var style = {
-      left: moveEvent.clientX - this.state.fromX + "px",
-      top: moveEvent.clientY - this.state.fromY + "px",
-    }
-
-    this.setState({
-      style: style
-    })
-  }
-
-  setStateFalse() {
-    this.setState({
-      isActive: false
-    })
-  }
-
 
   render() {
     return (
@@ -134,11 +100,25 @@ class LinkedNode extends Component {
     );
   }
 
-  addLinkedArrow(e) {
+  addLinkedArrow(event) {
     const key = new ViewUtils().getUnicodeID(10)
 
     // //初始化Element
     this.initLinkElement(key)
+
+    const e = window.event || event;
+    let scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+    let scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+    let x = e.pageX || e.clientX + scrollX;
+    let y = e.pageY || e.clientY + scrollY;
+
+    let from = {
+      x: x,
+      y: y,
+    }
+    this.setState({
+      from: from
+    })
 
     document.onmousemove = e => this.modifyEndPoint(e, [key])
 
@@ -182,9 +162,10 @@ class LinkedNode extends Component {
     let y = e.pageY || e.clientY + scrollY;
 
     var endPoint = {
-      X: x,
-      Y: y,
+      X: x - this.state.from.x + this.state.bindLink.startPoint.X,
+      Y: y - this.state.from.y + this.state.bindLink.startPoint.Y,
     }
+
     bindLink.endPoint = endPoint
 
     let bindedState = this.props.getBindedState()

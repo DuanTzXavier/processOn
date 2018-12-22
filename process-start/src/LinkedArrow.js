@@ -189,9 +189,9 @@ class LinkedArrow extends Component {
         //     y: y
         // }
 
-        console.log("fromPosition" + fromPosition)
-        console.log("endPosition" + endPosition)
-        console.log("startPosition" + startPosition)
+        // console.log("fromPosition" + fromPosition)
+        // console.log("endPosition" + endPosition)
+        // console.log("startPosition" + startPosition)
 
         switch (fromPosition) {
             case 0:

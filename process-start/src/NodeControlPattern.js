@@ -29,7 +29,7 @@ class NodeControlPattern extends Component {
                 style={style}
                 onMouseDown={(e) => this.onMouseDown(e)}
                 onMouseLeave={(e) => this.handleOnMouseLeave(e)}
-                onMouseMove={(e) => this.handleOnMouseOver(e)}
+                onMouseMove={(e) => this.handleOnMouseMove(e)}
                 onClick={(e) => this.handleOnClick(e)}>
 
                 <LinkedNode
@@ -123,16 +123,13 @@ class NodeControlPattern extends Component {
         })
     }
 
-    handleOnMouseOver(event) {
-        let e = event || window.event;
-        let scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
-        let scrollY = document.documentElement.scrollTop || document.body.scrollTop;
-        let x = e.pageX || e.clientX + scrollX;
-        let y = e.pageY || e.clientY + scrollY;
-        x -= e.currentTarget.offsetLeft
-        y -= e.currentTarget.offsetTop
+    handleOnMouseMove(event) {
+        const e = window.event || event;
 
-        let mousePosition = { X: x, Y: y }
+        let mousePosition = { 
+            X: e.offsetX, 
+            Y: e.offsetY, 
+        }
 
         let centerPosition = {
             X: parseInt(this.props.pattern.patternStyle.width) / 2,
