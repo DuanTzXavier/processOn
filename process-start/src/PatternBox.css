@@ -1,6 +1,9 @@
 .Pattern-Box {
-    background: #ededed;
-    position: absolute;
-    width: 163px;
-    height: 1000px;
+    text-align:center;
+    border:none;
+    background: #ccf0f0;
+    display: table-cell; 
+    vertical-align: middle;
+    width: 52px;
+    height: 52px;
   }

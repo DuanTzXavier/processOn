@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './PatternBox.css'
 
-class Pattern extends Component {
+class PatternBox extends Component {
 
     constructor(props) {
         super(props);
@@ -17,19 +17,17 @@ class Pattern extends Component {
             <div
                 className="Pattern-Box"
                 onClick={(e) => this.handleOnClick(e)}
-                onMouseOver={(e)=> this.handleOnMouseOver(e)}>
-
-
-            </div>
+                onMouseOver={(e)=> this.handleOnMouseOver(e)}>1</div>
         );
     }
 
     handleOnMouseOver(e){
+        console.log(2)
     }
 
     handleOnClick(e){
-
+        console.log(1)
     }
 }
 
-export default Pattern;
+export default PatternBox;

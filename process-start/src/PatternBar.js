@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './PatternBar.css'
+import PatternBox from './PatternBox';
 
 
 class PatternBar extends Component {
@@ -15,29 +16,29 @@ class PatternBar extends Component {
 
                 <div  className="InLineRow">
                     <div className="InLineItem">
-                        <canvas></canvas>
+                        <PatternBox/>
                     </div>
-                    <div className="InLineItem">1</div>
-                    <div className="InLineItem">1</div>
+                    <div className="InLineItem"><PatternBox/></div>
+                    <div className="InLineItem"><PatternBox/></div>
+                </div>
+
+                {/* <div  className="InLineRow">
+                    <div className="InLineItem"><PatternBox/></div>
+                    <div className="InLineItem"><PatternBox/></div>
+                    <div className="InLineItem"><PatternBox/></div>
                 </div>
 
                 <div  className="InLineRow">
-                    <div className="InLineItem">1</div>
-                    <div className="InLineItem">1</div>
-                    <div className="InLineItem">1</div>
+                    <div className="InLineItem"><PatternBox/></div>
+                    <div className="InLineItem"><PatternBox/></div>
+                    <div className="InLineItem"><PatternBox/></div>
                 </div>
 
                 <div  className="InLineRow">
-                    <div className="InLineItem">1</div>
-                    <div className="InLineItem">1</div>
-                    <div className="InLineItem">1</div>
-                </div>
-
-                <div  className="InLineRow">
-                    <div className="InLineItem">1</div>
-                    <div className="InLineItem">1</div>
-                    <div className="InLineItem">1</div>
-                </div>
+                    <div className="InLineItem"><PatternBox/></div>
+                    <div className="InLineItem"><PatternBox/></div>
+                    <div className="InLineItem"><PatternBox/></div>
+                </div> */}
             </div>
         );
     }
