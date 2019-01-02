@@ -35,18 +35,18 @@ class PatternBox extends Component {
             isNodeControlPatternShow: false,
             uniqueKey: new ViewUtils().getUnicodeID(10),
             startPoint: {
-                X: "200px",
-                Y: "200px",
+                X: "500px",
+                Y: "100px",
             },
             endPoint: {
-                X: "401px",
-                Y: "402px",
+                X: "601px",
+                Y: "202px",
             },
             patternStyle: {
                 width: "200px",
                 height: "200px",
-                left: "200px",
-                top: "200px",
+                left: "700px",
+                top: "300px",
             },
         }
 

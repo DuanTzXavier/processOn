@@ -130,6 +130,10 @@ class NodeControlPattern extends Component {
     handleOnMouseMove(event) {
         const e = window.event || event;
 
+        if (e.target.getAttribute("class") !== "Node-Control-Pattern") {
+            return
+          }
+
         let mousePosition = {
             X: e.offsetX,
             Y: e.offsetY,
