@@ -1,61 +1,19 @@
 import React, { Component } from 'react';
 import Pattern from './Pattern';
 import './DrawBoard.css'
-import Test from './Test';
 import SelectPattern from './SelectPattern';
 import { CopyUtils } from './utils/CopyUtils';
 import LinkedArrow from './LinkedArrow';
-import { ViewUtils } from './utils/ViewUtils'
 import NodeControlPattern from './NodeControlPattern';
 
 class DrawBoard extends Component {
   constructor() {
     super();
-    var pattern = {
-      isSelectedCanShow: false,
-      isNodeControlPatternShow: false,
-      uniqueKey: new ViewUtils().getUnicodeID(10),
-      startPoint: {
-        X: "200px",
-        Y: "200px",
-      },
-      endPoint: {
-        X: "401px",
-        Y: "402px",
-      },
-      patternStyle: {
-        width: "200px",
-        height: "200px",
-        left: "200px",
-        top: "200px",
-      },
-    }
-
-    var pattern2 = {
-      isSelectedCanShow: false,
-      isNodeControlPatternShow: false,
-      uniqueKey: new ViewUtils().getUnicodeID(10),
-      startPoint: {
-        X: "500px",
-        Y: "100px",
-      },
-      endPoint: {
-        X: "601px",
-        Y: "202px",
-      },
-      patternStyle: {
-        width: "200px",
-        height: "200px",
-        left: "700px",
-        top: "300px",
-      },
-    }
     this.state = {
       elements: [],
       h1: "1",
       selectPatternKey: "",
       nodeControlPatternKey: "",
-      patterns: [pattern, pattern2],
       tests: [1, 2],
       links: [],
       bindedState: {
@@ -79,12 +37,12 @@ class DrawBoard extends Component {
       elements = elements.concat(element)
     }
 
-    let patterns = this.state.patterns
+    let patterns = this.props.patterns
     for (let index in patterns) {
       let element = React.createElement(Pattern, {
         key: index,
         pattern: patterns[index],
-        modifyPattern: this.modifyPattern,
+        modifyPattern: this.props.modifyPattern,
         setSelectPattern: this.setSelectPattern,
         setNodeControlPattern: this.setNodeControlPattern,
       })
@@ -106,7 +64,7 @@ class DrawBoard extends Component {
 
         <SelectPattern
           pattern={selectPattern}
-          modifyPattern={this.modifyPattern}
+          modifyPattern={this.props.modifyPattern}
           links={this.state.links}
           addBindLink={(newBindLink) => this.addBindLink(newBindLink)}
           getBindedState={this.getBindedState}
@@ -115,7 +73,7 @@ class DrawBoard extends Component {
 
         <NodeControlPattern
           pattern={nodeControlPattern}
-          modifyPattern={this.modifyPattern}
+          modifyPattern={this.props.modifyPattern}
           links={this.state.links}
           addBindLink={(newBindLink) => this.addBindLink(newBindLink)}
           modifyBindLinks={(key, bindLink) => this.modifyBindLinks(key, bindLink)}
@@ -133,11 +91,6 @@ class DrawBoard extends Component {
 
   componentDidMount() {
     this.drawbg()
-  }
-
-  componentWillUpdate() {
-    // this.drawbg()
-
   }
 
   drawbg() {
@@ -204,7 +157,7 @@ class DrawBoard extends Component {
     let pattern = new CopyUtils().copy(selectPattern)
     pattern.isSelectedCanShow = false
 
-    this.modifyPattern(pattern)
+    this.props.modifyPattern(pattern)
   }
 
   setNodeControlPattern = (patternX) => {
@@ -221,7 +174,7 @@ class DrawBoard extends Component {
     }
     patterns = patterns.concat(pattern)
 
-    this.modifyPatterns(patterns)
+    this.props.modifyPatterns(patterns)
     this.setState({
       nodeControlPatternKey: patternX.uniqueKey,
     })
@@ -240,7 +193,7 @@ class DrawBoard extends Component {
     pattern.isNodeControlPatternShow = false
     patterns = patterns.concat(pattern)
 
-    this.modifyPatterns(patterns)
+    this.props.modifyPatterns(patterns)
     this.setState({
       selectPatternKey: patternX.uniqueKey,
     })
@@ -254,35 +207,7 @@ class DrawBoard extends Component {
 
     let pattern = new CopyUtils().copy(patternX)
     pattern.isNodeControlPatternShow = false
-    this.modifyPattern(pattern)
-  }
-
-  modifyPattern = (pattern) => {
-    let patterns = new CopyUtils().copy(this.state.patterns)
-    for (let index in patterns) {
-      if (pattern.uniqueKey === patterns[index].uniqueKey) {
-        patterns[index] = pattern
-      }
-    }
-
-    this.setState({
-      patterns: patterns,
-    })
-  }
-
-  modifyPatterns = (modifiedPatterns) => {
-    let patterns = new CopyUtils().copy(this.state.patterns)
-    for (let indexM in modifiedPatterns) {
-      for (let index in patterns) {
-        if (modifiedPatterns[indexM].uniqueKey === patterns[index].uniqueKey) {
-          patterns[index] = modifiedPatterns[indexM]
-        }
-      }
-    }
-
-    this.setState({
-      patterns: patterns,
-    })
+    this.props.modifyPattern(pattern)
   }
 
   getPatternByKey = (key) => {
@@ -290,7 +215,7 @@ class DrawBoard extends Component {
       return
     }
 
-    let patterns = this.state.patterns
+    let patterns = this.props.patterns
     for (let index in patterns) {
       if (key === patterns[index].uniqueKey) {
         return patterns[index]

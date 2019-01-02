@@ -1,41 +1,97 @@
 import React, { Component } from 'react';
 import DrawBoard from './DrawBoard';
 import PatternBar from './PatternBar';
+import { ViewUtils } from './utils/ViewUtils';
+import { CopyUtils } from './utils/CopyUtils';
+
 
 class Designer extends Component {
-    state = {
+    constructor() {
+        super();
+        var pattern = {
+            isSelectedCanShow: false,
+            isNodeControlPatternShow: false,
+            uniqueKey: new ViewUtils().getUnicodeID(10),
+            startPoint: {
+                X: "200px",
+                Y: "200px",
+            },
+            endPoint: {
+                X: "401px",
+                Y: "402px",
+            },
+            patternStyle: {
+                width: "200px",
+                height: "200px",
+                left: "200px",
+                top: "200px",
+            },
+        }
 
+        var pattern2 = {
+            isSelectedCanShow: false,
+            isNodeControlPatternShow: false,
+            uniqueKey: new ViewUtils().getUnicodeID(10),
+            startPoint: {
+                X: "500px",
+                Y: "100px",
+            },
+            endPoint: {
+                X: "601px",
+                Y: "202px",
+            },
+            patternStyle: {
+                width: "200px",
+                height: "200px",
+                left: "700px",
+                top: "300px",
+            },
+        }
+        this.state = {
+            patterns: [pattern, pattern2],
+        }
     }
 
     render() {
         return (
             <div>
-                <PatternBar/>
-                <DrawBoard />
+                <PatternBar />
+                <DrawBoard
+                    patterns={this.state.patterns}
+                    modifyPattern={this.modifyPattern}
+                    modifyPatterns={this.modifyPatterns}
+                />
             </div>
 
         );
     }
 
-    static getDerivedStateFromProps(props, state) {
+    modifyPattern = (pattern) => {
+        let patterns = new CopyUtils().copy(this.state.patterns)
+        for (let index in patterns) {
+            if (pattern.uniqueKey === patterns[index].uniqueKey) {
+                patterns[index] = pattern
+            }
+        }
 
-        // console.log(props)
+        this.setState({
+            patterns: patterns,
+        })
+    }
 
-        // console.log(state)
+    modifyPatterns = (modifiedPatterns) => {
+        let patterns = new CopyUtils().copy(this.state.patterns)
+        for (let indexM in modifiedPatterns) {
+            for (let index in patterns) {
+                if (modifiedPatterns[indexM].uniqueKey === patterns[index].uniqueKey) {
+                    patterns[index] = modifiedPatterns[indexM]
+                }
+            }
+        }
 
-
-        // if(props.h1 !== state.h1){
-        //     state = props
-
-        //     console.log("1")
-        //     return state
-        // }
-
-
-        // Any time the current user changes,
-        // Reset any parts of state that are tied to that user.
-        // In this simple example, that's just the email.
-        return null;
+        this.setState({
+            patterns: patterns,
+        })
     }
 }
 
