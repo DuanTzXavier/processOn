@@ -42,7 +42,7 @@ class DrawBoard extends Component {
       let element = React.createElement(Pattern, {
         key: index,
         pattern: patterns[index],
-        modifyPattern: this.props.modifyPattern,
+        modifyPatterns: this.props.modifyPatterns,
         setSelectPattern: this.setSelectPattern,
         setNodeControlPattern: this.setNodeControlPattern,
       })
@@ -64,7 +64,7 @@ class DrawBoard extends Component {
 
         <SelectPattern
           pattern={selectPattern}
-          modifyPattern={this.props.modifyPattern}
+          modifyPatterns={this.props.modifyPatterns}
           links={this.state.links}
           addBindLink={(newBindLink) => this.addBindLink(newBindLink)}
           getBindedState={this.getBindedState}
@@ -73,7 +73,7 @@ class DrawBoard extends Component {
 
         <NodeControlPattern
           pattern={nodeControlPattern}
-          modifyPattern={this.props.modifyPattern}
+          modifyPatterns={this.props.modifyPatterns}
           links={this.state.links}
           addBindLink={(newBindLink) => this.addBindLink(newBindLink)}
           modifyBindLinks={(key, bindLink) => this.modifyBindLinks(key, bindLink)}
@@ -157,7 +157,7 @@ class DrawBoard extends Component {
     let pattern = new CopyUtils().copy(selectPattern)
     pattern.isSelectedCanShow = false
 
-    this.props.modifyPattern(pattern)
+    this.props.modifyPatterns([pattern])
   }
 
   setNodeControlPattern = (patternX) => {
@@ -207,7 +207,7 @@ class DrawBoard extends Component {
 
     let pattern = new CopyUtils().copy(patternX)
     pattern.isNodeControlPatternShow = false
-    this.props.modifyPattern(pattern)
+    this.props.modifyPatterns([pattern])
   }
 
   getPatternByKey = (key) => {

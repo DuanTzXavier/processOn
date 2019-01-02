@@ -110,7 +110,7 @@ class NodeControlPattern extends Component {
         pattern.patternStyle.left = moveEvent.clientX - this.state.fromX + "px"
         pattern.patternStyle.top = moveEvent.clientY - this.state.fromY + "px"
         pattern.isSelectedCanShow = false
-        this.props.modifyPattern(pattern)
+        this.props.modifyPatterns([pattern])
 
         this.setState({
             isMoved: true,

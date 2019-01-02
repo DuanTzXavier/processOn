@@ -29,7 +29,7 @@ class Pattern extends Component {
             width: Math.abs(parseInt(props.pattern.startPoint.X) - parseInt(props.pattern.endPoint.X)) + "px",
             height: Math.abs(parseInt(props.pattern.startPoint.Y) - parseInt(props.pattern.endPoint.Y)) + "px",
         }
-        props.modifyPattern(pattern)
+        props.modifyPatterns([pattern])
     }
 
     initShapeStyle(patternStyle) {

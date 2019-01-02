@@ -152,7 +152,7 @@ class SizeNode extends Component {
                 break;
         }
 
-        this.props.modifyPattern(pattern)
+        this.props.modifyPatterns([pattern])
 
         this.setState({
             isMoved: true,

@@ -66,19 +66,6 @@ class Designer extends Component {
         );
     }
 
-    modifyPattern = (pattern) => {
-        let patterns = new CopyUtils().copy(this.state.patterns)
-        for (let index in patterns) {
-            if (pattern.uniqueKey === patterns[index].uniqueKey) {
-                patterns[index] = pattern
-            }
-        }
-
-        this.setState({
-            patterns: patterns,
-        })
-    }
-
     modifyPatterns = (modifiedPatterns) => {
         let patterns = new CopyUtils().copy(this.state.patterns)
         for (let indexM in modifiedPatterns) {
