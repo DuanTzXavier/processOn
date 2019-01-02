@@ -14,31 +14,23 @@ class PatternBar extends Component {
 
                 <h3 >基础图形</h3>
 
-                <div  className="InLineRow">
+                <div className="InLineRow">
                     <div className="InLineItem">
-                        <PatternBox modifyPatterns={this.props.modifyPatterns}/>
+                        <PatternBox
+                            styleName={"rectangle"}
+                            modifyPatterns={this.props.modifyPatterns} />
                     </div>
-                    <div className="InLineItem"><PatternBox modifyPatterns={this.props.modifyPatterns}/></div>
-                    <div className="InLineItem"><PatternBox modifyPatterns={this.props.modifyPatterns}/></div>
+                    <div className="InLineItem">
+                        <PatternBox
+                            styleName={"circle_rectangle"}
+                            modifyPatterns={this.props.modifyPatterns} />
+                    </div>
+                    <div className="InLineItem">
+                        <PatternBox
+                            styleName={"rhomb"}
+                            modifyPatterns={this.props.modifyPatterns} />
+                    </div>
                 </div>
-
-                {/* <div  className="InLineRow">
-                    <div className="InLineItem"><PatternBox/></div>
-                    <div className="InLineItem"><PatternBox/></div>
-                    <div className="InLineItem"><PatternBox/></div>
-                </div>
-
-                <div  className="InLineRow">
-                    <div className="InLineItem"><PatternBox/></div>
-                    <div className="InLineItem"><PatternBox/></div>
-                    <div className="InLineItem"><PatternBox/></div>
-                </div>
-
-                <div  className="InLineRow">
-                    <div className="InLineItem"><PatternBox/></div>
-                    <div className="InLineItem"><PatternBox/></div>
-                    <div className="InLineItem"><PatternBox/></div>
-                </div> */}
             </div>
         );
     }

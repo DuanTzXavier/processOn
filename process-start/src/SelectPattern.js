@@ -17,9 +17,8 @@ class SelectPattern extends Component {
             style.visibility = this.props.pattern.isSelectedCanShow ? "visible" : "collapse"
         }
 
-
         return (
-            <div id="SelectPattern" className="Select-Pattern" style={style} onMouseDown={(e) => this.onMouseDown(e)} onDoubleClick={(e)=>this.handleDoubleClick(e)}>
+            <div id="SelectPattern" className="Select-Pattern" style={style} onKeyDown={(e) => this.handleOnKeyDown(e)} onMouseDown={(e) => this.onMouseDown(e)} onDoubleClick={(e) => this.handleDoubleClick(e)}>
                 <LinkedNode
                     pattern={this.props.pattern}
                     styleType={1}
@@ -79,12 +78,27 @@ class SelectPattern extends Component {
         );
     }
 
-    handleDoubleClick(e){
+    static getDerivedStateFromProps(props, state) {
+        if (!props.pattern.isSelectedCanShow) {
+            document.onkeydown = null
+        } else {
+            document.onkeydown = function (event) {
+                switch (event.keyCode) {
+                    case 8:
+                        props.deletePatterns([props.pattern])
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        return null;
+    }
+
+    handleDoubleClick(e) {
         let input = document.getElementById(this.props.pattern.uniqueKey + "input")
         input.focus()
     }
-
-
 
     onMouseDown(e) {
         if (e.target.getAttribute("class") !== "Select-Pattern") {

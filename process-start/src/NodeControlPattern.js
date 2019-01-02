@@ -33,6 +33,7 @@ class NodeControlPattern extends Component {
                 onClick={(e) => this.handleOnClick(e)}>
 
                 <LinkedNode
+                    key={"LinkedNode" + 1}
                     pattern={this.props.pattern}
                     styleType={1}
                     links={this.props.links}
@@ -42,6 +43,7 @@ class NodeControlPattern extends Component {
                     modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
                 />
                 <LinkedNode
+                    key={"LinkedNode" + 2}
                     pattern={this.props.pattern}
                     styleType={2}
                     links={this.props.links}
@@ -51,8 +53,9 @@ class NodeControlPattern extends Component {
                     modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
                 />
                 <LinkedNode
+                    key={"LinkedNode" + 3}
                     pattern={this.props.pattern}
-                    styleType={4}
+                    styleType={3}
                     links={this.props.links}
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                     getBindedState={this.props.getBindedState}
@@ -60,8 +63,9 @@ class NodeControlPattern extends Component {
                     modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
                 />
                 <LinkedNode
+                    key={"LinkedNode" + 4}
                     pattern={this.props.pattern}
-                    styleType={3}
+                    styleType={4}
                     links={this.props.links}
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                     getBindedState={this.props.getBindedState}
@@ -126,9 +130,9 @@ class NodeControlPattern extends Component {
     handleOnMouseMove(event) {
         const e = window.event || event;
 
-        let mousePosition = { 
-            X: e.offsetX, 
-            Y: e.offsetY, 
+        let mousePosition = {
+            X: e.offsetX,
+            Y: e.offsetY,
         }
 
         let centerPosition = {

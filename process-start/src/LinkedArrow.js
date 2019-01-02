@@ -103,10 +103,10 @@ class LinkedArrow extends Component {
         let startFrom = this.props.bindLink.startFrom
         let endTo = this.props.bindLink.endTo
 
-        let fromKey = ""
+        // let fromKey = ""
         let fromPosition = 0
         if (typeof (startFrom) !== 'undefined') {
-            fromKey = startFrom.split("_")[0]
+            // fromKey = startFrom.split("_")[0]
             fromPosition = startFrom.split("_")[1] - 1
         }
 

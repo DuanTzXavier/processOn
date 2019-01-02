@@ -59,6 +59,7 @@ class Designer extends Component {
                 <DrawBoard
                     patterns={this.state.patterns}
                     modifyPatterns={this.modifyPatterns}
+                    deletePatterns={this.deletePatterns}
                 />
             </div>
 
@@ -78,6 +79,22 @@ class Designer extends Component {
 
             if (!finded) {
                 patterns.push(modifiedPatterns[indexM])
+            }
+        }
+
+        this.setState({
+            patterns: patterns,
+        })
+    }
+
+    deletePatterns = (deletePatterns) => {
+        let patterns = new CopyUtils().copy(this.state.patterns)
+        for (let indexM in deletePatterns) {
+            for (let index in patterns) {
+                if (deletePatterns[indexM].uniqueKey === patterns[index].uniqueKey) {
+                    patterns.splice(index, 1)
+                    break;
+                }
             }
         }
 

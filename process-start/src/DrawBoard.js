@@ -27,6 +27,7 @@ class DrawBoard extends Component {
   render() {
     let elements = []
 
+    // build Links
     let links = this.state.links
     for (let index in links) {
       let element = React.createElement(LinkedArrow, {
@@ -37,6 +38,7 @@ class DrawBoard extends Component {
       elements = elements.concat(element)
     }
 
+    // build Patterns
     let patterns = this.props.patterns
     for (let index in patterns) {
       let element = React.createElement(Pattern, {
@@ -50,41 +52,52 @@ class DrawBoard extends Component {
     }
     elements = elements.concat(this.state.elements)
 
+    // build SelectPattern
     let selectPattern = this.getPatternByKey(this.state.selectPatternKey)
+    if (selectPattern != null) {
+      let element = React.createElement(SelectPattern, {
+        key:"SelectPattern",
+        pattern: selectPattern,
+        modifyPatterns: this.props.modifyPatterns,
+        links: this.state.links,
+        addBindLink: (newBindLink) => this.addBindLink(newBindLink),
+        getBindedState: this.getBindedState,
+        getPatternByKey: this.getPatternByKey,
+        modifyBindLinks: (key, bindLink) => this.modifyBindLinks(key, bindLink),
+        deletePatterns:this.props.deletePatterns,
+      })
+      elements = elements.concat(element)
+    }
+
+    // build SelectPattern
     let nodeControlPattern = this.getPatternByKey(this.state.nodeControlPatternKey)
-    let s = {
-      // width:"75%",
-      float:"left",
-  }
+    if (nodeControlPattern != null) {
+      let element = React.createElement(NodeControlPattern, {
+        key:"NodeControlPattern",
+        pattern: nodeControlPattern,
+        modifyPatterns: this.props.modifyPatterns,
+        links: this.state.links,
+        addBindLink: (newBindLink) => this.addBindLink(newBindLink),
+        modifyBindLinks: (key, bindLink) => this.modifyBindLinks(key, bindLink),
+        dismissNodeControlPattern: this.dismissNodeControlPattern,
+        setBindedState: this.setBindedState,
+        getBindedState: this.getBindedState,
+        getPatternByKey: this.getPatternByKey,
+        setSelectPattern: (pattern) => this.setSelectPattern(pattern),
+      })
+      elements = elements.concat(element)
+    }
+
+
+
+    let styleForDB = {
+      float: "left",
+    }
     return (
-      
-      <div className="Draw-Board" style={s} onClick={(e) => this.handleClick(e)}>
+
+      <div className="Draw-Board" style={styleForDB} onClick={(e) => this.handleClick(e)}>
         <canvas id="myCanvas" className="Draw-Board-BG" />
         {elements}
-
-        <SelectPattern
-          pattern={selectPattern}
-          modifyPatterns={this.props.modifyPatterns}
-          links={this.state.links}
-          addBindLink={(newBindLink) => this.addBindLink(newBindLink)}
-          getBindedState={this.getBindedState}
-          getPatternByKey={this.getPatternByKey}
-          modifyBindLinks={(key, bindLink) => this.modifyBindLinks(key, bindLink)} />
-
-        <NodeControlPattern
-          pattern={nodeControlPattern}
-          modifyPatterns={this.props.modifyPatterns}
-          links={this.state.links}
-          addBindLink={(newBindLink) => this.addBindLink(newBindLink)}
-          modifyBindLinks={(key, bindLink) => this.modifyBindLinks(key, bindLink)}
-          dismissNodeControlPattern={this.dismissNodeControlPattern}
-          setBindedState={this.setBindedState}
-          getBindedState={this.getBindedState}
-          getPatternByKey={this.getPatternByKey}
-          setSelectPattern={(pattern) => this.setSelectPattern(pattern)} />
-
-        {/* <Test h1={this.state.h1} /> */}
-
       </div>
     );
   }
