@@ -6,6 +6,7 @@ import { CopyUtils } from './utils/CopyUtils';
 
 
 class SelectPattern extends Component {
+    state={}
     render() {
         let style
         if (typeof (this.props.pattern) === 'undefined') {
@@ -26,7 +27,7 @@ class SelectPattern extends Component {
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                     getBindedState={this.props.getBindedState}
                     getPatternByKey={this.props.getPatternByKey}
-                    modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
+                    modifyBindLinks={(bindLinks) => this.props.modifyBindLinks(bindLinks)}
                 />
                 <LinkedNode
                     pattern={this.props.pattern}
@@ -35,7 +36,7 @@ class SelectPattern extends Component {
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                     getBindedState={this.props.getBindedState}
                     getPatternByKey={this.props.getPatternByKey}
-                    modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
+                    modifyBindLinks={(bindLinks) => this.props.modifyBindLinks(bindLinks)}
                 />
                 <LinkedNode
                     pattern={this.props.pattern}
@@ -44,7 +45,7 @@ class SelectPattern extends Component {
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                     getBindedState={this.props.getBindedState}
                     getPatternByKey={this.props.getPatternByKey}
-                    modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
+                    modifyBindLinks={(bindLinks) => this.props.modifyBindLinks(bindLinks)}
                 />
                 <LinkedNode
                     pattern={this.props.pattern}
@@ -53,7 +54,7 @@ class SelectPattern extends Component {
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                     getBindedState={this.props.getBindedState}
                     getPatternByKey={this.props.getPatternByKey}
-                    modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
+                    modifyBindLinks={(bindLinks) => this.props.modifyBindLinks(bindLinks)}
                 />
                 <SizeNode
                     pattern={this.props.pattern}

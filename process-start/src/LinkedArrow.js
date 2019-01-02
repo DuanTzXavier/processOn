@@ -16,12 +16,6 @@ class LinkedArrow extends Component {
         this.initArrow = this.initArrow.bind(this)
     }
 
-    updateProps(bindLink) {
-        bindLink.that.setState({
-            bindLink: bindLink,
-        });
-    }
-
     render() {
         // build div style
         let startFrom = this.props.bindLink.startFrom
@@ -53,25 +47,14 @@ class LinkedArrow extends Component {
                 className="Linked-Arrow"
                 style={style}>
 
-                <canvas id={this.props.bindLink.uniqueKey} onMouseMove={(e) => this.handleOnMouseMove(e)} style={this.state.canvasStyle} />
+                <canvas id={this.props.bindLink.uniqueKey} onMouseMove={(e) => this.handleOnMouseMove(e)} onClick={(e)=>this.handleOnClick(e)} style={this.state.canvasStyle} />
 
             </div>
         );
     }
 
     handleOnMouseMove = (event) => {
-        let e = event || window.event;
-        let scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
-        let scrollY = document.documentElement.scrollTop || document.body.scrollTop;
-        let x = e.pageX || e.clientX + scrollX;
-        let y = e.pageY || e.clientY + scrollY;
-        let left = Math.min(this.props.bindLink.startPoint.X, this.props.bindLink.endPoint.X) - this.harfArrowWidth
-        let top = Math.min(this.props.bindLink.startPoint.Y, this.props.bindLink.endPoint.Y) - this.harfArrowWidth
-        x -= left
-        y -= top
-        let ctx = e.currentTarget.getContext('2d')
-
-        if (ctx.isPointInPath(x, y)) {
+        if (this.isOnCanvas(event)) {
             this.setState({
                 canvasStyle: {
                     cursor: "wait",
@@ -83,9 +66,21 @@ class LinkedArrow extends Component {
                     cursor: "default",
                 }
             })
-
-            // e.currentTarget.style += "cursor: default;"
         }
+    }
+
+    handleOnClick = (event) => {
+        console.log(this.isOnCanvas(event))
+    }
+
+    isOnCanvas(event){
+        if(event.currentTarget.tagName !== "CANVAS"){
+            return false
+        }
+
+        let ctx = event.currentTarget.getContext('2d')
+        let e = window.event || event;
+        return ctx.isPointInPath(e.offsetX, e.offsetY)
     }
 
     componentDidMount() {
@@ -358,7 +353,7 @@ class LinkedArrow extends Component {
         //获取对应的CanvasRenderingContext2D对象(画笔)
         var ctx = canvas.getContext("2d");
 
-        ctx.lineWidth = 2
+        ctx.lineWidth = 3
 
         let points = []
         points[0] = {

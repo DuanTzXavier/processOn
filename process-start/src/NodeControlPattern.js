@@ -40,7 +40,7 @@ class NodeControlPattern extends Component {
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                     getBindedState={this.props.getBindedState}
                     getPatternByKey={this.props.getPatternByKey}
-                    modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
+                    modifyBindLinks={(bindLinks) => this.props.modifyBindLinks(bindLinks)}
                 />
                 <LinkedNode
                     key={"LinkedNode" + 2}
@@ -50,7 +50,7 @@ class NodeControlPattern extends Component {
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                     getBindedState={this.props.getBindedState}
                     getPatternByKey={this.props.getPatternByKey}
-                    modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
+                    modifyBindLinks={(bindLinks) => this.props.modifyBindLinks(bindLinks)}
                 />
                 <LinkedNode
                     key={"LinkedNode" + 3}
@@ -60,7 +60,7 @@ class NodeControlPattern extends Component {
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                     getBindedState={this.props.getBindedState}
                     getPatternByKey={this.props.getPatternByKey}
-                    modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
+                    modifyBindLinks={(bindLinks) => this.props.modifyBindLinks(bindLinks)}
                 />
                 <LinkedNode
                     key={"LinkedNode" + 4}
@@ -70,7 +70,7 @@ class NodeControlPattern extends Component {
                     addBindLink={(newBindLink) => this.props.addBindLink(newBindLink)}
                     getBindedState={this.props.getBindedState}
                     getPatternByKey={this.props.getPatternByKey}
-                    modifyBindLinks={(key, bindLink) => this.props.modifyBindLinks(key, bindLink)}
+                    modifyBindLinks={(bindLinks) => this.props.modifyBindLinks(bindLinks)}
                 />
             </div>
         );

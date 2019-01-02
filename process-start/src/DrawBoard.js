@@ -14,7 +14,6 @@ class DrawBoard extends Component {
       h1: "1",
       selectPatternKey: "",
       nodeControlPatternKey: "",
-      tests: [1, 2],
       links: [],
       bindedState: {
         patternKey: "",
@@ -34,6 +33,7 @@ class DrawBoard extends Component {
         key: links[index].uniqueKey,
         bindLink: links[index],
         getPatternByKey: this.getPatternByKey,
+        modifyBindLinks:(bindLinks) => this.modifyBindLinks(bindLinks),
       })
       elements = elements.concat(element)
     }
@@ -63,7 +63,7 @@ class DrawBoard extends Component {
         addBindLink: (newBindLink) => this.addBindLink(newBindLink),
         getBindedState: this.getBindedState,
         getPatternByKey: this.getPatternByKey,
-        modifyBindLinks: (key, bindLink) => this.modifyBindLinks(key, bindLink),
+        modifyBindLinks: (bindLinks) => this.modifyBindLinks(bindLinks),
         deletePatterns:this.props.deletePatterns,
       })
       elements = elements.concat(element)
@@ -78,7 +78,7 @@ class DrawBoard extends Component {
         modifyPatterns: this.props.modifyPatterns,
         links: this.state.links,
         addBindLink: (newBindLink) => this.addBindLink(newBindLink),
-        modifyBindLinks: (key, bindLink) => this.modifyBindLinks(key, bindLink),
+        modifyBindLinks: (bindLinks) => this.modifyBindLinks(bindLinks),
         dismissNodeControlPattern: this.dismissNodeControlPattern,
         setBindedState: this.setBindedState,
         getBindedState: this.getBindedState,
@@ -149,14 +149,17 @@ class DrawBoard extends Component {
     this.dismissSelectPattern()
   }
 
-  modifyBindLinks = (bindLink) => {
+  modifyBindLinks = (bindLinks) => {
     let links = this.state.links
-    for (let index in links) {
-      if (links[index].uniqueKey === bindLink.uniqueKey) {
-        links[index] = bindLink
-        break
+    for (let indexM in bindLinks){
+      for (let index in links) {
+        if (links[index].uniqueKey === bindLinks[indexM].uniqueKey) {
+          links[index] = bindLinks[indexM]
+          break
+        }
       }
     }
+    
     this.setState({
       links: links
     })

@@ -186,13 +186,13 @@ class LinkedNode extends Component {
       }
     }
 
-    this.props.modifyBindLinks(bindLink)
+    this.props.modifyBindLinks([bindLink])
   }
 
   endModifyPoint(keys) {
     let bindLink = this.state.bindLink
     bindLink.isActive = false
-    this.props.modifyBindLinks(bindLink)
+    this.props.modifyBindLinks([bindLink])
   }
 
 }

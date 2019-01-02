@@ -1,52 +1,12 @@
 import React, { Component } from 'react';
 import DrawBoard from './DrawBoard';
 import PatternBar from './PatternBar';
-import { ViewUtils } from './utils/ViewUtils';
 import { CopyUtils } from './utils/CopyUtils';
 
 
 class Designer extends Component {
     constructor() {
         super();
-        // var pattern = {
-        //     isSelectedCanShow: false,
-        //     isNodeControlPatternShow: false,
-        //     uniqueKey: new ViewUtils().getUnicodeID(10),
-        //     startPoint: {
-        //         X: "200px",
-        //         Y: "200px",
-        //     },
-        //     endPoint: {
-        //         X: "401px",
-        //         Y: "402px",
-        //     },
-        //     patternStyle: {
-        //         width: "200px",
-        //         height: "200px",
-        //         left: "200px",
-        //         top: "200px",
-        //     },
-        // }
-
-        // var pattern2 = {
-        //     isSelectedCanShow: false,
-        //     isNodeControlPatternShow: false,
-        //     uniqueKey: new ViewUtils().getUnicodeID(10),
-        //     startPoint: {
-        //         X: "500px",
-        //         Y: "100px",
-        //     },
-        //     endPoint: {
-        //         X: "601px",
-        //         Y: "202px",
-        //     },
-        //     patternStyle: {
-        //         width: "200px",
-        //         height: "200px",
-        //         left: "700px",
-        //         top: "300px",
-        //     },
-        // }
         this.state = {
             patterns: [],
         }
