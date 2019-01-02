@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './PatternBox.css'
+import { ViewUtils } from './utils/ViewUtils';
 
 class PatternBox extends Component {
 
@@ -26,6 +27,27 @@ class PatternBox extends Component {
     }
 
     handleOnClick(e){
+        var pattern = {
+            isSelectedCanShow: false,
+            isNodeControlPatternShow: false,
+            uniqueKey: new ViewUtils().getUnicodeID(10),
+            startPoint: {
+                X: "200px",
+                Y: "200px",
+            },
+            endPoint: {
+                X: "401px",
+                Y: "402px",
+            },
+            patternStyle: {
+                width: "200px",
+                height: "200px",
+                left: "200px",
+                top: "200px",
+            },
+        }
+
+        this.props.modifyPatterns([pattern])
         console.log(1)
     }
 }

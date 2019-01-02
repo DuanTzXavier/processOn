@@ -55,10 +55,9 @@ class Designer extends Component {
     render() {
         return (
             <div>
-                <PatternBar />
+                <PatternBar modifyPatterns={this.modifyPatterns} />
                 <DrawBoard
                     patterns={this.state.patterns}
-                    modifyPattern={this.modifyPattern}
                     modifyPatterns={this.modifyPatterns}
                 />
             </div>
@@ -69,10 +68,16 @@ class Designer extends Component {
     modifyPatterns = (modifiedPatterns) => {
         let patterns = new CopyUtils().copy(this.state.patterns)
         for (let indexM in modifiedPatterns) {
+            let finded = false
             for (let index in patterns) {
                 if (modifiedPatterns[indexM].uniqueKey === patterns[index].uniqueKey) {
                     patterns[index] = modifiedPatterns[indexM]
+                    finded = true
                 }
+            }
+
+            if (!finded) {
+                patterns.push(modifiedPatterns[indexM])
             }
         }
 

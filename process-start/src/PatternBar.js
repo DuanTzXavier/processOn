@@ -16,10 +16,10 @@ class PatternBar extends Component {
 
                 <div  className="InLineRow">
                     <div className="InLineItem">
-                        <PatternBox/>
+                        <PatternBox modifyPatterns={this.props.modifyPatterns}/>
                     </div>
-                    <div className="InLineItem"><PatternBox/></div>
-                    <div className="InLineItem"><PatternBox/></div>
+                    <div className="InLineItem"><PatternBox modifyPatterns={this.props.modifyPatterns}/></div>
+                    <div className="InLineItem"><PatternBox modifyPatterns={this.props.modifyPatterns}/></div>
                 </div>
 
                 {/* <div  className="InLineRow">
