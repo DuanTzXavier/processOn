@@ -136,6 +136,7 @@ class LinkedNode extends Component {
       startPoint: point,
       endPoint: point,
       isActive: true,
+      isSelect: false,
       startFrom: this.props.pattern.uniqueKey + "_" + this.props.styleType,
     }
 

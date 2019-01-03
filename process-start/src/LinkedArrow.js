@@ -71,6 +71,9 @@ class LinkedArrow extends Component {
 
     handleOnClick = (event) => {
         console.log(this.isOnCanvas(event))
+        let bindLink = this.props.bindLink
+        bindLink.isSelect = true
+        this.props.modifyBindLinks([bindLink])
     }
 
     isOnCanvas(event){
@@ -354,7 +357,13 @@ class LinkedArrow extends Component {
         var ctx = canvas.getContext("2d");
 
         ctx.lineWidth = 3
+        ctx.lineJoin="round";
 
+        if(this.props.bindLink.isSelect){
+            ctx.shadowBlur = 5;
+            ctx.shadowColor = "#833";
+        }
+        
         let points = []
         points[0] = {
             x: (startPosition & 1) === 1 ? (width - haw) : haw,
