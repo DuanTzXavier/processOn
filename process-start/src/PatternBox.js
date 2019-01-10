@@ -42,11 +42,11 @@ class PatternBox extends Component {
             },
             endPoint: {
                 X: "600px",
-                Y: "200px",
+                Y: "175px",
             },
             patternStyle: {
                 width: "100px",
-                height: "100px",
+                height: "75px",
                 left: "500px",
                 top: "100px",
             },

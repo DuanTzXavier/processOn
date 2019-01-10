@@ -89,7 +89,7 @@ class LinkedArrow extends Component {
         this.initArrow()
     }
 
-    componentWillUpdate(nextProps) {
+    componentDidUpdate() {
         this.initArrow()
     }
 

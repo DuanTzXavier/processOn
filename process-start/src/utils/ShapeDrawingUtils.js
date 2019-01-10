@@ -19,7 +19,10 @@ export class ShaoeDrawingUtils {
         var cxt = canvas.getContext("2d");
         cxt.lineWidth = lineWidth;
         cxt.lineJoin = "round";
+        cxt.fillStyle="rgb(256,256,256)";
+        cxt.fillRect(lineWidth, lineWidth, width, height);
         cxt.strokeRect(lineWidth, lineWidth, width, height);
+        cxt.fill()
     }
 
     drawCircleRectangle(canvas, lineWidth) {
@@ -29,6 +32,8 @@ export class ShaoeDrawingUtils {
         cxt.lineWidth = lineWidth;
         cxt.lineJoin = "round";
         this.drawRoundRect(cxt, lineWidth, lineWidth, width, height, 15)
+        cxt.fillStyle="rgb(256,256,256)";
+        cxt.fill()
         cxt.stroke();
     }
 
@@ -51,6 +56,8 @@ export class ShaoeDrawingUtils {
         cxt.lineWidth = lineWidth;
         cxt.lineJoin = "round";
         this.drawCanvasRhomb(cxt, lineWidth, lineWidth, width, height)
+        cxt.fillStyle="rgb(256,256,256)";
+        cxt.fill()
         cxt.stroke();
     }
 
