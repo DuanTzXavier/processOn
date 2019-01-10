@@ -4,6 +4,7 @@
 }
 .Pattern-Shape {
   position: absolute;
+  z-index:-1;
   /* visibility: collapse; */
 }
 .Pattern-Text{

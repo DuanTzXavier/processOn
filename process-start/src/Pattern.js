@@ -54,9 +54,10 @@ class Pattern extends Component {
                 style={this.props.pattern.patternStyle}
                 onClick={(e) => this.props.setSelectPattern(this.props.pattern)}
                 onMouseOver={(e)=> this.handleOnMouseOver(e)}>
+                <div  id={this.props.pattern.uniqueKey + "input"} className="Pattern-Text" style={textStyle} contentEditable="true"></div>
+
                 <canvas className="Pattern-Shape" style={patternShapeStyle} id={this.props.pattern.uniqueKey + "shape"} />
 
-                <div  id={this.props.pattern.uniqueKey + "input"} className="Pattern-Text" style={textStyle} contentEditable="true"></div>
 
             </div>
         );

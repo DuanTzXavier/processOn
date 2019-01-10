@@ -2,11 +2,12 @@
   width: auto;
   height: auto;
   margin-left: 163px;
-  position: absolute;
   /* margin: 100px; */
   /* background: rgba(254, 209, 54, .9); */
 }
 .Draw-Board-BG {
   width:auto;
   height: auto;
+  position: absolute;
+  z-index:-2;
 }
