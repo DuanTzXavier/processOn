@@ -138,6 +138,7 @@ class DrawBoard extends Component {
       return
     }
     this.dismissSelectPattern()
+    this.dismissSelectBindLinks()
   }
 
   addBindLink = (newBindLink) => {
@@ -162,6 +163,17 @@ class DrawBoard extends Component {
     
     this.setState({
       links: links
+    })
+  }
+
+  dismissSelectBindLinks(){
+    let links = new CopyUtils().copy(this.state.links)
+
+    for(let index in links){
+      links[index].isSelect = false
+    }
+    this.setState({
+      links: links,
     })
   }
 
