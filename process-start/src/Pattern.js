@@ -76,7 +76,7 @@ class Pattern extends Component {
 
         canvas.width = parseInt(this.props.pattern.patternStyle.width) 
         canvas.height = parseInt(this.props.pattern.patternStyle.height)
-        new ShaoeDrawingUtils().drawShape("rectangle", canvas, 2)
+        new ShaoeDrawingUtils().drawShape(this.props.pattern.styleName, canvas, 2)
     }
 }
 

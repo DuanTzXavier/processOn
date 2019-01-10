@@ -35,13 +35,14 @@ class PatternBox extends Component {
             isNodeControlPatternShow: false,
             uniqueKey: new ViewUtils().getUnicodeID(10),
             isEditing:false,
+            styleName:this.props.styleName,
             startPoint: {
                 X: "500px",
                 Y: "100px",
             },
             endPoint: {
-                X: "601px",
-                Y: "202px",
+                X: "600px",
+                Y: "200px",
             },
             patternStyle: {
                 width: "100px",
