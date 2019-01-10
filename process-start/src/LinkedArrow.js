@@ -70,7 +70,6 @@ class LinkedArrow extends Component {
     }
 
     handleOnClick = (event) => {
-        console.log(this.isOnCanvas(event))
         let bindLink = this.props.bindLink
         bindLink.isSelect = true
         this.props.modifyBindLinks([bindLink])

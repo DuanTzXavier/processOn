@@ -145,7 +145,11 @@ class DrawBoard extends Component {
     if (e.target.getAttribute("class") !== "Draw-Board") {
       return
     }
-    this.props.dismissNodeControlPattern(this.getPatternByKey(this.state.nodeControlPatternKey))
+
+    let nodePattern = this.getPatternByKey(this.state.nodeControlPatternKey)
+    if(nodePattern.isNodeControlPatternShow){
+      this.props.dismissNodeControlPattern(nodePattern)
+    }
   }
 
   addBindLink = (newBindLink) => {
@@ -269,7 +273,6 @@ class DrawBoard extends Component {
   getBindedState = () => {
     return this.state.bindedState
   }
-
 
 }
 

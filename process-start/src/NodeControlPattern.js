@@ -7,7 +7,7 @@ import { CopyUtils } from './utils/CopyUtils';
 class NodeControlPattern extends Component {
 
     halfNodeWidth = 3
-
+    isUnmount = false
     state = {
         isMoved: false,
     }
@@ -121,7 +121,14 @@ class NodeControlPattern extends Component {
         })
     }
 
+    componentWillUnmount(){
+        this.isUnmount = true
+    }
+
     setStateFalse() {
+        if(this.isUnmount){
+            return
+        }
         this.setState({
             isActive: false
         })
@@ -132,7 +139,7 @@ class NodeControlPattern extends Component {
 
         if (e.target.getAttribute("class") !== "Node-Control-Pattern") {
             return
-          }
+        }
 
         let mousePosition = {
             X: e.offsetX,

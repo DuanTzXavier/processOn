@@ -26,7 +26,7 @@ class PatternBox extends Component {
     }
 
     handleOnMouseOver(e) {
-        console.log(2)
+        // console.log(2)
     }
 
     handleOnClick(e) {

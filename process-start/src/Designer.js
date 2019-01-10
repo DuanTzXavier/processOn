@@ -27,6 +27,7 @@ class Designer extends Component {
     }
 
     modifyPatterns = (modifiedPatterns) => {
+
         let patterns = new CopyUtils().copy(this.state.patterns)
         for (let indexM in modifiedPatterns) {
             let finded = false

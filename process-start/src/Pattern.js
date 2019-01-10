@@ -5,7 +5,6 @@ import { ShaoeDrawingUtils } from './utils/ShapeDrawingUtils';
 
 
 class Pattern extends Component {
-
     constructor(props) {
         super(props);
         this.updatePatternStyle(props)
@@ -17,8 +16,11 @@ class Pattern extends Component {
             nextProps.pattern.endPoint.X !== this.props.pattern.endPoint.X ||
             nextProps.pattern.endPoint.Y !== this.props.pattern.endPoint.Y) {
             this.updatePatternStyle(nextProps)
-            this.drawShape()
         }
+    }
+
+    componentDidUpdate(){
+        this.drawShape()
     }
 
 
@@ -72,10 +74,9 @@ class Pattern extends Component {
 
     drawShape(){
         let canvas = document.getElementById(this.props.pattern.uniqueKey + "shape")
-        console.log(this.props.pattern.patternStyle)
-
         canvas.width = parseInt(this.props.pattern.patternStyle.width) 
         canvas.height = parseInt(this.props.pattern.patternStyle.height)
+        console.log(this.props.pattern.styleName)
         new ShaoeDrawingUtils().drawShape(this.props.pattern.styleName, canvas, 2)
     }
 }
