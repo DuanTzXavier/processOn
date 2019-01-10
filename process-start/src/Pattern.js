@@ -23,8 +23,6 @@ class Pattern extends Component {
         this.drawShape()
     }
 
-
-
     updatePatternStyle(props) {
         let pattern = new CopyUtils().copy(props.pattern)
         pattern.patternStyle = {
@@ -76,7 +74,6 @@ class Pattern extends Component {
         let canvas = document.getElementById(this.props.pattern.uniqueKey + "shape")
         canvas.width = parseInt(this.props.pattern.patternStyle.width) 
         canvas.height = parseInt(this.props.pattern.patternStyle.height)
-        console.log(this.props.pattern.styleName)
         new ShaoeDrawingUtils().drawShape(this.props.pattern.styleName, canvas, 2)
     }
 }

@@ -11,10 +11,10 @@ class LinkedArrow extends Component {
 
     }
 
-    constructor(props) {
-        super(props);
-        this.initArrow = this.initArrow.bind(this)
-    }
+    // constructor(props) {
+    //     super(props);
+    //     // this.initArrow = this.initArrow.bind(this)
+    // }
 
     render() {
         // build div style
@@ -157,6 +157,8 @@ class LinkedArrow extends Component {
 
         //获取对应的CanvasRenderingContext2D对象(画笔)
         var ctx = canvas.getContext("2d");
+        ctx.lineWidth = 2
+
         let points = []
 
         switch (fromPosition) {
@@ -266,7 +268,7 @@ class LinkedArrow extends Component {
         //获取对应的CanvasRenderingContext2D对象(画笔)
         var ctx = canvas.getContext("2d");
 
-        ctx.lineWidth = 3
+        ctx.lineWidth = 2
         ctx.lineJoin="round";
 
         if(this.props.bindLink.isSelect){
@@ -322,7 +324,7 @@ class LinkedArrow extends Component {
         //获取对应的CanvasRenderingContext2D对象(画笔)
         var ctx = canvas.getContext("2d");
 
-        ctx.lineWidth = 3
+        ctx.lineWidth = 2
         ctx.lineJoin="round";
 
         if(this.props.bindLink.isSelect){

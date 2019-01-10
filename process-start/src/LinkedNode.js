@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ViewUtils } from './utils/ViewUtils'
 import './LinkedNode.css'
+import { NodeStyleUtils } from './utils/NodeStyleUtils';
 
 class LinkedNode extends Component {
 
@@ -13,54 +14,12 @@ class LinkedNode extends Component {
     }
   }
 
-  initStyle(props) {
-    if (typeof (props.pattern) === 'undefined') {
-      return
-    }
-
-    let style = {}
-    switch (props.styleType) {
-      case 1:
-        style = {
-          left: parseInt(props.pattern.patternStyle.width) / 2 - this.halfNodeWidth + "px",
-          top: - this.halfNodeWidth + "px",
-        }
-        break;
-      case 2:
-        style = {
-          left: - this.halfNodeWidth + "px",
-          top: parseInt(props.pattern.patternStyle.height) / 2 - this.halfNodeWidth + "px",
-        }
-        break;
-      case 3:
-        style = {
-          left: parseInt(props.pattern.patternStyle.width) - this.halfNodeWidth + "px",
-          top: parseInt(props.pattern.patternStyle.height) / 2 - this.halfNodeWidth + "px",
-        }
-        break;
-      case 4:
-        style = {
-          left: parseInt(props.pattern.patternStyle.width) / 2 - this.halfNodeWidth + "px",
-          top: parseInt(props.pattern.patternStyle.height) - this.halfNodeWidth + "px",
-        }
-        break;
-      default:
-        style = {
-          left: parseInt(props.pattern.patternStyle.width) / 2 - this.halfNodeWidth + "px",
-          top: - this.halfNodeWidth + "px",
-        }
-        break
-    }
-
-    return style;
-  }
-
   componentWillUpdate(nextProps) {
     if (typeof (nextProps.pattern) === 'undefined') {
       return
     }
 
-    let style = this.initStyle(nextProps)
+    let style = new NodeStyleUtils().initStyle(nextProps)
 
     let copiedLinks = this.props.links
     let startPoint = {
@@ -177,7 +136,7 @@ class LinkedNode extends Component {
         let fakeProps = {}
         fakeProps.pattern = bindedPattern
         fakeProps.styleType = bindedState.position
-        let style = this.initStyle(fakeProps)
+        let style =  new NodeStyleUtils().initStyle(fakeProps)
         let point = {
           X: parseInt(bindedPattern.patternStyle.left) + parseInt(style.left) + this.halfNodeWidth,
           Y: parseInt(bindedPattern.patternStyle.top) + parseInt(style.top) + this.halfNodeWidth,
