@@ -44,10 +44,10 @@ class PatternBox extends Component {
                 Y: "202px",
             },
             patternStyle: {
-                width: "200px",
-                height: "200px",
-                left: "700px",
-                top: "300px",
+                width: "100px",
+                height: "100px",
+                left: "500px",
+                top: "100px",
             },
         }
 

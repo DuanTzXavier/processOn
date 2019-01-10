@@ -1,5 +1,5 @@
 .Pattern {
-  background: #ccf0f0;
+  background: #fdfdfd;
   position: absolute;
 }
 .Pattern-Shape {
@@ -9,7 +9,6 @@
 .Pattern-Text{
   border:none;
   text-align:center;
-  background: #ccf0f0;
   display: table-cell; 
   vertical-align: middle
 }

@@ -33,7 +33,7 @@ class DrawBoard extends Component {
         key: links[index].uniqueKey,
         bindLink: links[index],
         getPatternByKey: this.getPatternByKey,
-        modifyBindLinks:(bindLinks) => this.modifyBindLinks(bindLinks),
+        modifyBindLinks: (bindLinks) => this.modifyBindLinks(bindLinks),
       })
       elements = elements.concat(element)
     }
@@ -56,7 +56,7 @@ class DrawBoard extends Component {
     let selectPattern = this.getPatternByKey(this.state.selectPatternKey)
     if (selectPattern != null) {
       let element = React.createElement(SelectPattern, {
-        key:"SelectPattern",
+        key: "SelectPattern",
         pattern: selectPattern,
         modifyPatterns: this.props.modifyPatterns,
         links: this.state.links,
@@ -64,7 +64,7 @@ class DrawBoard extends Component {
         getBindedState: this.getBindedState,
         getPatternByKey: this.getPatternByKey,
         modifyBindLinks: (bindLinks) => this.modifyBindLinks(bindLinks),
-        deletePatterns:this.props.deletePatterns,
+        deletePatterns: this.props.deletePatterns,
       })
       elements = elements.concat(element)
     }
@@ -73,7 +73,7 @@ class DrawBoard extends Component {
     let nodeControlPattern = this.getPatternByKey(this.state.nodeControlPatternKey)
     if (nodeControlPattern != null) {
       let element = React.createElement(NodeControlPattern, {
-        key:"NodeControlPattern",
+        key: "NodeControlPattern",
         pattern: nodeControlPattern,
         modifyPatterns: this.props.modifyPatterns,
         links: this.state.links,
@@ -95,7 +95,7 @@ class DrawBoard extends Component {
     }
     return (
 
-      <div className="Draw-Board" style={styleForDB} onClick={(e) => this.handleClick(e)}>
+      <div className="Draw-Board" style={styleForDB} onClick={(e) => this.handleClick(e)} onMouseMove={(e) => this.handleOnMouseMove(e)}>
         <canvas id="myCanvas" className="Draw-Board-BG" />
         {elements}
       </div>
@@ -141,6 +141,13 @@ class DrawBoard extends Component {
     this.dismissSelectBindLinks()
   }
 
+  handleOnMouseMove = (e) => {
+    if (e.target.getAttribute("class") !== "Draw-Board") {
+      return
+    }
+    this.props.dismissNodeControlPattern(this.getPatternByKey(this.state.nodeControlPatternKey))
+  }
+
   addBindLink = (newBindLink) => {
     let links = this.state.links
     this.setState({
@@ -152,7 +159,7 @@ class DrawBoard extends Component {
 
   modifyBindLinks = (bindLinks) => {
     let links = this.state.links
-    for (let indexM in bindLinks){
+    for (let indexM in bindLinks) {
       for (let index in links) {
         if (links[index].uniqueKey === bindLinks[indexM].uniqueKey) {
           links[index] = bindLinks[indexM]
@@ -160,16 +167,16 @@ class DrawBoard extends Component {
         }
       }
     }
-    
+
     this.setState({
       links: links
     })
   }
 
-  dismissSelectBindLinks(){
+  dismissSelectBindLinks() {
     let links = new CopyUtils().copy(this.state.links)
 
-    for(let index in links){
+    for (let index in links) {
       links[index].isSelect = false
     }
     this.setState({

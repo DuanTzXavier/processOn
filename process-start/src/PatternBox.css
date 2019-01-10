@@ -1,7 +1,7 @@
 .Pattern-Box {
     text-align:center;
     border:none;
-    background: #ccf0f0;
+    background: #fdfdfd;
     display: table-cell; 
     vertical-align: middle;
     width: 52px;
@@ -9,7 +9,6 @@
   }
 
   .Pattern-Box-Shape {
-    background: #ccf0f0;
     width: 52px;
     height: 52px;
   }

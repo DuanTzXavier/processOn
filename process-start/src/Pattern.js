@@ -72,7 +72,11 @@ class Pattern extends Component {
 
     drawShape(){
         let canvas = document.getElementById(this.props.pattern.uniqueKey + "shape")
-        new ShaoeDrawingUtils().drawShape("rectangle", canvas, 1)
+        console.log(this.props.pattern.patternStyle)
+
+        canvas.width = parseInt(this.props.pattern.patternStyle.width) 
+        canvas.height = parseInt(this.props.pattern.patternStyle.height)
+        new ShaoeDrawingUtils().drawShape("rectangle", canvas, 2)
     }
 }
 

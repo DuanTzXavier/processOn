@@ -14,11 +14,15 @@ export class ShaoeDrawingUtils {
     }
 
     drawRetangle(canvas, lineWidth) {
-        console.log(canvas.width)
+        console.log(1, 1)
+        console.log(canvas.width, canvas.height)
+        let width = canvas.width - lineWidth * 2
+        let height = canvas.height - lineWidth * 2
         var cxt=canvas.getContext("2d");
         cxt.lineWidth = lineWidth;
         cxt.lineJoin="round";
-        cxt.strokeRect(lineWidth,lineWidth,canvas.width - lineWidth * 2,canvas.height - lineWidth * 2);       
+        console.log("123123", width, height)
+        cxt.strokeRect(lineWidth,lineWidth,width,height);       
     }
 
     drawCircleRectangle(canvas, lineWidth) {
