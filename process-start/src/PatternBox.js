@@ -34,6 +34,7 @@ class PatternBox extends Component {
             isSelectedCanShow: false,
             isNodeControlPatternShow: false,
             uniqueKey: new ViewUtils().getUnicodeID(10),
+            isEditing:false,
             startPoint: {
                 X: "500px",
                 Y: "100px",

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Pattern.css'
 import { CopyUtils } from './utils/CopyUtils';
+import { ShaoeDrawingUtils } from './utils/ShapeDrawingUtils';
 
 
 class Pattern extends Component {
@@ -16,6 +17,7 @@ class Pattern extends Component {
             nextProps.pattern.endPoint.X !== this.props.pattern.endPoint.X ||
             nextProps.pattern.endPoint.Y !== this.props.pattern.endPoint.Y) {
             this.updatePatternStyle(nextProps)
+            this.drawShape()
         }
     }
 
@@ -52,7 +54,7 @@ class Pattern extends Component {
                 style={this.props.pattern.patternStyle}
                 onClick={(e) => this.props.setSelectPattern(this.props.pattern)}
                 onMouseOver={(e)=> this.handleOnMouseOver(e)}>
-                <canvas className="Pattern-Shape" style={patternShapeStyle} />
+                <canvas className="Pattern-Shape" style={patternShapeStyle} id={this.props.pattern.uniqueKey + "shape"} />
 
                 <div  id={this.props.pattern.uniqueKey + "input"} className="Pattern-Text" style={textStyle} contentEditable="true"></div>
 
@@ -60,8 +62,17 @@ class Pattern extends Component {
         );
     }
 
+    componentDidMount(){
+        this.drawShape()
+    }
+
     handleOnMouseOver(e){
         this.props.setNodeControlPattern(this.props.pattern)
+    }
+
+    drawShape(){
+        let canvas = document.getElementById(this.props.pattern.uniqueKey + "shape")
+        new ShaoeDrawingUtils().drawShape("rectangle", canvas, 1)
     }
 }
 

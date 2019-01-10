@@ -184,6 +184,8 @@ class DrawBoard extends Component {
     }
     let pattern = new CopyUtils().copy(selectPattern)
     pattern.isSelectedCanShow = false
+    pattern.isEditing = false
+
 
     this.props.modifyPatterns([pattern])
   }

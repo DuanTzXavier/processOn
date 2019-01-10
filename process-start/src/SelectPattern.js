@@ -6,7 +6,7 @@ import { CopyUtils } from './utils/CopyUtils';
 
 
 class SelectPattern extends Component {
-    state={}
+    state = {}
     render() {
         let style
         if (typeof (this.props.pattern) === 'undefined') {
@@ -86,7 +86,9 @@ class SelectPattern extends Component {
             document.onkeydown = function (event) {
                 switch (event.keyCode) {
                     case 8:
-                        props.deletePatterns([props.pattern])
+                        if (!props.pattern.isEditing) {
+                            props.deletePatterns([props.pattern])
+                        }
                         break;
                     default:
                         break;
@@ -97,6 +99,10 @@ class SelectPattern extends Component {
     }
 
     handleDoubleClick(e) {
+        let pattern = new CopyUtils().copy(this.props.pattern)
+        pattern.isEditing = true
+        this.props.modifyPatterns([pattern])
+
         let input = document.getElementById(this.props.pattern.uniqueKey + "input")
         input.focus()
     }
