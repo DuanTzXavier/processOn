@@ -65,6 +65,7 @@ class DrawBoard extends Component {
         getPatternByKey: this.getPatternByKey,
         modifyBindLinks: (bindLinks) => this.modifyBindLinks(bindLinks),
         deletePatterns: this.props.deletePatterns,
+        deleteSelectBindLinks: this.deleteSelectBindLinks,
       })
       elements = elements.concat(element)
     }
@@ -104,6 +105,28 @@ class DrawBoard extends Component {
 
   componentDidMount() {
     this.drawbg()
+    this.initKeyListener()
+  }
+
+  initKeyListener () {
+    document.onkeydown = this.handleOnKeyDown
+  }
+
+  handleOnKeyDown = (event) => {
+    switch (event.keyCode) {
+      case 8:
+        let selectPattern = this.getPatternByKey(this.state.selectPatternKey)
+        if (selectPattern != null && selectPattern.isSelectedCanShow) {
+          if(selectPattern.isEditing){
+            return;
+          }
+          this.props.deletePatterns([selectPattern])
+        }
+        this.deleteSelectBindLinks()
+        break;
+      default:
+        break;
+    }
   }
 
   drawbg() {
@@ -147,7 +170,7 @@ class DrawBoard extends Component {
     }
 
     let nodePattern = this.getPatternByKey(this.state.nodeControlPatternKey)
-    if(nodePattern.isNodeControlPatternShow){
+    if (nodePattern.isNodeControlPatternShow) {
       this.props.dismissNodeControlPattern(nodePattern)
     }
   }
@@ -174,6 +197,20 @@ class DrawBoard extends Component {
 
     this.setState({
       links: links
+    })
+  }
+
+  deleteSelectBindLinks = () => {
+    let links = new CopyUtils().copy(this.state.links)
+    let newLinks = []
+
+    for (let index in links) {
+      if (links[index].isSelect) {
+        newLinks.concat(links[index])
+      }
+    }
+    this.setState({
+      links: newLinks,
     })
   }
 

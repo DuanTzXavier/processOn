@@ -79,25 +79,6 @@ class SelectPattern extends Component {
         );
     }
 
-    static getDerivedStateFromProps(props, state) {
-        if (!props.pattern.isSelectedCanShow) {
-            document.onkeydown = null
-        } else {
-            document.onkeydown = function (event) {
-                switch (event.keyCode) {
-                    case 8:
-                        if (!props.pattern.isEditing) {
-                            props.deletePatterns([props.pattern])
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-        return null;
-    }
-
     handleDoubleClick(e) {
         let pattern = new CopyUtils().copy(this.props.pattern)
         pattern.isEditing = true
