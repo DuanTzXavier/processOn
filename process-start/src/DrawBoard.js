@@ -205,8 +205,8 @@ class DrawBoard extends Component {
     let newLinks = []
 
     for (let index in links) {
-      if (links[index].isSelect) {
-        newLinks.concat(links[index])
+      if (!links[index].isSelect) {
+        newLinks.push(links[index])
       }
     }
     this.setState({
