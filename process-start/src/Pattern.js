@@ -19,7 +19,7 @@ class Pattern extends Component {
         }
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
         this.drawShape()
     }
 
@@ -45,35 +45,38 @@ class Pattern extends Component {
         let patternShapeStyle = this.initShapeStyle(this.props.pattern.patternStyle)
 
         let textStyle = {
-            width:patternShapeStyle.width,
-            height:patternShapeStyle.height,
+            width: patternShapeStyle.width,
+            height: patternShapeStyle.height,
         }
         return (
             <div
                 className="Pattern"
                 style={this.props.pattern.patternStyle}
                 onClick={(e) => this.props.setSelectPattern(this.props.pattern)}
-                onMouseOver={(e)=> this.handleOnMouseOver(e)}>
-                <div  id={this.props.pattern.uniqueKey + "input"} className="Pattern-Text" style={textStyle} contentEditable="true"></div>
+                onMouseOver={(e) => this.handleOnMouseOver(e)}>
+                <div id={this.props.pattern.uniqueKey + "input"} className="Pattern-Text" style={textStyle} contentEditable="true" >1231231232131231212</div>
 
+                <div className="Pattern" style={patternShapeStyle}>
                 <canvas className="Pattern-Shape" style={patternShapeStyle} id={this.props.pattern.uniqueKey + "shape"} />
+
+                </div>
 
 
             </div>
         );
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.drawShape()
     }
 
-    handleOnMouseOver(e){
+    handleOnMouseOver(e) {
         this.props.setNodeControlPattern(this.props.pattern)
     }
 
-    drawShape(){
+    drawShape() {
         let canvas = document.getElementById(this.props.pattern.uniqueKey + "shape")
-        canvas.width = parseInt(this.props.pattern.patternStyle.width) 
+        canvas.width = parseInt(this.props.pattern.patternStyle.width)
         canvas.height = parseInt(this.props.pattern.patternStyle.height)
         new ShaoeDrawingUtils().drawShape(this.props.pattern.styleName, canvas, 2)
     }
