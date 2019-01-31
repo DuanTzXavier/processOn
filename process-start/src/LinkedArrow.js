@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './LinkedArrow.css'
-import { CopyUtils } from './utils/CopyUtils';
 
 class LinkedArrow extends Component {
 
@@ -8,19 +7,33 @@ class LinkedArrow extends Component {
 
     shouldBeIncreas = 50
 
+    mount = false
     state = {
 
     }
 
-    // constructor(props) {
-    //     super(props);
-    //     // this.initArrow = this.initArrow.bind(this)
-    // }
-
     render() {
         // build div style
-        let startFrom = this.props.bindLink.startFrom
-        let endTo = this.props.bindLink.endTo
+
+
+        if (!this.mount) {
+            this.calculatStyle(this.props.bindLink)
+        }
+
+        return (
+            <div
+                className="Linked-Arrow"
+                style={this.style}>
+
+                <canvas id={this.props.bindLink.uniqueKey} onMouseMove={(e) => this.handleOnMouseMove(e)} onClick={(e) => this.handleOnClick(e)} style={this.state.canvasStyle} />
+
+            </div>
+        );
+    }
+
+    calculatStyle(bindLink) {
+        let startFrom = bindLink.startFrom
+        let endTo = bindLink.endTo
         let fromPosition = 0
         if (typeof (startFrom) !== 'undefined') {
             fromPosition = startFrom.split("_")[1]
@@ -31,27 +44,17 @@ class LinkedArrow extends Component {
             toPosition = endTo.split("_")[1]
         }
 
-        let left = Math.min(this.props.bindLink.startPoint.X, this.props.bindLink.endPoint.X) - this.harfArrowWidth - (toPosition === "2" && fromPosition === "2" ? this.shouldBeIncreas : 0) + "px"
-        let top = Math.min(this.props.bindLink.startPoint.Y, this.props.bindLink.endPoint.Y) - this.harfArrowWidth - (toPosition === "1" && fromPosition === "1" ? this.shouldBeIncreas : 0) + "px"
+        let left = Math.min(bindLink.startPoint.X, bindLink.endPoint.X) - this.harfArrowWidth - (toPosition === "2" && fromPosition === "2" ? this.shouldBeIncreas : 0) + "px"
+        let top = Math.min(bindLink.startPoint.Y, bindLink.endPoint.Y) - this.harfArrowWidth - (toPosition === "1" && fromPosition === "1" ? this.shouldBeIncreas : 0) + "px"
 
-        let width = Math.abs(this.props.bindLink.startPoint.X - this.props.bindLink.endPoint.X) + this.harfArrowWidth * 2 + "px"
-        let height = Math.abs(this.props.bindLink.startPoint.Y - this.props.bindLink.endPoint.Y) + this.harfArrowWidth * 2 + "px"
-
-        var style = {
+        let width = Math.abs(bindLink.startPoint.X - bindLink.endPoint.X) + this.harfArrowWidth * 2 + "px"
+        let height = Math.abs(bindLink.startPoint.Y - bindLink.endPoint.Y) + this.harfArrowWidth * 2 + "px"
+        this.style = {
             left: left,
             top: top,
             width: width,
             height: height,
         }
-        return (
-            <div
-                className="Linked-Arrow"
-                style={style}>
-
-                <canvas id={this.props.bindLink.uniqueKey} onMouseMove={(e) => this.handleOnMouseMove(e)} onClick={(e)=>this.handleOnClick(e)} style={this.state.canvasStyle} />
-
-            </div>
-        );
     }
 
     handleOnMouseMove = (event) => {
@@ -76,8 +79,8 @@ class LinkedArrow extends Component {
         this.props.modifyBindLinks([bindLink])
     }
 
-    isOnCanvas(event){
-        if(event.currentTarget.tagName !== "CANVAS"){
+    isOnCanvas(event) {
+        if (event.currentTarget.tagName !== "CANVAS") {
             return false
         }
 
@@ -87,12 +90,16 @@ class LinkedArrow extends Component {
     }
 
     componentDidMount() {
+        this.mount = true
         this.initArrow(this.props.bindLink)
     }
 
     componentWillUpdate(props) {
+        this.calculatStyle(props.bindLink)
         this.initArrow(props.bindLink)
     }
+
+    
 
     initArrow(bindLink) {
         const canvas = document.getElementById(bindLink.uniqueKey)
@@ -127,7 +134,7 @@ class LinkedArrow extends Component {
 
     }
 
-    initStartPosition(bindLink){
+    initStartPosition(bindLink) {
         let startX = bindLink.startPoint.X;
         let startY = bindLink.startPoint.Y;
         let endX = bindLink.endPoint.X;
@@ -160,7 +167,7 @@ class LinkedArrow extends Component {
         var ctx = canvas.getContext("2d");
         ctx.lineWidth = 2
 
-        if(bindLink.isSelect){
+        if (bindLink.isSelect) {
             ctx.shadowBlur = 5;
             ctx.shadowColor = "#833";
         }
@@ -220,11 +227,11 @@ class LinkedArrow extends Component {
                     x: isVertical ? (startPosition & 1) === 1 ? haw : (width - haw) : width - haw,
                     y: isVertical ? haw : startPosition > 1 ? haw : height - haw,
                 }
-                
+
 
                 points[3] = {
                     x: (endPosition & 1) === 1 ? (width - haw - this.shouldBeIncreas) : haw,
-                    y: endPosition < 2 ?  haw :  height - haw
+                    y: endPosition < 2 ? haw : height - haw
                 }
                 break
             case 3:
@@ -249,7 +256,7 @@ class LinkedArrow extends Component {
             default:
                 break;
         }
-        
+
         ctx.moveTo(points[0].x, points[0].y)
         points.forEach((value, _) => {
             ctx.lineTo(value.x, value.y)
@@ -275,13 +282,13 @@ class LinkedArrow extends Component {
         var ctx = canvas.getContext("2d");
 
         ctx.lineWidth = 2
-        ctx.lineJoin="round";
+        ctx.lineJoin = "round";
 
-        if(bindLink.isSelect){
+        if (bindLink.isSelect) {
             ctx.shadowBlur = 5;
             ctx.shadowColor = "#833";
         }
-        
+
         let points = this.getCrossLinePosition(bindLink, isVertical, haw, width, height)
 
         ctx.moveTo(points[0].x, points[0].y)
@@ -295,7 +302,7 @@ class LinkedArrow extends Component {
         ctx.closePath();
     }
 
-    getCrossLinePosition(bindLink, isVertical, haw, width, height){
+    getCrossLinePosition(bindLink, isVertical, haw, width, height) {
         let startPosition = this.initStartPosition(bindLink)
         let endPosition = startPosition ^ 3
         let points = []
@@ -303,10 +310,10 @@ class LinkedArrow extends Component {
             x: (startPosition & 1) === 1 ? (width - haw) : haw,
             y: startPosition < 2 ? haw : height - haw
         }
-        
+
         points[1] = {
-            x: isVertical? (startPosition & 1) === 1 ? (width - haw) : haw : (startPosition & 1) !== 1 ? (width - haw) : haw,
-            y: isVertical? (startPosition & 2) !== 2 ? height - haw : haw : (startPosition & 2) === 2 ? height - haw : haw,
+            x: isVertical ? (startPosition & 1) === 1 ? (width - haw) : haw : (startPosition & 1) !== 1 ? (width - haw) : haw,
+            y: isVertical ? (startPosition & 2) !== 2 ? height - haw : haw : (startPosition & 2) === 2 ? height - haw : haw,
         }
 
         points[2] = {
@@ -331,13 +338,13 @@ class LinkedArrow extends Component {
         var ctx = canvas.getContext("2d");
 
         ctx.lineWidth = 2
-        ctx.lineJoin="round";
+        ctx.lineJoin = "round";
 
-        if(bindLink.isSelect){
+        if (bindLink.isSelect) {
             ctx.shadowBlur = 5;
             ctx.shadowColor = "#833";
         }
-        
+
         let points = this.getDirectLinePosition(bindLink, isVertical, haw, width, height)
 
         ctx.moveTo(points[0].x, points[0].y)
@@ -351,7 +358,7 @@ class LinkedArrow extends Component {
         ctx.closePath();
     }
 
-    getDirectLinePosition(bindLink, isVertical, haw, width, height){
+    getDirectLinePosition(bindLink, isVertical, haw, width, height) {
         let startPosition = this.initStartPosition(bindLink)
         let endPosition = startPosition ^ 3
         let points = []
